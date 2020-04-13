@@ -7,15 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07495A222443FF950099C15A /* WorkoutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07495A212443FF950099C15A /* WorkoutTableViewCell.swift */; };
+		07495A2424440EC80099C15A /* WorkoutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07495A2324440EC80099C15A /* WorkoutTableViewController.swift */; };
 		07BC131B2443AD0400C117CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BC131A2443AD0400C117CD /* AppDelegate.swift */; };
 		07BC131D2443AD0400C117CD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BC131C2443AD0400C117CD /* SceneDelegate.swift */; };
-		07BC131F2443AD0400C117CD /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BC131E2443AD0400C117CD /* FirstViewController.swift */; };
-		07BC13212443AD0400C117CD /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BC13202443AD0400C117CD /* SecondViewController.swift */; };
+		07BC131F2443AD0400C117CD /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BC131E2443AD0400C117CD /* HomeViewController.swift */; };
+		07BC13212443AD0400C117CD /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BC13202443AD0400C117CD /* ProfileViewController.swift */; };
 		07BC13242443AD0400C117CD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07BC13222443AD0400C117CD /* Main.storyboard */; };
 		07BC13272443AD0400C117CD /* Fitnessing.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 07BC13252443AD0400C117CD /* Fitnessing.xcdatamodeld */; };
 		07BC13292443AD0E00C117CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07BC13282443AD0E00C117CD /* Assets.xcassets */; };
 		07BC132C2443AD0E00C117CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07BC132A2443AD0E00C117CD /* LaunchScreen.storyboard */; };
 		07BC13372443AD0E00C117CD /* FitnessingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BC13362443AD0E00C117CD /* FitnessingTests.swift */; };
+		07BC13452443BDF800C117CD /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07BC13442443BDF800C117CD /* Roboto-Black.ttf */; };
+		07BC13512443BE0C00C117CD /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07BC13462443BE0A00C117CD /* Roboto-Regular.ttf */; };
+		07BC13522443BE0C00C117CD /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07BC13472443BE0A00C117CD /* Roboto-BlackItalic.ttf */; };
+		07BC13532443BE0C00C117CD /* Roboto-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07BC13482443BE0B00C117CD /* Roboto-ThinItalic.ttf */; };
+		07BC13542443BE0C00C117CD /* Roboto-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07BC13492443BE0B00C117CD /* Roboto-Italic.ttf */; };
+		07BC13552443BE0C00C117CD /* Roboto-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07BC134A2443BE0B00C117CD /* Roboto-BoldItalic.ttf */; };
+		07BC13562443BE0C00C117CD /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07BC134B2443BE0B00C117CD /* Roboto-Thin.ttf */; };
+		07BC13572443BE0C00C117CD /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07BC134C2443BE0B00C117CD /* Roboto-Light.ttf */; };
+		07BC13582443BE0C00C117CD /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07BC134D2443BE0B00C117CD /* Roboto-MediumItalic.ttf */; };
+		07BC13592443BE0C00C117CD /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07BC134E2443BE0B00C117CD /* Roboto-Medium.ttf */; };
+		07BC135A2443BE0C00C117CD /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07BC134F2443BE0C00C117CD /* Roboto-LightItalic.ttf */; };
+		07BC135B2443BE0C00C117CD /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07BC13502443BE0C00C117CD /* Roboto-Bold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,11 +43,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		07495A212443FF950099C15A /* WorkoutTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTableViewCell.swift; sourceTree = "<group>"; };
+		07495A2324440EC80099C15A /* WorkoutTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTableViewController.swift; sourceTree = "<group>"; };
 		07BC13172443AD0400C117CD /* Fitnessing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fitnessing.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07BC131A2443AD0400C117CD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		07BC131C2443AD0400C117CD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		07BC131E2443AD0400C117CD /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
-		07BC13202443AD0400C117CD /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
+		07BC131E2443AD0400C117CD /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		07BC13202443AD0400C117CD /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		07BC13232443AD0400C117CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		07BC13262443AD0400C117CD /* Fitnessing.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Fitnessing.xcdatamodel; sourceTree = "<group>"; };
 		07BC13282443AD0E00C117CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -42,6 +58,18 @@
 		07BC13322443AD0E00C117CD /* FitnessingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FitnessingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		07BC13362443AD0E00C117CD /* FitnessingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessingTests.swift; sourceTree = "<group>"; };
 		07BC13382443AD0E00C117CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		07BC13442443BDF800C117CD /* Roboto-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Black.ttf"; sourceTree = "<group>"; };
+		07BC13462443BE0A00C117CD /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
+		07BC13472443BE0A00C117CD /* Roboto-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-BlackItalic.ttf"; sourceTree = "<group>"; };
+		07BC13482443BE0B00C117CD /* Roboto-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-ThinItalic.ttf"; sourceTree = "<group>"; };
+		07BC13492443BE0B00C117CD /* Roboto-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Italic.ttf"; sourceTree = "<group>"; };
+		07BC134A2443BE0B00C117CD /* Roboto-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-BoldItalic.ttf"; sourceTree = "<group>"; };
+		07BC134B2443BE0B00C117CD /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
+		07BC134C2443BE0B00C117CD /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
+		07BC134D2443BE0B00C117CD /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-MediumItalic.ttf"; sourceTree = "<group>"; };
+		07BC134E2443BE0B00C117CD /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
+		07BC134F2443BE0C00C117CD /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
+		07BC13502443BE0C00C117CD /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,11 +111,14 @@
 		07BC13192443AD0400C117CD /* Fitnessing */ = {
 			isa = PBXGroup;
 			children = (
+				07495A212443FF950099C15A /* WorkoutTableViewCell.swift */,
+				07BC13432443BDDD00C117CD /* Fonts */,
 				07BC131A2443AD0400C117CD /* AppDelegate.swift */,
 				07BC131C2443AD0400C117CD /* SceneDelegate.swift */,
-				07BC131E2443AD0400C117CD /* FirstViewController.swift */,
-				07BC13202443AD0400C117CD /* SecondViewController.swift */,
+				07BC131E2443AD0400C117CD /* HomeViewController.swift */,
+				07BC13202443AD0400C117CD /* ProfileViewController.swift */,
 				07BC13222443AD0400C117CD /* Main.storyboard */,
+				07495A2324440EC80099C15A /* WorkoutTableViewController.swift */,
 				07BC13282443AD0E00C117CD /* Assets.xcassets */,
 				07BC132A2443AD0E00C117CD /* LaunchScreen.storyboard */,
 				07BC132D2443AD0E00C117CD /* Info.plist */,
@@ -103,6 +134,25 @@
 				07BC13382443AD0E00C117CD /* Info.plist */,
 			);
 			path = FitnessingTests;
+			sourceTree = "<group>";
+		};
+		07BC13432443BDDD00C117CD /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				07BC13472443BE0A00C117CD /* Roboto-BlackItalic.ttf */,
+				07BC13502443BE0C00C117CD /* Roboto-Bold.ttf */,
+				07BC134A2443BE0B00C117CD /* Roboto-BoldItalic.ttf */,
+				07BC13492443BE0B00C117CD /* Roboto-Italic.ttf */,
+				07BC134C2443BE0B00C117CD /* Roboto-Light.ttf */,
+				07BC134F2443BE0C00C117CD /* Roboto-LightItalic.ttf */,
+				07BC134E2443BE0B00C117CD /* Roboto-Medium.ttf */,
+				07BC134D2443BE0B00C117CD /* Roboto-MediumItalic.ttf */,
+				07BC13462443BE0A00C117CD /* Roboto-Regular.ttf */,
+				07BC134B2443BE0B00C117CD /* Roboto-Thin.ttf */,
+				07BC13482443BE0B00C117CD /* Roboto-ThinItalic.ttf */,
+				07BC13442443BDF800C117CD /* Roboto-Black.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -186,9 +236,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07BC13592443BE0C00C117CD /* Roboto-Medium.ttf in Resources */,
+				07BC13552443BE0C00C117CD /* Roboto-BoldItalic.ttf in Resources */,
+				07BC135B2443BE0C00C117CD /* Roboto-Bold.ttf in Resources */,
+				07BC135A2443BE0C00C117CD /* Roboto-LightItalic.ttf in Resources */,
 				07BC132C2443AD0E00C117CD /* LaunchScreen.storyboard in Resources */,
+				07BC13522443BE0C00C117CD /* Roboto-BlackItalic.ttf in Resources */,
+				07BC13572443BE0C00C117CD /* Roboto-Light.ttf in Resources */,
+				07BC13582443BE0C00C117CD /* Roboto-MediumItalic.ttf in Resources */,
 				07BC13292443AD0E00C117CD /* Assets.xcassets in Resources */,
+				07BC13532443BE0C00C117CD /* Roboto-ThinItalic.ttf in Resources */,
+				07BC13512443BE0C00C117CD /* Roboto-Regular.ttf in Resources */,
+				07BC13542443BE0C00C117CD /* Roboto-Italic.ttf in Resources */,
 				07BC13242443AD0400C117CD /* Main.storyboard in Resources */,
+				07BC13562443BE0C00C117CD /* Roboto-Thin.ttf in Resources */,
+				07BC13452443BDF800C117CD /* Roboto-Black.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,10 +269,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				07BC13272443AD0400C117CD /* Fitnessing.xcdatamodeld in Sources */,
-				07BC13212443AD0400C117CD /* SecondViewController.swift in Sources */,
-				07BC131F2443AD0400C117CD /* FirstViewController.swift in Sources */,
+				07495A222443FF950099C15A /* WorkoutTableViewCell.swift in Sources */,
+				07BC13212443AD0400C117CD /* ProfileViewController.swift in Sources */,
+				07BC131F2443AD0400C117CD /* HomeViewController.swift in Sources */,
 				07BC131B2443AD0400C117CD /* AppDelegate.swift in Sources */,
 				07BC131D2443AD0400C117CD /* SceneDelegate.swift in Sources */,
+				07495A2424440EC80099C15A /* WorkoutTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
