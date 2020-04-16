@@ -30,8 +30,8 @@
 		07BC13592443BE0C00C117CD /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07BC134E2443BE0B00C117CD /* Roboto-Medium.ttf */; };
 		07BC135A2443BE0C00C117CD /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07BC134F2443BE0C00C117CD /* Roboto-LightItalic.ttf */; };
 		07BC135B2443BE0C00C117CD /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07BC13502443BE0C00C117CD /* Roboto-Bold.ttf */; };
-		9091AF512447D12100449196 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9091AF502447D12100449196 /* Constants.swift */; };
-		9091AF532447D13B00449196 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9091AF522447D13B00449196 /* HelperFunctions.swift */; };
+		90426114244901F4003E000B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90426113244901F4003E000B /* Constants.swift */; };
+		904261162449022B003E000B /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904261152449022B003E000B /* HelperFunctions.swift */; };
 		9091AF572447D67000449196 /* CoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9091AF552447D67000449196 /* CoreData.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
@@ -73,8 +73,8 @@
 		07BC134E2443BE0B00C117CD /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		07BC134F2443BE0C00C117CD /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
 		07BC13502443BE0C00C117CD /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
-		9091AF502447D12100449196 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		9091AF522447D13B00449196 /* HelperFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
+		90426113244901F4003E000B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		904261152449022B003E000B /* HelperFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
 		9091AF562447D67000449196 /* CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreData.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -189,8 +189,8 @@
 			isa = PBXGroup;
 			children = (
 				07495A212443FF950099C15A /* WorkoutTableViewCell.swift */,
-				9091AF502447D12100449196 /* Constants.swift */,
-				9091AF522447D13B00449196 /* HelperFunctions.swift */,
+				90426113244901F4003E000B /* Constants.swift */,
+				904261152449022B003E000B /* HelperFunctions.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -327,14 +327,14 @@
 			files = (
 				07BC13272443AD0400C117CD /* Fitnessing.xcdatamodeld in Sources */,
 				07495A222443FF950099C15A /* WorkoutTableViewCell.swift in Sources */,
-				9091AF512447D12100449196 /* Constants.swift in Sources */,
 				07BC13212443AD0400C117CD /* ProfileViewController.swift in Sources */,
 				07BC131F2443AD0400C117CD /* HomeViewController.swift in Sources */,
 				07BC131B2443AD0400C117CD /* AppDelegate.swift in Sources */,
+				904261162449022B003E000B /* HelperFunctions.swift in Sources */,
 				9091AF572447D67000449196 /* CoreData.xcdatamodeld in Sources */,
 				07BC131D2443AD0400C117CD /* SceneDelegate.swift in Sources */,
-				9091AF532447D13B00449196 /* HelperFunctions.swift in Sources */,
 				07495A2424440EC80099C15A /* WorkoutTableViewController.swift in Sources */,
+				90426114244901F4003E000B /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
