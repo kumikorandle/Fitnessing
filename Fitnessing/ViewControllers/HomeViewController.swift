@@ -1,4 +1,4 @@
-//
+	//
 //  FirstViewController.swift
 //  Fitnessing
 //
@@ -9,7 +9,8 @@
 import UIKit
 
 class HomeViewController: UIViewController  {
-    // MARK: Properties
+	
+// MARK: Property Initialization
     // Title
     var welcomeLabel = UILabel()
     var nameLabel = UILabel()
@@ -73,29 +74,47 @@ class HomeViewController: UIViewController  {
     let welcome = "Welcome"
     
     let scrollView: UIScrollView = {
-        let v = UIScrollView()
+       
+		let v = UIScrollView()
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
-    }()
+   
+	}()/// scrollView
+	
+	// Tracker variables
+	var selectedButton: UIButton?
+	var destinationController: UIViewController?
     
-    override func viewDidLoad() {
+	
+//MARK: viewDidLoad
+	override func viewDidLoad() {
+		
         let boxSize = self.view.frame.width/3 - 30
         
         super.viewDidLoad()
+		
         createBackground()
         createTitle(name: name)
         createLine(line: line1, topNeighbour: nameLabel)
-        createBox(box: box1, neighbour: nil, text:workoutsSubtitle, label: workoutsCompleted, numLabel: numWorkouts, num: numWorkoutsString, height: boxSize, width: boxSize, topNeighbour: line1)
-        createBox(box: box2, neighbour: box1, text:weightSubtitle, label:currentWeight, numLabel: weight, num:weightString, height: boxSize, width: boxSize, topNeighbour: line1)
-        createBox(box: box3, neighbour: box2, text:hoursSubtitle, label:hoursWorked, numLabel: workouts, num: numWorkoutsString, height: boxSize, width: boxSize, topNeighbour: line1)
-        createLine(line: line2, topNeighbour: box1)
+        
+		createBox(box: box1, neighbour: nil, text:workoutsSubtitle, label: workoutsCompleted, numLabel: numWorkouts, num: numWorkoutsString, height: boxSize, width: boxSize, topNeighbour: line1)
+        
+		createBox(box: box2, neighbour: box1, text:weightSubtitle, label:currentWeight, numLabel: weight, num:weightString, height: boxSize, width: boxSize, topNeighbour: line1)
+        
+		createBox(box: box3, neighbour: box2, text:hoursSubtitle, label:hoursWorked, numLabel: workouts, num: numWorkoutsString, height: boxSize, width: boxSize, topNeighbour: line1)
+        
+		createLine(line: line2, topNeighbour: box1)
         createPreviousWorkout()
         createLine(line: line3, topNeighbour: prevWorkoutButton)
         createWorkouts()
-    }
+   
+	}/// viewDidLoad
     
+	
+//MARK: create view functions
     func createBackground() {
-        let background = UILabel()
+       
+		let background = UILabel()
         background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
         background.backgroundColor = .white
         self.view.insertSubview(background, at: 0)
@@ -118,27 +137,33 @@ class HomeViewController: UIViewController  {
         layer0.frame = self.view.bounds
 
         background.layer.addSublayer(layer0)
-    }
+   
+	}/// createBackground
     
     func formatLabel(label: UILabel, text: String, font: String, alpha: CGFloat, width: CGFloat, height: CGFloat, fontSize: CGFloat) {
-        label.frame = CGRect(x: 0, y: 0, width: width, height: height)
+        
+		label.frame = CGRect(x: 0, y: 0, width: width, height: height)
         label.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: alpha)
         label.font = UIFont(name: font, size: fontSize)
         label.textAlignment = .center
         label.text = text
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
-    }
+   
+	}/// formatLabel
     
     func defineConstraints(label: UILabel, width: CGFloat, height: CGFloat, leadingConstant: CGFloat, topConstant: CGFloat, top: NSLayoutAnchor<NSLayoutYAxisAnchor>, leading: NSLayoutAnchor<NSLayoutXAxisAnchor>) {
-        label.translatesAutoresizingMaskIntoConstraints = false
+        
+		label.translatesAutoresizingMaskIntoConstraints = false
         label.widthAnchor.constraint(equalToConstant: width).isActive = true
         label.heightAnchor.constraint(equalToConstant: height).isActive = true
         label.leadingAnchor.constraint(equalTo: leading, constant: leadingConstant).isActive = true
         label.topAnchor.constraint(equalTo: top, constant: topConstant).isActive = true
-    }
+   
+	}/// defineConstraints
     
     func createTitle(name: String) {
+		
         formatLabel(label: welcomeLabel, text: welcome, font: "Roboto-Regular", alpha: 0.75, width: 200, height: 56, fontSize: 48)
         formatLabel(label: nameLabel, text: name, font: "Roboto-Bold", alpha: 1, width: 164, height: 56, fontSize: 48)
         nameLabel.sizeToFit()
@@ -149,7 +174,7 @@ class HomeViewController: UIViewController  {
         // Constraints
         defineConstraints(label: welcomeLabel, width: welcomeLabel.frame.width, height: welcomeLabel.frame.height, leadingConstant: 36, topConstant: 75, top: self.view!.topAnchor, leading: self.view!.leadingAnchor)
         defineConstraints(label: nameLabel, width: 164, height: 56, leadingConstant: 36, topConstant: 5, top: welcomeLabel.bottomAnchor, leading: self.view.leadingAnchor)
-    }
+    }/// createTitle
     
     func createLine(line: UIView, topNeighbour: Any?) {
         let lineWidth = self.view.frame.width - 60
@@ -179,7 +204,7 @@ class HomeViewController: UIViewController  {
         } else if let view = topNeighbour as? UIView {
             line.topAnchor.constraint(equalTo: view.bottomAnchor, constant: 30).isActive = true
         }
-    }
+    }/// createLine
     
     func createBox(box: UIView, neighbour: UIView?, text: String, label: UILabel, numLabel: UILabel, num: String, height: CGFloat, width: CGFloat, topNeighbour: UIView) {
         box.frame = CGRect(x: 0, y: 0, width: height, height: width)
@@ -210,7 +235,7 @@ class HomeViewController: UIViewController  {
         } else {
             box.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 36).isActive = true
         }
-    }
+    }/// createBox
     
     func createPreviousWorkout() {
         prevWorkoutButton.frame = CGRect(x: 0, y:0, width: self.view.frame.width - 60, height: 145)
@@ -248,7 +273,7 @@ class HomeViewController: UIViewController  {
         defineConstraints(label: exercises, width: exercises.frame.width, height: exercises.frame.height, leadingConstant: 20, topConstant: 1, top: workoutTitle.bottomAnchor, leading: dateBox.trailingAnchor)
         defineConstraints(label: workoutTitle, width: workoutTitle.frame.width, height: workoutTitle.frame.height, leadingConstant: 20, topConstant: 1, top: prevWorkout.bottomAnchor, leading: dateBox.trailingAnchor)
         defineConstraints(label: prevWorkout, width: prevWorkout.frame.width, height: workoutTitle.frame.height, leadingConstant: 20, topConstant: 30, top: line2.topAnchor, leading: dateBox.trailingAnchor)
-    }
+    }/// createPreviousWorkout
     
     func createWorkouts() {
         formatLabel(label: myWorkoutsLabel, text: myWorkoutsSubtile, font: "Roboto-Bold", alpha: 0.7, width: 143, height: 23, fontSize: 20)
@@ -273,7 +298,7 @@ class HomeViewController: UIViewController  {
         defineConstraints(label: myWorkoutsLabel, width: myWorkoutsLabel.frame.width, height: myWorkoutsLabel.frame.height, leadingConstant: 35, topConstant: 30, top: line3.topAnchor, leading: parent.leadingAnchor)
         
         createExercise()
-    }
+    }/// createWorkouts
     
     
     func createExercise() {
@@ -303,14 +328,38 @@ class HomeViewController: UIViewController  {
         exerciseBox.heightAnchor.constraint(equalToConstant: exerciseBox.frame.height).isActive = true
         exerciseBox.leadingAnchor.constraint(equalTo: parent.leadingAnchor, constant: 32).isActive = true
         exerciseBox.topAnchor.constraint(equalTo: myWorkoutsLabel.bottomAnchor, constant: 15).isActive = true
-    }
+    }/// createExercise
     
     @objc func previousWorkoutSelected() {
         print("Clicked")
-    }
+    }/// previousWorkoutSelected
     
     @objc func showAllButtonSelected() {
         print("Clicked")
-    }
-}
-
+    }/// showAllButtonSelected
+	
+	
+// MARK: Button Actions
+	
+	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+		if let touch = touches.first {
+			
+			if selectedButton == prevWorkoutButton {
+				if (prevWorkoutButton.frame.contains(touch.location(in: self.arrow))) {
+					destinationController = WorkoutViewController
+					handlePrevWorkoutButtonClick()
+				}
+				
+			}
+		}
+		
+		selectedButton = nil
+	} ///touchesEnded
+	
+	private func handlePrevWorkoutButtonClick() {
+		
+		self.navigationController?.pushViewController(destinationController!, animated: true)
+		
+	}/// handlePrevWorkoutButtonClick
+	
+}/// HomeViewController
