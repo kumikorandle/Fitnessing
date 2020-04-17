@@ -21,7 +21,7 @@ class WorkoutTableViewController: UITableViewController {
         self.navigationController?.isNavigationBarHidden = false
         customizeNavBar()
         
-        self.tableView.rowHeight = 185;
+        self.tableView.rowHeight = 200;
         
         // Remove cell separators
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
@@ -68,6 +68,7 @@ class WorkoutTableViewController: UITableViewController {
         cell!.Background.layer.cornerRadius = 10
         cell!.Background.layer.backgroundColor = UIColor.white.cgColor
         cell!.backgroundColor = UIColor.clear
+        
         //cell.layer.cornerRadius = 8
         //cell.layer.masksToBounds = true
         
