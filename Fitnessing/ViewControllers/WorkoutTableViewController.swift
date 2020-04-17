@@ -10,7 +10,8 @@ import UIKit
 
 class WorkoutTableViewController: UITableViewController {
     // MARK: Properties
-    let workouts = [Workout?]()
+    //let workouts = [Workout?]()
+    let workouts = [1, 2, 3]
     
     override func viewDidLoad() {
         super.viewDidLoad()

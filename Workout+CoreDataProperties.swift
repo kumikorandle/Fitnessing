@@ -17,7 +17,7 @@ extension Workout {
         return NSFetchRequest<Workout>(entityName: "Workout")
     }
 
-    @NSManaged public var exercises: NSObject?
+    @NSManaged public var exercises: [Exercise]
     @NSManaged public var timesCompleted: Int16
     @NSManaged public var lastDateCompleted: Date?
 
