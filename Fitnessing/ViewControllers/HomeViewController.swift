@@ -327,15 +327,14 @@ class HomeViewController: UIViewController  {
     
 // MARK: Button Actions
     @objc func previousWorkoutSelected() {
-		
         print("Clicked previous workout")
-		destinationController = self.storyboard!.instantiateViewController(withIdentifier: "exercise") as! WorkoutTableViewController
-		self.navigationController!.pushViewController(destinationController!, animated: true)
+        let dc : UIViewController?
+		dc = self.storyboard!.instantiateViewController(withIdentifier: "workoutDetails") as! WorkoutDetailViewController
+		self.navigationController!.pushViewController(dc!, animated: true)
 		
     }/// previousWorkoutSelected
     
     @objc func showAllButtonSelected() {
-        
 		print("Clicked show all")
         destinationController = self.storyboard!.instantiateViewController(withIdentifier: "workouts") as! WorkoutTableViewController
         self.navigationController!.pushViewController(destinationController!, animated: true)

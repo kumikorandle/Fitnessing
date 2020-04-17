@@ -265,7 +265,7 @@
                                     <outlet property="workoutDate" destination="iZL-kE-yvL" id="MJd-47-mqG"/>
                                     <outlet property="workoutTitle" destination="Fqk-pr-70V" id="mlU-ys-JEL"/>
                                     <outlet property="zeroLabel" destination="VT4-Tr-bPk" id="AIf-qB-MOk"/>
-                                    <segue destination="Mlv-tf-gUX" kind="show" identifier="workoutDetails" id="tjW-Gv-7zu"/>
+                                    <segue destination="Mlv-tf-gUX" kind="show" identifier="workoutDetailsSegue" id="tjW-Gv-7zu"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -318,10 +318,10 @@
             </objects>
             <point key="canvasLocation" x="5289.8550724637689" y="-320.08928571428572"/>
         </scene>
-        <!--View Controller-->
+        <!--Create Workout View Controller-->
         <scene sceneID="KxU-nj-4f9">
             <objects>
-                <viewController id="Lfd-kB-Bb9" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="create" id="Lfd-kB-Bb9" customClass="CreateWorkoutViewController" customModule="Fitnessing" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="a4q-Pf-pio">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -345,7 +345,7 @@
         <!--Workout Detail View Controller-->
         <scene sceneID="zBJ-9b-xdk">
             <objects>
-                <viewController id="Mlv-tf-gUX" customClass="WorkoutDetailViewController" customModule="Fitnessing" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="workoutDetails" id="Mlv-tf-gUX" customClass="WorkoutDetailViewController" customModule="Fitnessing" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="YnC-6X-Lyf">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

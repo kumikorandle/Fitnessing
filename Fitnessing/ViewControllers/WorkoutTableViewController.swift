@@ -104,6 +104,13 @@ class WorkoutTableViewController: UITableViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
+    @objc func createAction() {
+        print("Clicked create")
+        let destinationController : UIViewController?
+        destinationController = self.storyboard!.instantiateViewController(withIdentifier: "create") as! CreateWorkoutViewController
+        self.navigationController!.pushViewController(destinationController!, animated: true)
+    }
+    
 // MARK: Create view functions
     func createBackground() {
         let background = UIView()
@@ -148,11 +155,19 @@ class WorkoutTableViewController: UITableViewController {
         self.navigationController!.navigationBar.standardAppearance = navBarAppearance
         self.navigationController!.navigationBar.scrollEdgeAppearance = navBarAppearance
                 
+        // Back button
         let backbutton = UIButton(type: .custom)
         backbutton.setImage(UIImage(named: "BackButton.png"), for: .normal)
         backbutton.addTarget(self, action: #selector(backAction), for: .touchUpInside)
 
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backbutton)
+        
+        // Create button
+        let createButton = UIButton(type: .custom)
+        createButton.titleLabel!.text = "Create"
+        createButton.addTarget(self, action: #selector(createAction), for: .touchUpInside)
+        
+        self.navigationItem.rightBarButtonItems?.append(UIBarButtonItem(customView: createButton))
     }
     
     /*
