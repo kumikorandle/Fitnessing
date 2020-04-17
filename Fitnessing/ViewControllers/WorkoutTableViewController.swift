@@ -11,7 +11,7 @@ import UIKit
 class WorkoutTableViewController: UITableViewController {
 // MARK: Properties
     //let workouts = [Workout?]()
-    let workouts = [1, 2, 3]
+    var workouts = [1, 2, 3]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,9 +74,6 @@ class WorkoutTableViewController: UITableViewController {
         cell!.Background.layer.backgroundColor = UIColor.white.cgColor
         cell!.backgroundColor = UIColor.clear
         
-        //cell.layer.cornerRadius = 8
-        //cell.layer.masksToBounds = true
-        
         return cell!
     }
     
@@ -93,6 +90,7 @@ class WorkoutTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
+            workouts.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -172,14 +170,14 @@ class WorkoutTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
     }
-    */
+    
 
 }

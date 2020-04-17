@@ -22,6 +22,7 @@ class WorkoutTableViewCell: UITableViewCell {
     @IBOutlet weak var bar3: UIView!
     @IBOutlet weak var bar4: UIView!
     @IBOutlet weak var bar5: UIView!
+    @IBOutlet weak var graphLine: UILabel!
     
     // Graph Labels
     @IBOutlet weak var fiveLabel: UILabel!
@@ -54,6 +55,7 @@ class WorkoutTableViewCell: UITableViewCell {
         bar3.backgroundColor = UIColor(red: 1, green: 0.757, blue: 0.655, alpha: 1)
         bar4.backgroundColor = UIColor(red: 1, green: 0.773, blue: 0.729, alpha: 1)
         bar5.backgroundColor = UIColor(red: 1, green: 0.757, blue: 0.655, alpha: 1)
+        graphLine.backgroundColor = UIColor(red: 1, green: 0.757, blue: 0.655, alpha: 1)
 
     }
 
