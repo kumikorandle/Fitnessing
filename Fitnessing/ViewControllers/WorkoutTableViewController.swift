@@ -31,7 +31,6 @@ class WorkoutTableViewController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
     func addWorkoutsForTesting() {
@@ -164,10 +163,10 @@ class WorkoutTableViewController: UITableViewController {
         
         // Create button
         let createButton = UIButton(type: .custom)
-        createButton.titleLabel!.text = "Create"
+        createButton.setTitle("Create", for: .normal)
         createButton.addTarget(self, action: #selector(createAction), for: .touchUpInside)
         
-        self.navigationItem.rightBarButtonItems?.append(UIBarButtonItem(customView: createButton))
+        self.navigationItem.setRightBarButtonItems([self.editButtonItem, UIBarButtonItem(customView: createButton)], animated: true)
     }
     
     /*
