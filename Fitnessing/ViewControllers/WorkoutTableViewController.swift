@@ -9,7 +9,7 @@
 import UIKit
 
 class WorkoutTableViewController: UITableViewController {
-    // MARK: Properties
+// MARK: Properties
     //let workouts = [Workout?]()
     let workouts = [1, 2, 3]
     
@@ -46,7 +46,7 @@ class WorkoutTableViewController: UITableViewController {
         createBackground()
     }
     
-    // MARK: - Table view data source
+// MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -100,13 +100,13 @@ class WorkoutTableViewController: UITableViewController {
     }
     
 
-    // MARK: Button functions
+// MARK: Button functions
     @objc func backAction() {
         self.navigationController?.isNavigationBarHidden = true
         self.navigationController?.popViewController(animated: true)
     }
     
-    // MARK: Create view functions
+// MARK: Create view functions
     func createBackground() {
         let background = UIView()
         background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)

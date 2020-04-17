@@ -321,18 +321,25 @@ class HomeViewController: UIViewController  {
         exerciseBox.heightAnchor.constraint(equalToConstant: exerciseBox.frame.height).isActive = true
         exerciseBox.leadingAnchor.constraint(equalTo: parent.leadingAnchor, constant: 32).isActive = true
         exerciseBox.topAnchor.constraint(equalTo: myWorkoutsLabel.bottomAnchor, constant: 15).isActive = true
-    }/// createExercise
+   
+	}/// createExercise
     
     
-    // MARK: Button Actions
+// MARK: Button Actions
     @objc func previousWorkoutSelected() {
+		
         print("Clicked previous workout")
+		destinationController = self.storyboard!.instantiateViewController(withIdentifier: "exercise") as! WorkoutTableViewController
+		self.navigationController!.pushViewController(destinationController!, animated: true)
+		
     }/// previousWorkoutSelected
     
     @objc func showAllButtonSelected() {
-        print("Clicked show all")
+        
+		print("Clicked show all")
         destinationController = self.storyboard!.instantiateViewController(withIdentifier: "workouts") as! WorkoutTableViewController
         self.navigationController!.pushViewController(destinationController!, animated: true)
-    }/// showAllButtonSelected
+    
+	}/// showAllButtonSelected
 	
 }/// HomeViewController

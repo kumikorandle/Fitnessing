@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -38,6 +38,9 @@
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
                     <navigationItem key="navigationItem" id="qvZ-K1-LSr"/>
+                    <connections>
+                        <segue destination="fHu-lu-khq" kind="show" identifier="home to exercise segue" id="pVB-d9-csR"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
@@ -288,6 +291,37 @@
                 </navigationBar>
             </objects>
             <point key="canvasLocation" x="2656.521739130435" y="-320.08928571428572"/>
+        </scene>
+        <!--Exercise View Controller-->
+        <scene sceneID="SdQ-q4-TeY">
+            <objects>
+                <viewController storyboardIdentifier="exercise" id="fHu-lu-khq" userLabel="Exercise View Controller" customClass="ExerciseViewController" customModule="Fitnessing" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="e1p-y2-VDP">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="awE-uw-BDw"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="NxX-tX-JgD"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UxG-mu-J7o" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1659" y="375"/>
+        </scene>
+        <!--Add Exercises View Controller-->
+        <scene sceneID="Kl6-Um-Q1E">
+            <objects>
+                <viewController id="FPF-zW-Kv9" userLabel="Add Exercises View Controller" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="cj3-wn-Dbc">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="KIK-mw-sMd"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LQJ-bB-KQk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-88" y="747"/>
         </scene>
         <!--Profile-->
         <scene sceneID="wg7-f3-ORb">
