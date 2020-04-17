@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="19C57" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Exercise" representedClassName=".Exercise" syncable="YES">
-        <attribute name="lastDateCompleted" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="musclesWorked" optional="YES" attributeType="String"/>
+        <attribute name="musclesWorked" optional="YES" attributeType="Transformable"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="numReps" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="numSets" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="pictures" optional="YES" attributeType="Binary" storedInTruthFile="YES"/>
+        <attribute name="pictures" optional="YES" attributeType="Transformable" storedInTruthFile="YES"/>
         <attribute name="videoLink" optional="YES" attributeType="URI"/>
+        <attribute name="weightLifted" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
     </entity>
     <entity name="User" representedClassName=".User" syncable="YES">
         <attribute name="age" optional="YES" attributeType="Integer 16" defaultValueString="-1" usesScalarValueType="YES"/>
@@ -25,8 +25,8 @@
         <attribute name="weightLBS" optional="YES" attributeType="Integer 16" defaultValueString="-1" usesScalarValueType="YES"/>
     </entity>
     <entity name="Workout" representedClassName=".Workout" syncable="YES">
-        <attribute name="exercises" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
-        <attribute name="numExercises" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="exercises" attributeType="Transformable" allowsExternalBinaryDataStorage="YES"/>
+        <attribute name="lastDateCompleted" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="timesCompleted" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <elements>
