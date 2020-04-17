@@ -73,24 +73,14 @@ class HomeViewController: UIViewController  {
     let name = "Kumiko"
     let welcome = "Welcome"
     
-    let scrollView: UIScrollView = {
-       
-		let v = UIScrollView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-   
-	}()/// scrollView
-	
 	// Tracker variables
 	var selectedButton: UIButton?
-	var destinationController: UIViewController?
+	var destinationController: UITableViewController?
     
 	
 //MARK: viewDidLoad
 	override func viewDidLoad() {
-		
         let boxSize = self.view.frame.width/3 - 30
-        
         super.viewDidLoad()
 		
         createBackground()
@@ -110,6 +100,9 @@ class HomeViewController: UIViewController  {
    
 	}/// viewDidLoad
     
+    override func viewDidAppear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = true
+    }
 	
 //MARK: create view functions
     func createBackground() {
@@ -263,6 +256,7 @@ class HomeViewController: UIViewController  {
         prevWorkoutButton.widthAnchor.constraint(equalToConstant: prevWorkoutButton.frame.width).isActive = true
         prevWorkoutButton.heightAnchor.constraint(equalToConstant: prevWorkoutButton.frame.height).isActive = true
         prevWorkoutButton.topAnchor.constraint(equalTo: line2.topAnchor, constant: 1).isActive = true
+        prevWorkoutButton.leadingAnchor.constraint(equalTo: parent.leadingAnchor, constant: 35).isActive = true
         
         arrow.translatesAutoresizingMaskIntoConstraints = false
         arrow.widthAnchor.constraint(equalToConstant: 10).isActive = true
@@ -322,7 +316,6 @@ class HomeViewController: UIViewController  {
         defineConstraints(label: firstWorkoutTitle, width: firstWorkoutTitle.frame.width, height: firstWorkoutTitle.frame.height, leadingConstant: 20, topConstant: 20, top: exerciseBox.topAnchor, leading: exerciseBox.leadingAnchor)
         defineConstraints(label: workoutDate, width: workoutDate.frame.width, height: workoutDate.frame.height, leadingConstant: 20, topConstant: 1, top: firstWorkoutTitle.bottomAnchor, leading: exerciseBox.leadingAnchor)
         
-
         exerciseBox.translatesAutoresizingMaskIntoConstraints = false
         exerciseBox.widthAnchor.constraint(equalToConstant: exerciseBox.frame.width).isActive = true
         exerciseBox.heightAnchor.constraint(equalToConstant: exerciseBox.frame.height).isActive = true
@@ -330,36 +323,16 @@ class HomeViewController: UIViewController  {
         exerciseBox.topAnchor.constraint(equalTo: myWorkoutsLabel.bottomAnchor, constant: 15).isActive = true
     }/// createExercise
     
+    
+    // MARK: Button Actions
     @objc func previousWorkoutSelected() {
-        print("Clicked")
+        print("Clicked previous workout")
     }/// previousWorkoutSelected
     
     @objc func showAllButtonSelected() {
-        print("Clicked")
+        print("Clicked show all")
+        destinationController = self.storyboard!.instantiateViewController(withIdentifier: "workouts") as! WorkoutTableViewController
+        self.navigationController!.pushViewController(destinationController!, animated: true)
     }/// showAllButtonSelected
-	
-	
-// MARK: Button Actions
-	
-	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-		if let touch = touches.first {
-			
-			if selectedButton == prevWorkoutButton {
-				if (prevWorkoutButton.frame.contains(touch.location(in: self.arrow))) {
-					destinationController = WorkoutViewController
-					handlePrevWorkoutButtonClick()
-				}
-				
-			}
-		}
-		
-		selectedButton = nil
-	} ///touchesEnded
-	
-	private func handlePrevWorkoutButtonClick() {
-		
-		self.navigationController?.pushViewController(destinationController!, animated: true)
-		
-	}/// handlePrevWorkoutButtonClick
 	
 }/// HomeViewController

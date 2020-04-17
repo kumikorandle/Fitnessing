@@ -9,18 +9,31 @@
 import UIKit
 
 class WorkoutTableViewController: UITableViewController {
+    // MARK: Properties
     let workouts = [1, 2, 3]
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        //createBackground()
+        self.navigationController?.isNavigationBarHidden = false
+        createBackground()
+        customizeNavBar()
+        
+        self.tableView.rowHeight = 185;
+        
+        // Remove cell separators
+        self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = false
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -42,12 +55,41 @@ class WorkoutTableViewController: UITableViewController {
         // Fetches the appropriate meal for the data source layout.
         let workout = workouts[indexPath.row]
                 
+        cell.Background.layer.cornerRadius = 10
+        cell.Background.layer.backgroundColor = UIColor.white.cgColor
         //cell.layer.cornerRadius = 8
         //cell.layer.masksToBounds = true
         
         return cell
     }
     
+    /*
+    // Override to support conditional editing of the table view.
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        // Return false if you do not want the specified item to be editable.
+        return true
+    }
+    */
+
+    
+    // Override to support editing the table view.
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            // Delete the row from the data source
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        } else if editingStyle == .insert {
+            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+        }    
+    }
+    
+
+    // MARK: Button functions
+    @objc func backAction() {
+        self.navigationController?.isNavigationBarHidden = true
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    // MARK: Create view functions
     func createBackground() {
         let background = UILabel()
         background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
@@ -74,26 +116,30 @@ class WorkoutTableViewController: UITableViewController {
         background.layer.addSublayer(layer0)
     }
     
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
+    func customizeNavBar() {
+        self.navigationController?.navigationBar.tintColor = .white
+        self.navigationController?.navigationBar.barTintColor = UIColor(red: 1, green: 0.749, blue: 0.647, alpha: 1)
+        self.navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+        
+        let navBarAppearance = UINavigationBarAppearance()
+        
+        navBarAppearance.configureWithOpaqueBackground()
+        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        navBarAppearance.backgroundColor = UIColor(red: 1, green: 0.749, blue: 0.647, alpha: 1)
+        navBarAppearance.shadowColor = .clear
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
+        self.navigationController!.navigationBar.standardAppearance = navBarAppearance
+        self.navigationController!.navigationBar.scrollEdgeAppearance = navBarAppearance
+                
+        let backbutton = UIButton(type: .custom)
+        backbutton.setImage(UIImage(named: "BackButton.png"), for: .normal)
+        backbutton.addTarget(self, action: #selector(backAction), for: .touchUpInside)
 
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backbutton)
+    }
+    
     /*
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {

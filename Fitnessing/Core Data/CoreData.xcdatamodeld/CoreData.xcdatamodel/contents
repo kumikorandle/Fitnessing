@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="19A602" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="19C57" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Exercise" representedClassName=".Exercise" syncable="YES">
+        <attribute name="musclesWorked" optional="YES" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
+        <attribute name="numReps" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="numSets" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="pictures" optional="YES" attributeType="Binary" storedInTruthFile="YES"/>
-        <attribute name="timesCompleted" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="videoLink" optional="YES" attributeType="URI"/>
     </entity>
     <entity name="User" representedClassName=".User" syncable="YES">
@@ -23,13 +25,12 @@
     </entity>
     <entity name="Workout" representedClassName=".Workout" syncable="YES">
         <attribute name="exercises" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
-        <attribute name="reps" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="sets" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="numExercises" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="timesCompleted" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <elements>
-        <element name="Exercise" positionX="-63" positionY="-18" width="128" height="103"/>
+        <element name="Exercise" positionX="-63" positionY="-18" width="128" height="133"/>
         <element name="User" positionX="-54" positionY="-9" width="128" height="238"/>
-        <element name="Workout" positionX="-36" positionY="9" width="128" height="103"/>
+        <element name="Workout" positionX="-36" positionY="9" width="128" height="88"/>
     </elements>
 </model>

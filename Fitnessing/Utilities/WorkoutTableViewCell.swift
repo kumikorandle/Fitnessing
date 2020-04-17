@@ -9,7 +9,9 @@
 import UIKit
 
 class WorkoutTableViewCell: UITableViewCell {
-
+    // MARK: Properties
+    @IBOutlet weak var Background: UIView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
