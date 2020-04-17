@@ -55,6 +55,15 @@
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sxw-ou-rGv">
                                             <rect key="frame" x="20" y="11" width="374" height="163"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="THIS IS A TEST" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fqk-pr-70V">
+                                                    <rect key="frame" x="128" y="71" width="118" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="374" id="HWs-Jc-ccc"/>
@@ -62,15 +71,14 @@
                                             </constraints>
                                         </view>
                                     </subviews>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstItem="Sxw-ou-rGv" firstAttribute="centerY" secondItem="x8f-3r-PYe" secondAttribute="centerY" id="MZe-9T-l4G"/>
                                         <constraint firstItem="Sxw-ou-rGv" firstAttribute="centerX" secondItem="x8f-3r-PYe" secondAttribute="centerX" id="hCY-h1-Qqk"/>
                                     </constraints>
                                 </tableViewCellContentView>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="Background" destination="Sxw-ou-rGv" id="wBs-ny-jaw"/>
+                                    <outlet property="test" destination="Fqk-pr-70V" id="cgi-nY-9mZ"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

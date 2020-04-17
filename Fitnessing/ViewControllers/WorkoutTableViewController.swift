@@ -14,8 +14,11 @@ class WorkoutTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        
         self.navigationController?.isNavigationBarHidden = false
-        createBackground()
         customizeNavBar()
         
         self.tableView.rowHeight = 185;
@@ -34,6 +37,10 @@ class WorkoutTableViewController: UITableViewController {
         self.navigationController?.isNavigationBarHidden = false
     }
     
+    override func viewDidLayoutSubviews() {
+        createBackground()
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -48,19 +55,23 @@ class WorkoutTableViewController: UITableViewController {
         // Table view cells are reused and should be dequeued using a cell identifier.
         let cellIdentifier = "WorkoutTableViewCell"
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? WorkoutTableViewCell else {
-            fatalError("The dequeued cell is not an instance of WorkoutTableViewCell.")
+        var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? WorkoutTableViewCell
+        
+        if cell == nil {
+            tableView.register(UINib(nibName: "MyCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
+            cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? WorkoutTableViewCell
         }
         
         // Fetches the appropriate meal for the data source layout.
         let workout = workouts[indexPath.row]
                 
-        cell.Background.layer.cornerRadius = 10
-        cell.Background.layer.backgroundColor = UIColor.white.cgColor
+        cell!.Background.layer.cornerRadius = 10
+        cell!.Background.layer.backgroundColor = UIColor.white.cgColor
+        cell!.backgroundColor = UIColor.clear
         //cell.layer.cornerRadius = 8
         //cell.layer.masksToBounds = true
         
-        return cell
+        return cell!
     }
     
     /*
@@ -91,10 +102,9 @@ class WorkoutTableViewController: UITableViewController {
     
     // MARK: Create view functions
     func createBackground() {
-        let background = UILabel()
+        let background = UIView()
         background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
         background.backgroundColor = .white
-        self.view.insertSubview(background, at: 0)
         
         let layer0 = CAGradientLayer()
         layer0.colors = [
@@ -113,7 +123,8 @@ class WorkoutTableViewController: UITableViewController {
         layer0.position = background.center
         layer0.frame = self.view.bounds
 
-        background.layer.addSublayer(layer0)
+        background.layer.insertSublayer(layer0, at: 0)
+        self.tableView.insertSubview(background, at: 0)
     }
     
     func customizeNavBar() {
