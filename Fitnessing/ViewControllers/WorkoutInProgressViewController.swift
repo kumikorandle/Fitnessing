@@ -9,6 +9,7 @@
 import UIKit
 
 class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+	
     //var exercises = [Exercise]()
     var exercises = [1, 2, 3]
     
@@ -17,7 +18,9 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
     
     @IBOutlet weak var tableView: UITableView!
 
-    override func viewDidLoad() {
+    
+//MARK: viewDidLoad
+	override func viewDidLoad() {
         super.viewDidLoad()
         
         self.tableView.delegate = self
@@ -38,7 +41,7 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
         createSubtitle()
         
         tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 50).isActive = true
-    }
+    }/// veiwDidLoad
     
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -64,9 +67,9 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
         cell!.titleLabel.text = "Hip Thrusts"
         
         return cell!
-    }
+    }/// cellForRowAt
     
-    // MARK: Helper Functions
+// MARK: Helper Functions
      func defineConstraints(label: UILabel, width: CGFloat, height: CGFloat, leadingConstant: CGFloat, topConstant: CGFloat, top: NSLayoutAnchor<NSLayoutYAxisAnchor>, leading: NSLayoutAnchor<NSLayoutXAxisAnchor>) {
          
          label.translatesAutoresizingMaskIntoConstraints = false
@@ -97,7 +100,8 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
          label.numberOfLines = 0
          label.lineBreakMode = .byWordWrapping
     
-     }
+     }/// formatLabel
+	
     
     // MARK: View functions
       func createBackground() {
@@ -123,7 +127,7 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
           
           header.layer.insertSublayer(layer0, at: 0)
         defineConstraints(label: header, width: self.view.frame.width, height: header.frame.height, leadingConstant: 0, topConstant: -10, top: self.view.topAnchor, leading: self.view.leadingAnchor)
-      }
+      }/// createBackground
     
     func customizeNavBar() {
         self.navigationController?.navigationBar.tintColor = .white
@@ -147,15 +151,16 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
         finishButton.addTarget(self, action: #selector(finishAction), for: .touchUpInside)
         
         self.navigationItem.setRightBarButton(UIBarButtonItem(customView: finishButton), animated: true)
-    }
+    }/// customizeNavBar
     
     func createSubtitle() {
         formatLabel(label: subtitle, text: "In Progress", font: "Roboto-Bold", alpha: 0.8, width: 100, height: 25, fontSize: 16)
         self.view.addSubview(subtitle)
         defineConstraints(label: subtitle, width: subtitle.frame.width, height: subtitle.frame.height, leadingConstant: 10, topConstant: 140, top: self.view.topAnchor, leading: self.view.leadingAnchor)
-    }
+    }/// createSubtitle
+	
     
-    // MARK: Button functions
+// MARK: Button functions
     @objc func finishAction() {
         print("Clicked finish")
         self.navigationController?.popViewController(animated: true)

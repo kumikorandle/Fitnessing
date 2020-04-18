@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ExerciseViewController: UIViewController {
+class ExerciseDetailViewController: UIViewController {
 	
 //MARK: viewDidLoad
 	override func viewDidLoad() {
