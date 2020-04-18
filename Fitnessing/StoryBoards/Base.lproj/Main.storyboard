@@ -351,10 +351,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="15G-30-QXk">
-                                <rect key="frame" x="20" y="431" width="374" height="377"/>
+                                <rect key="frame" x="20" y="478" width="374" height="330"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="377" id="WNu-Nk-ifr"/>
+                                    <constraint firstAttribute="height" constant="330" id="WNu-Nk-ifr"/>
                                 </constraints>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExerciseTableViewCell" rowHeight="320" id="jKL-e7-tma" customClass="ExerciseTableViewCell" customModule="Fitnessing" customModuleProvider="target">

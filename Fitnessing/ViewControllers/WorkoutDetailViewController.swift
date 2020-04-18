@@ -17,6 +17,11 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
     var exercises = [1, 2, 3]
     
     let header = UILabel()
+    var exerciseLabel = UILabel()
+    var completedRect = UIView()
+    var liftedRect = UIView()
+    var hoursRect = UIView()
+    var avgRect = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +39,11 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         self.navigationController?.isNavigationBarHidden = false
         customizeNavBar()
         createBackground()
-        createRectangle(topNeighbour: header.topAnchor, leadingNeighbour: self.view.leadingAnchor)
+        createRectangle(imgName: "circle-checked.png", rect: completedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: self.view.leadingAnchor)
+        createRectangle(imgName: "weight-icon.png", rect: liftedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: completedRect.trailingAnchor)
+        createRectangle(imgName: "date-icon.png", rect: hoursRect, topNeighbour: completedRect.bottomAnchor, leadingNeighbour: self.view.leadingAnchor)
+        createRectangle(imgName: "clock-icon.png", rect: avgRect, topNeighbour: liftedRect.bottomAnchor, leadingNeighbour: hoursRect.trailingAnchor)
+        createExerciseTitle()
         
     }
     
@@ -68,7 +77,7 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
     func formatLabel(label: UILabel, text: String, font: String, alpha: CGFloat, width: CGFloat, height: CGFloat, fontSize: CGFloat) {
          
          label.frame = CGRect(x: 0, y: 0, width: width, height: height)
-         label.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: alpha)
+         label.textColor = UIColor(red: 0.562, green: 0.562, blue: 0.562, alpha: alpha)
          label.font = UIFont(name: font, size: fontSize)
          label.textAlignment = .center
          label.text = text
@@ -84,6 +93,16 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
          label.heightAnchor.constraint(equalToConstant: height).isActive = true
          label.leadingAnchor.constraint(equalTo: leading, constant: leadingConstant).isActive = true
          label.topAnchor.constraint(equalTo: top, constant: topConstant).isActive = true
+    
+     }/// defineConstraints
+    
+    func defineConstraints(view: UIView, width: CGFloat, height: CGFloat, leadingConstant: CGFloat, topConstant: CGFloat, top: NSLayoutAnchor<NSLayoutYAxisAnchor>, leading: NSLayoutAnchor<NSLayoutXAxisAnchor>) {
+         
+         view.translatesAutoresizingMaskIntoConstraints = false
+         view.widthAnchor.constraint(equalToConstant: width).isActive = true
+         view.heightAnchor.constraint(equalToConstant: height).isActive = true
+         view.leadingAnchor.constraint(equalTo: leading, constant: leadingConstant).isActive = true
+         view.topAnchor.constraint(equalTo: top, constant: topConstant).isActive = true
     
      }/// defineConstraints
     
@@ -113,7 +132,7 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
     }
     
     func createBackground() {
-        header.frame = CGRect(x: 0, y: (self.navigationController?.navigationBar.frame.height)!, width: self.view.frame.width, height: 225)
+        header.frame = CGRect(x: 0, y: (self.navigationController?.navigationBar.frame.height)!, width: self.view.frame.width, height: 325)
         header.backgroundColor = .white
         self.view.addSubview(header)
 
@@ -128,26 +147,46 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         layer0.endPoint = CGPoint(x: 0.75, y: 0.5)
 
         layer0.transform = CATransform3DMakeAffineTransform(CGAffineTransform(a: 0, b: 1, c: -1, d: 0, tx: 1, ty: 0))
-        
+
         layer0.position = header.center
-        layer0.frame = header.frame
+        layer0.frame = CGRect(x: 0, y: (self.navigationController?.navigationBar.frame.height)!, width: self.view.frame.width, height: 325 - (self.navigationController?.navigationBar.frame.height)!)
+        
         header.layer.insertSublayer(layer0, at: 0)
-        defineConstraints(label: header, width: self.view.frame.width, height: header.frame.height, leadingConstant: 0, topConstant: 0, top: self.view.topAnchor, leading: self.view.leadingAnchor)
+        defineConstraints(label: header, width: self.view.frame.width, height: header.frame.height, leadingConstant: 0, topConstant: -10, top: self.view.topAnchor, leading: self.view.leadingAnchor)
     }
     
-    func createRectangle(topNeighbour: NSLayoutYAxisAnchor, leadingNeighbour: NSLayoutXAxisAnchor) {
-        let view = UILabel()
-        view.frame = CGRect(x: 0, y: 0, width: 183, height: 72)
-        view.backgroundColor = .white
+    func createRectangle(imgName: String, rect: UIView, topNeighbour: NSLayoutYAxisAnchor, leadingNeighbour: NSLayoutXAxisAnchor) {
+        let img = UIImage(named: imgName)
+        let imgView = UIImageView(image: img)
+        if (imgName == "weight-icon.png") {
+            imgView.frame = CGRect(x: 0, y: 0, width: 24, height: 20)
+        } else {
+            imgView.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+        }
         
-        view.layer.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
-        view.layer.cornerRadius = 10
-        view.layer.borderWidth = 1
-        view.layer.borderColor = UIColor(red: 0.942, green: 0.942, blue: 0.942, alpha: 1).cgColor
+        rect.frame = CGRect(x: 0, y: 0, width: self.view.frame.width/2 - 30 , height: 72)
+        rect.backgroundColor = .white
+        
+        rect.layer.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
+        rect.layer.cornerRadius = 10
+        rect.layer.borderWidth = 1
+        rect.layer.borderColor = UIColor(red: 0.942, green: 0.942, blue: 0.942, alpha: 1).cgColor
         
         let parent = self.view!
-        parent.addSubview(view)
-        defineConstraints(label: view, width: view.frame.width, height: view.frame.height, leadingConstant: 10, topConstant: 10, top: topNeighbour, leading: leadingNeighbour)
+        rect.addSubview(imgView)
+        parent.addSubview(rect)
+        
+        defineConstraints(view: rect, width: rect.frame.width, height: rect.frame.height, leadingConstant: (self.view.frame.width - (rect.frame.width * 2))/3 , topConstant: 10, top: topNeighbour, leading: leadingNeighbour)
+        
+        defineConstraints(view: imgView, width: imgView.frame.width, height: imgView.frame.height, leadingConstant: 15, topConstant: rect.frame.height/2 - imgView.frame.height/2, top: rect.topAnchor, leading: rect.leadingAnchor)
+    }
+    
+    func createExerciseTitle() {
+        formatLabel(label: exerciseLabel, text: "EXERCISES", font: "Roboto-Bold", alpha: 0.6, width: 100, height: 20, fontSize: 16)
+        let parent = self.view!
+        parent.addSubview(exerciseLabel)
+        defineConstraints(label: exerciseLabel, width: exerciseLabel.frame.width, height: exerciseLabel.frame.height, leadingConstant: (self.view.frame.width - (hoursRect.frame.width * 2))/3, topConstant: 30, top: hoursRect.bottomAnchor, leading: self.view.leadingAnchor)
+        
     }
     
     // MARK: Button Methods
