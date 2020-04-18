@@ -11,6 +11,8 @@ import UIKit
 class HomeViewController: UIViewController {
 	
 // MARK: Property Initialization
+    var sharedUser: User!
+    
     // Title
     var welcomeLabel = UILabel()
     var nameLabel = UILabel()
@@ -54,6 +56,7 @@ class HomeViewController: UIViewController {
     let hoursSubtitle = "worked\nout"
     let myWorkoutsSubtile = "MY WORKOUTS"
     let prevSubtitle = "Previous Workout"
+    
     var workoutTitleSubtitle = "LEGS & ABS"
     var exercisesSubtitle = "6 exercises completed"
     var firstWorkout = "Back & Biceps"
@@ -62,15 +65,10 @@ class HomeViewController: UIViewController {
     // Button String
     let showAllButton = "Show All"
     
-    // Number strings
-    var numWorkoutsString = "0"
-    var weightString = "0 lbs"
-    var hoursString = "0 hrs"
     var monthString = "JAN"
     var dayString = "1"
         
     // Title
-    let name = "Kumiko"
     let welcome = "Welcome"
     
 	// Tracker variables
@@ -82,16 +80,16 @@ class HomeViewController: UIViewController {
 	override func viewDidLoad() {
         let boxSize = self.view.frame.width/3 - 30
         super.viewDidLoad()
-        
+        initializeUser()
         createBackground()
-        createTitle(name: name)
+        createTitle(name: sharedUser.getFirstName())
         createLine(line: line1, topNeighbour: nameLabel)
         
-		createBox(box: box1, neighbour: nil, text:workoutsSubtitle, label: workoutsCompleted, numLabel: numWorkouts, num: numWorkoutsString, height: boxSize, width: boxSize, topNeighbour: line1)
+        createBox(box: box1, neighbour: nil, text:workoutsSubtitle, label: workoutsCompleted, numLabel: numWorkouts, num: String(sharedUser.getNumWorkoutsCompleted()), height: boxSize, width: boxSize, topNeighbour: line1)
         
-		createBox(box: box2, neighbour: box1, text:weightSubtitle, label:currentWeight, numLabel: weight, num:weightString, height: boxSize, width: boxSize, topNeighbour: line1)
+        createBox(box: box2, neighbour: box1, text:weightSubtitle, label:currentWeight, numLabel: weight, num:String(sharedUser.getWeight()) + " lbs", height: boxSize, width: boxSize, topNeighbour: line1)
         
-		createBox(box: box3, neighbour: box2, text:hoursSubtitle, label:hoursWorked, numLabel: workouts, num: numWorkoutsString, height: boxSize, width: boxSize, topNeighbour: line1)
+        createBox(box: box3, neighbour: box2, text:hoursSubtitle, label:hoursWorked, numLabel: workouts, num: String(sharedUser.getTotalHoursWorked()) + " hrs", height: boxSize, width: boxSize, topNeighbour: line1)
         
 		createLine(line: line2, topNeighbour: box1)
         createPreviousWorkout()
@@ -104,6 +102,18 @@ class HomeViewController: UIViewController {
         self.navigationController?.isNavigationBarHidden = true
     }
 	
+    func initializeUser() {
+        _ = SharingUser()
+        
+        SharingUser.sharedUser.loadUser() // un-archive data
+        
+        if (SharingUser.sharedUser.user == nil) {
+            SharingUser.sharedUser.user = User(firstName: "First Name", lastName: "Last Name", heightCM: 0, weightLBS: 0, totalHoursWorked: 0, totalWeightLifted: 0, workoutCollection: [])
+        }
+        
+        sharedUser = SharingUser.sharedUser.user
+    }
+    
 //MARK: create view functions
     func createBackground() {
        
@@ -160,6 +170,7 @@ class HomeViewController: UIViewController {
         formatLabel(label: welcomeLabel, text: welcome, font: "Roboto-Regular", alpha: 0.75, width: 200, height: 56, fontSize: 48)
         formatLabel(label: nameLabel, text: name, font: "Roboto-Bold", alpha: 1, width: 164, height: 56, fontSize: 48)
         nameLabel.sizeToFit()
+        nameLabel.textAlignment = .left
         
         self.view.addSubview(welcomeLabel)
         self.view.addSubview(nameLabel)

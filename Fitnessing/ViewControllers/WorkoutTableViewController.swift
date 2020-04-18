@@ -10,13 +10,15 @@ import UIKit
 
 class WorkoutTableViewController: UITableViewController {
 // MARK: Properties
-    //let workouts = [Workout?]()
-    var workouts = [1, 2, 3]
+    var workouts = [Workout?]()
+    var sharedUser: User!
     var createButton = UIButton(type: .custom)
     var destinationController : UIViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        initializeUser()
+        workouts = sharedUser.getWorkoutCollection()
 
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -30,8 +32,16 @@ class WorkoutTableViewController: UITableViewController {
         self.navigationItem.setRightBarButtonItems([self.editButtonItem, UIBarButtonItem(customView: createButton)], animated: true)
     }
     
-    func addWorkoutsForTesting() {
+    func initializeUser() {
+        _ = SharingUser()
         
+        SharingUser.sharedUser.loadUser() // un-archive data
+        
+        if (SharingUser.sharedUser.user == nil) {
+            SharingUser.sharedUser.user = User(firstName: "First Name", lastName: "Last Name", heightCM: 0, weightLBS: 0, totalHoursWorked: 0, totalWeightLifted: 0, workoutCollection: [])
+        }
+        
+        sharedUser = SharingUser.sharedUser.user
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -70,7 +80,16 @@ class WorkoutTableViewController: UITableViewController {
         cell!.Background.layer.cornerRadius = 10
         cell!.Background.layer.backgroundColor = UIColor.white.cgColor
         cell!.backgroundColor = UIColor.clear
+        cell!.workoutTitle.text = workout?.name
         
+        let date = workout?.lastDateCompleted ?? workout?.dateCreated
+        let calendar = Calendar.current
+        let day = calendar.component(.hour, from: date!)
+        let month = calendar.component(.month, from: date!)
+        let year = calendar.component(.year, from: date!)
+        
+        cell!.workoutDate.text = String(month) + " " + String(day) + ", " + String(year)
+ 
         return cell!
     }
     
