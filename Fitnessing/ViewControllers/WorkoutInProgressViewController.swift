@@ -20,8 +20,15 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //self.tableView.delegate = self
-        //self.tableView.dataSource = self
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        
+        self.tableView.rowHeight = 365
+        self.tableView.backgroundColor = .clear
+        
+        // Remove cell separators
+        self.tableView!.separatorStyle = UITableViewCell.SeparatorStyle.none
+        
         
         self.title = "Legs"
         

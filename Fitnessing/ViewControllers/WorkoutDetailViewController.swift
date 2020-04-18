@@ -30,10 +30,11 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
-        self.tableView.rowHeight = 320
-        self.tableView.layer.cornerRadius = 15
-        self.tableView.layer.borderColor = UIColor(red: 0.942, green: 0.942, blue: 0.942, alpha: 1).cgColor
-        self.tableView.layer.borderWidth = 1
+        self.tableView.rowHeight = 365
+        self.tableView.backgroundColor = .clear
+        
+        // Remove cell separators
+        self.tableView!.separatorStyle = UITableViewCell.SeparatorStyle.none
         
         self.title = "Legs"
 

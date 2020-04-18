@@ -22,12 +22,21 @@ class SetTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
+    }
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         createSetNum()
         createRepNum()
         createStar()
         createWeight()
     }
-
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
@@ -61,13 +70,13 @@ class SetTableViewCell: UITableViewCell {
     func createSetNum() {
         formatLabel(label: setNumLabel, text: setNum, font: "Roboto-Regular", alpha: 1, width: 50, height: 50, fontSize: 16)
         self.contentView.addSubview(setNumLabel)
-        defineConstraints(label: setNumLabel, width: setNumLabel.frame.width, height: setNumLabel.frame.height, leadingConstant: 10, topConstant: 10, top: self.contentView.topAnchor, leading: self.contentView.leadingAnchor)
+        defineConstraints(label: setNumLabel, width: setNumLabel.frame.width, height: setNumLabel.frame.height, leadingConstant: 20, topConstant: 10, top: self.contentView.topAnchor, leading: self.contentView.leadingAnchor)
     }
     
     func createRepNum() {
         formatLabel(label: repNumLabel, text: repNum, font: "Roboto-Bold", alpha: 1, width: 100, height: 50, fontSize: 18)
         self.contentView.addSubview(repNumLabel)
-        defineConstraints(label: repNumLabel, width: repNumLabel.frame.width, height: repNumLabel.frame.height, leadingConstant: 50, topConstant: 10, top: self.contentView.topAnchor, leading: setNumLabel.trailingAnchor)
+        defineConstraints(label: repNumLabel, width: repNumLabel.frame.width, height: repNumLabel.frame.height, leadingConstant: 40, topConstant: 10, top: self.contentView.topAnchor, leading: setNumLabel.trailingAnchor)
     }
     
     func createStar() {

@@ -13,26 +13,42 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
     
     var exerciseNum = "1 of 1"
     var exerciseTitle = "Exercise"
+    let cellIdentifier = "SetTableViewCell"
     
     let num = UILabel()
     let titleLabel = UILabel()
+    let background = UIView()
     
-    @IBOutlet weak var tableView: UITableView!
-    
+    //@IBOutlet weak var tableView: UITableView!
+    var tableView : UITableView?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
+        tableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.contentView.frame.width, height: self.contentView.frame.height - num.frame.height - titleLabel.frame.height - 60))
         
-        self.tableView.rowHeight = 60
+        tableView!.register(SetTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+
+        self.tableView!.delegate = self
+        self.tableView!.dataSource = self
         
+        self.background.addSubview(tableView!)
+        
+        createBackground()
         createExerciseNum()
         createTitle()
         
+        self.tableView!.rowHeight = 60
+        self.tableView!.backgroundColor = .clear
+        
         // Remove cell separators
-        self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+        self.tableView!.separatorStyle = UITableViewCell.SeparatorStyle.none
+        
+        tableView!.translatesAutoresizingMaskIntoConstraints = false
+        tableView!.widthAnchor.constraint(equalToConstant: tableView!.frame.width).isActive = true
+        tableView!.heightAnchor.constraint(equalToConstant: tableView!.frame.height).isActive = true
+        tableView!.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 0).isActive = true
+        tableView!.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0).isActive = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -47,8 +63,6 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Table view cells are reused and should be dequeued using a cell identifier.
-        let cellIdentifier = "SetTableViewCell"
-        
         var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? SetTableViewCell
         
         if cell == nil {
@@ -90,17 +104,38 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
     
      }/// defineConstraints
     
+    func defineConstraints(view: UIView, width: CGFloat, height: CGFloat, leadingConstant: CGFloat, topConstant: CGFloat, top: NSLayoutAnchor<NSLayoutYAxisAnchor>, leading: NSLayoutAnchor<NSLayoutXAxisAnchor>) {
+         
+         view.translatesAutoresizingMaskIntoConstraints = false
+         view.widthAnchor.constraint(equalToConstant: width).isActive = true
+         view.heightAnchor.constraint(equalToConstant: height).isActive = true
+         view.leadingAnchor.constraint(equalTo: leading, constant: leadingConstant).isActive = true
+         view.topAnchor.constraint(equalTo: top, constant: topConstant).isActive = true
+    
+     }/// defineConstraints
+    
     //MARK: View functions
     func createExerciseNum() {
         formatLabel(label: num, text: exerciseNum, font: "Roboto-Regular", alpha: 0.8, width: 52, height: 19, fontSize: 16)
-        self.contentView.addSubview(num)
-        defineConstraints(label: num, width: num.frame.width, height: num.frame.height, leadingConstant: 10, topConstant: 10, top: self.contentView.topAnchor, leading: self.contentView.leadingAnchor)
+        self.background.addSubview(num)
+        defineConstraints(label: num, width: num.frame.width, height: num.frame.height, leadingConstant: 10, topConstant: 20, top: self.contentView.topAnchor, leading: self.background.leadingAnchor)
     }
     
     func createTitle() {
         formatLabel(label: titleLabel, text: exerciseTitle, font: "Roboto-Bold", alpha: 1, width: 130, height: 28, fontSize: 24)
-        self.contentView.addSubview(titleLabel)
-        defineConstraints(label: titleLabel, width: titleLabel.frame.width, height: titleLabel.frame.height, leadingConstant: 10, topConstant: 10, top: self.num.bottomAnchor, leading: self.contentView.leadingAnchor)
+        self.background.addSubview(titleLabel)
+        defineConstraints(label: titleLabel, width: titleLabel.frame.width, height: titleLabel.frame.height, leadingConstant: 10, topConstant: 10, top: self.num.bottomAnchor, leading: self.background.leadingAnchor)
     }
 
+    func createBackground() {
+        background.frame = CGRect(x: 0, y: 0, width: self.contentView.frame.width - 20, height: self.contentView.frame.height - 15)
+        background.backgroundColor = .white
+        background.layer.cornerRadius = 15
+        background.layer.borderColor = UIColor(red: 0.942, green: 0.942, blue: 0.942, alpha: 1).cgColor
+        background.layer.borderWidth = 1
+        
+        self.contentView.addSubview(background)
+        
+        defineConstraints(view: background, width: background.frame.width, height: background.frame.height, leadingConstant: 10, topConstant: 10, top: self.contentView.topAnchor, leading: self.contentView.leadingAnchor)
+    }
 }
