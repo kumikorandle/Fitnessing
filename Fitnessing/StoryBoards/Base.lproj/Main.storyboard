@@ -408,7 +408,7 @@
         <!--Workout In Progress View Controller-->
         <scene sceneID="GnS-ex-ONk">
             <objects>
-                <viewController id="Efw-Vk-Npb" customClass="WorkoutInProgressViewController" customModule="Fitnessing" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="inProgressWorkout" id="Efw-Vk-Npb" customClass="WorkoutInProgressViewController" customModule="Fitnessing" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Imv-m0-hwQ">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

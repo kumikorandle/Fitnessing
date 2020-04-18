@@ -22,6 +22,7 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
     var liftedRect = UIView()
     var hoursRect = UIView()
     var avgRect = UIView()
+    var startButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,11 +40,12 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         self.navigationController?.isNavigationBarHidden = false
         customizeNavBar()
         createBackground()
-        createRectangle(imgName: "circle-checked.png", rect: completedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: self.view.leadingAnchor)
-        createRectangle(imgName: "weight-icon.png", rect: liftedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: completedRect.trailingAnchor)
-        createRectangle(imgName: "date-icon.png", rect: hoursRect, topNeighbour: completedRect.bottomAnchor, leadingNeighbour: self.view.leadingAnchor)
-        createRectangle(imgName: "clock-icon.png", rect: avgRect, topNeighbour: liftedRect.bottomAnchor, leadingNeighbour: hoursRect.trailingAnchor)
+        createRectangle(imgName: "circle-checked.png", rect: completedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: self.view.leadingAnchor, subtitle: "workouts completed", text: "0")
+        createRectangle(imgName: "weight-icon.png", rect: liftedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: completedRect.trailingAnchor, subtitle: "weight lifted", text: "0 lbs")
+        createRectangle(imgName: "date-icon.png", rect: hoursRect, topNeighbour: completedRect.bottomAnchor, leadingNeighbour: self.view.leadingAnchor, subtitle: "worked out", text: "0 hrs")
+        createRectangle(imgName: "clock-icon.png", rect: avgRect, topNeighbour: liftedRect.bottomAnchor, leadingNeighbour: hoursRect.trailingAnchor, subtitle: "avg duration", text: "0 hr")
         createExerciseTitle()
+        createStartButton()
         
     }
     
@@ -79,7 +81,7 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
          label.frame = CGRect(x: 0, y: 0, width: width, height: height)
          label.textColor = UIColor(red: 0.562, green: 0.562, blue: 0.562, alpha: alpha)
          label.font = UIFont(name: font, size: fontSize)
-         label.textAlignment = .center
+        label.textAlignment = .left
          label.text = text
          label.numberOfLines = 0
          label.lineBreakMode = .byWordWrapping
@@ -155,8 +157,14 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         defineConstraints(label: header, width: self.view.frame.width, height: header.frame.height, leadingConstant: 0, topConstant: -10, top: self.view.topAnchor, leading: self.view.leadingAnchor)
     }
     
-    func createRectangle(imgName: String, rect: UIView, topNeighbour: NSLayoutYAxisAnchor, leadingNeighbour: NSLayoutXAxisAnchor) {
+    func createRectangle(imgName: String, rect: UIView, topNeighbour: NSLayoutYAxisAnchor, leadingNeighbour: NSLayoutXAxisAnchor, subtitle: String, text: String) {
         let img = UIImage(named: imgName)
+        let subtitleLabel = UILabel()
+        let textLabel = UILabel()
+        
+        formatLabel(label: textLabel, text: text, font: "Roboto-Bold", alpha: 1, width: 100, height: 20, fontSize: 16)
+        formatLabel(label: subtitleLabel, text: subtitle, font: "Roboto-Regular", alpha: 1, width: 100, height: 20, fontSize: 16)
+        
         let imgView = UIImageView(image: img)
         if (imgName == "weight-icon.png") {
             imgView.frame = CGRect(x: 0, y: 0, width: 24, height: 20)
@@ -174,11 +182,17 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         
         let parent = self.view!
         rect.addSubview(imgView)
+        rect.addSubview(textLabel)
+        rect.addSubview(subtitleLabel)
         parent.addSubview(rect)
         
         defineConstraints(view: rect, width: rect.frame.width, height: rect.frame.height, leadingConstant: (self.view.frame.width - (rect.frame.width * 2))/3 , topConstant: 10, top: topNeighbour, leading: leadingNeighbour)
         
         defineConstraints(view: imgView, width: imgView.frame.width, height: imgView.frame.height, leadingConstant: 15, topConstant: rect.frame.height/2 - imgView.frame.height/2, top: rect.topAnchor, leading: rect.leadingAnchor)
+        
+        defineConstraints(label: textLabel, width: textLabel.frame.width, height: textLabel.frame.height, leadingConstant: 10, topConstant: rect.frame.height/2 - (textLabel.frame.height + subtitleLabel.frame.height)/2, top: rect.topAnchor, leading: imgView.trailingAnchor)
+        
+        defineConstraints(label: subtitleLabel, width: subtitleLabel.frame.width, height: subtitleLabel.frame.height, leadingConstant: 10, topConstant: 0, top: textLabel.bottomAnchor, leading: imgView.trailingAnchor)
     }
     
     func createExerciseTitle() {
@@ -189,9 +203,50 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         
     }
     
+    func createStartButton() {
+        startButton.setTitle("START", for: .normal)
+        startButton.backgroundColor = .white
+        startButton.setTitleColor(.white, for: .normal)
+        startButton.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50)
+        startButton.titleLabel?.font = UIFont(name: "Roboto-Bold", size: 20)
+        startButton.addTarget(self, action: #selector(startAction), for: .touchUpInside)
+
+        let layer0 = CAGradientLayer()
+        layer0.colors = [
+          UIColor(red: 1, green: 0.757, blue: 0.655, alpha: 1).cgColor,
+          UIColor(red: 1, green: 0, blue: 0, alpha: 0.28).cgColor
+        ]
+
+        layer0.locations = [0, 1]
+        layer0.startPoint = CGPoint(x: 0.25, y: 0.5)
+        layer0.endPoint = CGPoint(x: 0.75, y: 0.5)
+
+        layer0.position = startButton.center
+        layer0.frame = startButton.frame
+        
+        startButton.layer.insertSublayer(layer0, at: 0)
+        self.view.addSubview(startButton)
+        
+        startButton.translatesAutoresizingMaskIntoConstraints = false
+        startButton.widthAnchor.constraint(equalToConstant: startButton.frame.width).isActive = true
+        startButton.heightAnchor.constraint(equalToConstant: startButton.frame.height).isActive = true
+        startButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
+        startButton.bottomAnchor.constraint(equalTo: header.bottomAnchor, constant: 0).isActive = true
+    }
+    
     // MARK: Button Methods
     @objc func editAction() {
         print("Clicked edit")
+        let dc : UIViewController?
+        dc = self.storyboard!.instantiateViewController(withIdentifier: "create") as! CreateWorkoutViewController
+        self.navigationController!.pushViewController(dc!, animated: true)
+    }
+    
+    @objc func startAction() {
+        print("Clicked start")
+        let dc : UIViewController?
+        dc = self.storyboard!.instantiateViewController(withIdentifier: "inProgressWorkout") as! WorkoutInProgressViewController
+        self.navigationController!.pushViewController(dc!, animated: true)
     }
     
     /*
