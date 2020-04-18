@@ -12,6 +12,8 @@ class WorkoutTableViewController: UITableViewController {
 // MARK: Properties
     //let workouts = [Workout?]()
     var workouts = [1, 2, 3]
+    var createButton = UIButton(type: .custom)
+    var destinationController : UIViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,17 +22,14 @@ class WorkoutTableViewController: UITableViewController {
         self.tableView.dataSource = self
         
         self.navigationController?.isNavigationBarHidden = false
-        customizeNavBar()
         
         self.tableView.rowHeight = 200;
         
         // Remove cell separators
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+        customizeNavBar()
+        self.navigationItem.setRightBarButtonItems([self.editButtonItem, UIBarButtonItem(customView: createButton)], animated: true)
     }
     
     func addWorkoutsForTesting() {
@@ -39,6 +38,7 @@ class WorkoutTableViewController: UITableViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         self.navigationController?.isNavigationBarHidden = false
+        self.navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     override func viewDidLayoutSubviews() {
@@ -105,7 +105,6 @@ class WorkoutTableViewController: UITableViewController {
     
     @objc func createAction() {
         print("Clicked create")
-        let destinationController : UIViewController?
         destinationController = self.storyboard!.instantiateViewController(withIdentifier: "create") as! CreateWorkoutViewController
         self.navigationController!.pushViewController(destinationController!, animated: true)
     }
@@ -162,11 +161,8 @@ class WorkoutTableViewController: UITableViewController {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backbutton)
         
         // Create button
-        let createButton = UIButton(type: .custom)
         createButton.setTitle("Create", for: .normal)
         createButton.addTarget(self, action: #selector(createAction), for: .touchUpInside)
-        
-        self.navigationItem.setRightBarButtonItems([self.editButtonItem, UIBarButtonItem(customView: createButton)], animated: true)
     }
     
     /*

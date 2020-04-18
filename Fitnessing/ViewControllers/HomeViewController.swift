@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeViewController: UIViewController  {
+class HomeViewController: UIViewController {
 	
 // MARK: Property Initialization
     // Title
@@ -82,7 +82,7 @@ class HomeViewController: UIViewController  {
 	override func viewDidLoad() {
         let boxSize = self.view.frame.width/3 - 30
         super.viewDidLoad()
-		
+        
         createBackground()
         createTitle(name: name)
         createLine(line: line1, topNeighbour: nameLabel)
@@ -305,14 +305,14 @@ class HomeViewController: UIViewController  {
 
         formatLabel(label: firstWorkoutTitle, text: firstWorkout, font: "Roboto-Bold", alpha: 1, width: 155, height: 28, fontSize: 24)
         firstWorkoutTitle.textColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
-        
+
         formatLabel(label: workoutDate, text: workoutDateSubtitle, font: "Roboto-Regular", alpha: 0.7, width: 89, height: 21, fontSize: 18)
         workoutDate.textColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 0.7)
 
         exerciseBox.addSubview(workoutDate)
         exerciseBox.addSubview(firstWorkoutTitle)
         parent.addSubview(exerciseBox)
-        
+                
         defineConstraints(label: firstWorkoutTitle, width: firstWorkoutTitle.frame.width, height: firstWorkoutTitle.frame.height, leadingConstant: 20, topConstant: 20, top: exerciseBox.topAnchor, leading: exerciseBox.leadingAnchor)
         defineConstraints(label: workoutDate, width: workoutDate.frame.width, height: workoutDate.frame.height, leadingConstant: 20, topConstant: 1, top: firstWorkoutTitle.bottomAnchor, leading: exerciseBox.leadingAnchor)
         
@@ -340,5 +340,14 @@ class HomeViewController: UIViewController  {
         self.navigationController!.pushViewController(destinationController!, animated: true)
     
 	}/// showAllButtonSelected
+    
+    @objc func workoutSelected() {
+        print("Clicked workout")
+        let dc : UIViewController?
+        dc = self.storyboard!.instantiateViewController(withIdentifier: "workoutDetails") as! WorkoutDetailViewController
+        self.navigationController!.pushViewController(dc!, animated: true)
+    
+    }/// workoutSelected
 	
+   
 }/// HomeViewController
