@@ -9,7 +9,7 @@
 import UIKit
 
 class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource,UITableViewDelegate {
-    var sets : [[Int]] = [[8, 5, 350]]
+    var sets : [[Int]] = [[8, 350], [8, 350], [8, 350], [8, 350]]
     
     var exerciseNum = "1 of 1"
     var exerciseTitle = "Exercise"
@@ -24,8 +24,14 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource,UITableViewD
         // Initialization code
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        
+        self.tableView.rowHeight = 60
+        
         createExerciseNum()
         createTitle()
+        
+        // Remove cell separators
+        self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -35,7 +41,7 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource,UITableViewD
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        sets.count
+        return sets.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -53,6 +59,9 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource,UITableViewD
         let set = sets[indexPath.row]
                 
         cell!.backgroundColor = UIColor.clear
+        cell!.setNumLabel.text = "SET " + String(indexPath.row + 1)
+        cell!.repNumLabel.text = String(set[0]) + "\nreps"
+        cell!.weightLabel.text = String(set[1]) + "\nlbs"
         
         return cell!
     }
@@ -90,7 +99,7 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource,UITableViewD
     func createTitle() {
         formatLabel(label: titleLabel, text: exerciseTitle, font: "Roboto-Bold", alpha: 1, width: 130, height: 28, fontSize: 24)
         self.contentView.addSubview(titleLabel)
-        defineConstraints(label: titleLabel, width: titleLabel.frame.width, height: titleLabel.frame.height, leadingConstant: 10, topConstant: 0, top: self.num.bottomAnchor, leading: self.contentView.leadingAnchor)
+        defineConstraints(label: titleLabel, width: titleLabel.frame.width, height: titleLabel.frame.height, leadingConstant: 10, topConstant: 10, top: self.num.bottomAnchor, leading: self.contentView.leadingAnchor)
     }
 
 }

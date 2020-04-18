@@ -22,9 +22,7 @@ class WorkoutTableViewController: UITableViewController {
         self.tableView.dataSource = self
         
         self.navigationController?.isNavigationBarHidden = false
-        
-        self.tableView.rowHeight = 200;
-        
+                
         // Remove cell separators
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
 
