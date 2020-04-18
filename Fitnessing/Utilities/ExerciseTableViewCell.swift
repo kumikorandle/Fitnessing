@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource,UITableViewDelegate {
+class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate {
     var sets : [[Int]] = [[8, 350], [8, 350], [8, 350], [8, 350]]
     
     var exerciseNum = "1 of 1"
@@ -18,6 +18,7 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource,UITableViewD
     let titleLabel = UILabel()
     
     @IBOutlet weak var tableView: UITableView!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

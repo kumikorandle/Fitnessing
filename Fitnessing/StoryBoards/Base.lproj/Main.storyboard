@@ -413,18 +413,51 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Workout in Progress" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="plW-Xm-DOJ">
-                                <rect key="frame" x="37" y="300" width="341" height="243"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="64"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ft7-w8-mRm">
+                                <rect key="frame" x="20" y="249" width="374" height="579"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExerciseTableViewCell" rowHeight="365" id="LxM-9Q-OVV" customClass="ExerciseTableViewCell" customModule="Fitnessing" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="374" height="365"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LxM-9Q-OVV" id="Qm3-sX-FiW">
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="365"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YqA-Dg-ZtK">
+                                                    <rect key="frame" x="0.0" y="56" width="374" height="309"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                    <prototypes>
+                                                        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SetTableViewCell" rowHeight="72" id="g4H-Wj-5NT" customClass="SetTableViewCell" customModule="Fitnessing" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="28" width="374" height="72"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="g4H-Wj-5NT" id="fxL-kn-EsO">
+                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="72"/>
+                                                                <autoresizingMask key="autoresizingMask"/>
+                                                            </tableViewCellContentView>
+                                                        </tableViewCell>
+                                                    </prototypes>
+                                                </tableView>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" red="0.98310596449999998" green="0.98310596449999998" blue="0.98310596449999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="ft7-w8-mRm" firstAttribute="centerX" secondItem="Imv-m0-hwQ" secondAttribute="centerX" id="Xtk-uZ-MO3"/>
+                            <constraint firstItem="ft7-w8-mRm" firstAttribute="leading" secondItem="WTd-ym-91n" secondAttribute="leading" constant="20" id="dMV-Oh-fdA"/>
+                            <constraint firstAttribute="bottom" secondItem="ft7-w8-mRm" secondAttribute="bottom" constant="14" id="v3C-5o-eUR"/>
+                            <constraint firstItem="WTd-ym-91n" firstAttribute="trailing" secondItem="ft7-w8-mRm" secondAttribute="trailing" constant="20" id="vOR-IF-f6f"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="WTd-ym-91n"/>
                     </view>
                     <navigationItem key="navigationItem" id="c9K-ef-luC"/>
+                    <connections>
+                        <outlet property="tableView" destination="ft7-w8-mRm" id="9TF-ny-ZFO"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3eA-D7-VDi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
