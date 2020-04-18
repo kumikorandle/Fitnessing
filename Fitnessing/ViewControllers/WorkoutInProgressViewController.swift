@@ -15,6 +15,7 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
     
     var header = UILabel()
     var subtitle = UILabel()
+    var editButton = UIButton()
     
     @IBOutlet weak var tableView: UITableView!
 
@@ -39,6 +40,7 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
         customizeNavBar()
         createBackground()
         createSubtitle()
+        createEditWorkout()
         
         tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 50).isActive = true
     }/// veiwDidLoad
@@ -159,11 +161,34 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
         defineConstraints(label: subtitle, width: subtitle.frame.width, height: subtitle.frame.height, leadingConstant: 10, topConstant: 140, top: self.view.topAnchor, leading: self.view.leadingAnchor)
     }/// createSubtitle
 	
+    func createEditWorkout() {
+        editButton.setTitle("Edit Workout", for: .normal)
+        editButton.setTitleColor(UIColor(red: 0.562, green: 0.562, blue: 0.562, alpha: 1), for: .normal)
+        editButton.frame = CGRect(x: 0, y: 0, width: 150, height: 16)
+        editButton.titleLabel?.textAlignment = .right
+        editButton.titleLabel?.font = UIFont(name: "Roboto-Regular", size: 16)
+        editButton.addTarget(self, action: #selector(editAction), for: .touchUpInside)
+        editButton.setImage(UIImage(named:"pencil-icon.png"), for: .normal)
+        
+        self.view.addSubview(editButton)
+        
+        editButton.translatesAutoresizingMaskIntoConstraints = false
+        editButton.widthAnchor.constraint(equalToConstant: editButton.frame.width).isActive = true
+        editButton.heightAnchor.constraint(equalToConstant: editButton.frame.height).isActive = true
+        editButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15).isActive = true
+        editButton.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 20).isActive = true
+    }
     
 // MARK: Button functions
     @objc func finishAction() {
         print("Clicked finish")
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func editAction() {
+        print("Clicked edit")
+        let destinationController = self.storyboard!.instantiateViewController(withIdentifier: "create") as! CreateWorkoutViewController
+        self.navigationController!.pushViewController(destinationController, animated: true)
     }
     /*
     // MARK: - Navigation

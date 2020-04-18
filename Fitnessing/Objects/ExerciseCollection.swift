@@ -15,10 +15,29 @@ class ExerciseCollection: NSObject, NSCoding {
     
     override init() {
         super.init()
+        
+        // Lower body workouts
+        addExercise(name: "Squat", musclesWorked: ["Quadriceps", "Glutes", "Hamstrings", "Lower Back"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
+        addExercise(name: "Leg Press", musclesWorked: ["Quadriceps", "Glutes", "Hamstrings", "Calves"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
+        addExercise(name: "Lunge", musclesWorked: ["Quadriceps", "Glutes", "Hamstrings", "Calves"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
+        addExercise(name: "Deadlift", musclesWorked: ["Quadriceps", "Glutes", "Hamstrings", "Lower Back"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
+        addExercise(name: "Leg Extension", musclesWorked: ["Quadriceps"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
+        addExercise(name: "Leg Curl", musclesWorked: ["Glutes", "Hamstrings", "Calves"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
+        addExercise(name: "Hip Thrusts", musclesWorked: ["Glutes", "Hamstrings"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
+        
+        // Upper body workouts
+        addExercise(name: "Bench Press", musclesWorked: ["Pectorals", "Deltoids", "Triceps"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
+        addExercise(name: "Chest Fly", musclesWorked: ["Pectorals", "Deltoids"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
+        addExercise(name: "Bicep Curl", musclesWorked: ["Biceps", "Forearms"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
+        addExercise(name: "Tricep Extension", musclesWorked: ["Triceps", "Forearms"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
+        addExercise(name: "Pushup", musclesWorked: ["Triceps", "Pectorals", "Deltoids"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
+        
+        // Abs
+        addExercise(name: "Abs", musclesWorked: ["Abs"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
     }
     
-    func addExercise(name: String, musclesWorked: [String], videoLink: URL, numReps: Int, numSets: Int, weightLifted: Float) {
-        let exercise = Exercise(name: name, musclesWorked: musclesWorked, videoLink: videoLink, numReps: numReps, numSets: numSets, weightLifted: weightLifted)
+    func addExercise(name: String, musclesWorked: [String], videoLink: URL, numReps: Int, numSets: Int, weightLifted: Float, weight: Float) {
+        let exercise = Exercise(name: name, musclesWorked: musclesWorked, videoLink: videoLink, numReps: numReps, numSets: numSets, weightLifted: weightLifted, weight: weight)
         collection.append(exercise)
     }
     

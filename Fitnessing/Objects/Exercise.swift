@@ -17,6 +17,7 @@ class Exercise: NSObject, NSCoding {
     private var numSets: Int = 0
     private var videoLink: URL?
     private var weightLifted: Float = 0
+    private var weight: Float = 0
     
     struct PropertyKey {
         static let name = "name"
@@ -25,15 +26,17 @@ class Exercise: NSObject, NSCoding {
         static let numSets = "numSets"
         static let videoLink = "videoLink"
         static let weightLifted = "weightLifted"
+        static let weight = "weight"
     }
     
-    init (name: String, musclesWorked: [String], videoLink: URL, numReps: Int, numSets: Int, weightLifted: Float){
+    init (name: String, musclesWorked: [String], videoLink: URL, numReps: Int, numSets: Int, weightLifted: Float, weight: Float){
         self.name = name
         self.musclesWorked = musclesWorked
         self.videoLink = videoLink
         self.numReps = numReps
         self.numSets = numSets
         self.weightLifted = weightLifted
+        self.weight = weight
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
@@ -49,10 +52,10 @@ class Exercise: NSObject, NSCoding {
         let numSetsDecoded = aDecoder.decodeInteger(forKey: PropertyKey.numSets) as Int
         let videoLinkDecoded = aDecoder.decodeObject(forKey: PropertyKey.videoLink) as? URL
         let weightLiftedDecoded = aDecoder.decodeFloat(forKey: PropertyKey.weightLifted) as Float
-
+        let weightDecoded = aDecoder.decodeFloat(forKey: PropertyKey.weight) as Float
 
          // Must call designated initializer.
-        self.init(name: nameDecoded, musclesWorked: musclesWorkedDecoded, videoLink: videoLinkDecoded!, numReps: numRepsDecoded, numSets: numSetsDecoded, weightLifted: weightLiftedDecoded)
+        self.init(name: nameDecoded, musclesWorked: musclesWorkedDecoded, videoLink: videoLinkDecoded!, numReps: numRepsDecoded, numSets: numSetsDecoded, weightLifted: weightLiftedDecoded, weight: weightDecoded)
     }
     
     func getName() -> String {
@@ -98,6 +101,7 @@ class Exercise: NSObject, NSCoding {
         aCoder.encode(numSets, forKey: PropertyKey.numSets)
         aCoder.encode(videoLink, forKey: PropertyKey.videoLink)
         aCoder.encode(weightLifted, forKey: PropertyKey.weightLifted)
+        aCoder.encode(weight, forKey: PropertyKey.weight)
     }
     
 }
