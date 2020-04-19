@@ -21,7 +21,7 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
     var addButton = UIButton()
 
 	@IBOutlet weak var tableView: UITableView!
-	
+
 	
 	//MARK: viewDidLoad
 	override func viewDidLoad() {
@@ -38,7 +38,6 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 		self.tableView!.separatorStyle = UITableViewCell.SeparatorStyle.none
 		
 		self.title = "New Workout"
-
 		
 		self.navigationController?.isNavigationBarHidden = false
 		customizeNavBar()
@@ -47,6 +46,8 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
         createAddExercise()
         
         self.navigationItem.setRightBarButtonItems([self.editButtonItem, UIBarButtonItem(customView: finishButton)], animated: true)
+        
+        tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 50).isActive = true
 		
 	}/// veiwDidLoad
 	
@@ -97,7 +98,6 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
         return true
     }
     
-	// MARK: Helper Functions
 	// MARK: Formatting Functions
 	func defineConstraints(label: UILabel, width: CGFloat, height: CGFloat, leadingConstant: CGFloat, topConstant: CGFloat, top: NSLayoutAnchor<NSLayoutYAxisAnchor>, leading: NSLayoutAnchor<NSLayoutXAxisAnchor>) {
 		
@@ -233,8 +233,6 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
         let destinationController = self.storyboard!.instantiateViewController(withIdentifier: "addExercises") as! AddExerciseViewController
         self.navigationController!.pushViewController(destinationController, animated: true)
     }
-
-	
 	
 	/*
 	// MARK: - Navigation
