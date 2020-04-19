@@ -50,17 +50,18 @@ class HomeViewController: UIViewController {
     var arrow = UIImageView()
     var prevWorkoutButton = UIButton()
     var showAll = UIButton()
+    var workoutButton = UIButton()
     var workoutsTableView : UITableView!
     
     // Subtitle strings
     let workoutsSubtitle = "workouts\ncompleted"
     let weightSubtitle = "current\nweight"
     let hoursSubtitle = "worked\nout"
-    let myWorkoutsSubtile = "MY WORKOUTS"
+    let myWorkoutsSubtitle = "MY WORKOUTS"
     let prevSubtitle = "Previous Workout"
     
-    var workoutTitleSubtitle = "LEGS & ABS"
-    var exercisesSubtitle = "6 exercises completed"
+    var workoutTitleSubtitle = "No workouts completed yet..."
+    var exercisesSubtitle = ""
     var firstWorkout = "Back & Biceps"
     var workoutDateSubtitle = "Sat, Jan 11"
     
@@ -112,7 +113,7 @@ class HomeViewController: UIViewController {
         SharingUser.sharedUser.loadUser() // un-archive data
         
         if (SharingUser.sharedUser.user == nil) {
-            SharingUser.sharedUser.user = User(firstName: "First Name", lastName: "Last Name", heightCM: 0, weightLBS: 0, totalHoursWorked: 0, totalWeightLifted: 0, workoutCollection: createUserWorkoutCollection())
+            SharingUser.sharedUser.user = User(firstName: "Name", lastName: "Name", heightCM: 0, weightLBS: 0, totalHoursWorked: 0, totalWeightLifted: 0, workoutCollection: createUserWorkoutCollection())
         }
         
         sharedUser = SharingUser.sharedUser.user
@@ -252,12 +253,12 @@ class HomeViewController: UIViewController {
     }/// createLine
     
     func createBox(box: UIView, neighbour: UIView?, text: String, label: UILabel, numLabel: UILabel, num: String, height: CGFloat, width: CGFloat, topNeighbour: UIView) {
-        box.frame = CGRect(x: 0, y: 0, width: height, height: width)
+        box.frame = CGRect(x: 0, y: 0, width: width, height: height)
         box.layer.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.35).cgColor
         box.layer.cornerRadius = 20
         
         formatLabel(label: label, text: text, font: "Roboto-Regular", alpha: 1, width: box.frame.width, height: 60, fontSize: 20)
-        formatLabel(label: numLabel, text: num, font: "Roboto-Bold", alpha: 1, width: box.frame.width, height: 20, fontSize: 24)
+        formatLabel(label: numLabel, text: num, font: "Roboto-Bold", alpha: 1, width: box.frame.width, height: 60, fontSize: 24)
         
         box.addSubview(numLabel)
         box.addSubview(label)
@@ -286,7 +287,21 @@ class HomeViewController: UIViewController {
         prevWorkoutButton.frame = CGRect(x: 0, y:0, width: self.view.frame.width - 60, height: 145)
         prevWorkoutButton.addTarget(self, action: #selector(previousWorkoutSelected), for: .touchUpInside)
         
-        createBox(box: dateBox, neighbour: nil, text:monthString, label:month, numLabel:day, num: dayString, height: 81, width: 62, topNeighbour: line2)
+        if (sharedUser.getWorkoutCollection().count > 0) {
+            let workout = sharedUser.getWorkoutCollection()[sharedUser.getPreviousWorkout()]
+            workoutTitleSubtitle = workout.getName()
+            exercisesSubtitle = String(workout.getExercises().count) + " exercises completed"
+            
+            let date = workout.getLastDateCompleted()
+            let calendar = Calendar.current
+            let calDay = calendar.component(.hour, from: date)
+            let mon = calendar.component(.month, from: date)
+            
+            let monthName = DateFormatter().monthSymbols[mon - 1]
+            monthString = monthName
+            dayString = String(calDay)
+        }
+        createBox(box: dateBox, neighbour: nil, text:monthString, label:month, numLabel:day, num: dayString, height: 90, width: 70, topNeighbour: line2)
         
         formatLabel(label: prevWorkout, text: prevSubtitle, font: "Roboto-Regular", alpha: 0.7, width: 142, height: 21, fontSize: 18)
         formatLabel(label: workoutTitle, text: workoutTitleSubtitle, font: "Roboto-Bold", alpha: 1, width: 221, height: 28, fontSize: 24)
@@ -322,7 +337,7 @@ class HomeViewController: UIViewController {
     }/// createPreviousWorkout
     
     func createWorkouts() {
-        formatLabel(label: myWorkoutsLabel, text: myWorkoutsSubtile, font: "Roboto-Bold", alpha: 0.7, width: 143, height: 23, fontSize: 20)
+        formatLabel(label: myWorkoutsLabel, text: myWorkoutsSubtitle, font: "Roboto-Bold", alpha: 0.7, width: 143, height: 23, fontSize: 20)
 
         showAll.frame = CGRect(x: 0, y: 0, width: 79, height: 23)
         showAll.titleLabel!.font = UIFont(name: "Roboto-Bold", size: 20)
@@ -348,6 +363,10 @@ class HomeViewController: UIViewController {
     
     
     func createExercise() {
+        workoutButton.frame = CGRect(x: 0, y:0, width: self.view.frame.width - 60, height: 190)
+        workoutButton.layer.cornerRadius = 20
+        workoutButton.addTarget(self, action: #selector(workoutSelected), for: .touchUpInside)
+        
         exerciseBox.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 60, height: 190)
         exerciseBox.backgroundColor = .white
         exerciseBox.layer.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
@@ -364,9 +383,16 @@ class HomeViewController: UIViewController {
         exerciseBox.addSubview(workoutDate)
         exerciseBox.addSubview(firstWorkoutTitle)
         parent.addSubview(exerciseBox)
+        parent.addSubview(workoutButton)
                 
         defineConstraints(label: firstWorkoutTitle, width: firstWorkoutTitle.frame.width, height: firstWorkoutTitle.frame.height, leadingConstant: 20, topConstant: 20, top: exerciseBox.topAnchor, leading: exerciseBox.leadingAnchor)
         defineConstraints(label: workoutDate, width: workoutDate.frame.width, height: workoutDate.frame.height, leadingConstant: 20, topConstant: 1, top: firstWorkoutTitle.bottomAnchor, leading: exerciseBox.leadingAnchor)
+        
+        workoutButton.translatesAutoresizingMaskIntoConstraints = false
+        workoutButton.widthAnchor.constraint(equalToConstant: workoutButton.frame.width).isActive = true
+        workoutButton.heightAnchor.constraint(equalToConstant: workoutButton.frame.height).isActive = true
+        workoutButton.leadingAnchor.constraint(equalTo: exerciseBox.leadingAnchor, constant: 0).isActive = true
+        workoutButton.topAnchor.constraint(equalTo: exerciseBox.topAnchor, constant: 0).isActive = true
         
         exerciseBox.translatesAutoresizingMaskIntoConstraints = false
         exerciseBox.widthAnchor.constraint(equalToConstant: exerciseBox.frame.width).isActive = true
@@ -399,5 +425,6 @@ class HomeViewController: UIViewController {
         sharedUser.setCurrentIndex(index: 0)
         self.navigationController!.pushViewController(dc, animated: true)
     }/// workoutSelected
+
 
 } /// HomeViewController

@@ -154,7 +154,7 @@ class WorkoutTableViewController: UITableViewController {
     
     @objc func buttonAction(sender: UIButton) {
         sharedUser.setCurrentIndex(index: sender.tag)
-        destinationController = self.storyboard!.instantiateViewController(withIdentifier: "workoutDetails") as! WorkoutDetailViewController
+        destinationController = self.storyboard!.instantiateViewController(withIdentifier: "inProgressWorkout") as! WorkoutInProgressViewController
         self.navigationController!.pushViewController(destinationController!, animated: true)
     }
     
