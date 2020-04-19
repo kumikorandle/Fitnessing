@@ -94,8 +94,6 @@ class User: NSObject, NSCoding {
         self.heightCM = height
     }
     
-    
-    
     func encode(with aCoder: NSCoder) {
         aCoder.encode(firstName, forKey: PropertyKey.firstName)
         aCoder.encode(lastName, forKey: PropertyKey.lastName)

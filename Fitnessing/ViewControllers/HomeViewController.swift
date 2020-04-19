@@ -12,6 +12,7 @@ class HomeViewController: UIViewController {
 	
 // MARK: Property Initialization
     var sharedUser: User!
+    var sharedExerciseCollection: ExerciseCollection!
     
     // Title
     var welcomeLabel = UILabel()
@@ -80,7 +81,9 @@ class HomeViewController: UIViewController {
 	override func viewDidLoad() {
         let boxSize = self.view.frame.width/3 - 30
         super.viewDidLoad()
+        initializeExerciseCollection()
         initializeUser()
+        
         createBackground()
         createTitle(name: sharedUser.getFirstName())
         createLine(line: line1, topNeighbour: nameLabel)
@@ -108,10 +111,39 @@ class HomeViewController: UIViewController {
         SharingUser.sharedUser.loadUser() // un-archive data
         
         if (SharingUser.sharedUser.user == nil) {
-            SharingUser.sharedUser.user = User(firstName: "First Name", lastName: "Last Name", heightCM: 0, weightLBS: 0, totalHoursWorked: 0, totalWeightLifted: 0, workoutCollection: [])
+            SharingUser.sharedUser.user = User(firstName: "First Name", lastName: "Last Name", heightCM: 0, weightLBS: 0, totalHoursWorked: 0, totalWeightLifted: 0, workoutCollection: createUserWorkoutCollection())
         }
         
         sharedUser = SharingUser.sharedUser.user
+    }
+    
+    func initializeExerciseCollection() {
+        _ = SharingExerciseCollection()
+        
+        SharingExerciseCollection.sharedExerciseCollection.loadExerciseCollection() // un-archive data
+        
+        if (SharingExerciseCollection.sharedExerciseCollection.exerciseCollection == nil) {
+            SharingExerciseCollection.sharedExerciseCollection.exerciseCollection = ExerciseCollection()
+        }
+        
+        sharedExerciseCollection = SharingExerciseCollection.sharedExerciseCollection.exerciseCollection
+    }
+    
+    // Random workout collection data for testing
+    func createUserWorkoutCollection() -> [Workout]{
+        var workouts = [Workout]()
+        var legExercises = [Exercise]()
+        
+        legExercises.append(sharedExerciseCollection.getExercise(name: "Squat")!)
+        legExercises.append(sharedExerciseCollection.getExercise(name: "Lunge")!)
+        legExercises.append(sharedExerciseCollection.getExercise(name: "Hip Thrusts")!)
+        legExercises.append(sharedExerciseCollection.getExercise(name: "Deadlift")!)
+        
+        let legWorkout = Workout(name: "Legs", exercises: legExercises, dateCreated: Date(), lastDateCompleted: nil, timesCompleted: 0)
+        
+        workouts.append(legWorkout)
+        
+        return workouts
     }
     
 //MARK: create view functions

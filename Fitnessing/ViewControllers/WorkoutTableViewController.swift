@@ -89,6 +89,27 @@ class WorkoutTableViewController: UITableViewController {
         let year = calendar.component(.year, from: date!)
         
         cell!.workoutDate.text = String(month) + " " + String(day) + ", " + String(year)
+//
+//        var i = 0
+//        let fullBarHeight = CGFloat(96)
+//        for exercise in workout!.exercises {
+//            var percent = CGFloat(exercise.getWeightLifted()/5000)
+//            if percent > 1 {
+//                percent = 1
+//            }
+//            if i == 0 {
+//                cell!.bar1.heightAnchor.constraint(equalToConstant: percent * fullBarHeight).isActive = true
+//            } else if i == 1 {
+//                cell!.bar2.heightAnchor.constraint(equalToConstant: percent * fullBarHeight).isActive = true
+//            } else if i == 2 {
+//                cell!.bar3.heightAnchor.constraint(equalToConstant: percent * fullBarHeight).isActive = true
+//            } else if i == 3 {
+//                cell!.bar4.heightAnchor.constraint(equalToConstant: percent * fullBarHeight).isActive = true
+//            } else if i == 4 {
+//                cell!.bar5.heightAnchor.constraint(equalToConstant: percent * fullBarHeight).isActive = true
+//            }
+//            i = i + 1
+//        }
  
         return cell!
     }

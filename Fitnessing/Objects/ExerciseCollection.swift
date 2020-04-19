@@ -41,6 +41,13 @@ class ExerciseCollection: NSObject, NSCoding {
         collection.append(exercise)
     }
     
+    func getExercise(name: String) -> Exercise? {
+        if let i = collection.firstIndex(where: { $0.getName() == name }) {
+            return collection[i]
+        }
+        return nil
+    }
+    
     func encode(with coder: NSCoder) {
         coder.encode(collection, forKey: collectionKey)
     }
