@@ -9,9 +9,9 @@
 import UIKit
 
 class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-	
-    //var exercises = [Exercise]()
-    var exercises = [1, 2, 3]
+    var sharedUser: User!
+    var exercises: [Exercise]?
+    var workout: Workout?
     
     var header = UILabel()
     var subtitle = UILabel()
@@ -23,6 +23,9 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
 //MARK: viewDidLoad
 	override func viewDidLoad() {
         super.viewDidLoad()
+        initializeUser()
+        workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()]
+        exercises = workout!.getExercises()
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -33,8 +36,7 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
         // Remove cell separators
         self.tableView!.separatorStyle = UITableViewCell.SeparatorStyle.none
         
-        
-        self.title = "Legs"
+        self.title = workout?.getName()
         
         self.navigationController?.isNavigationBarHidden = false
         customizeNavBar()
@@ -47,7 +49,7 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
     
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return exercises.count
+        return exercises!.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -60,16 +62,22 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
             tableView.register(UINib(nibName: "MyCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
             cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? ExerciseTableViewCell
         }
-        
+                
         // Fetches the appropriate meal for the data source layout.
-        let exercise = exercises[indexPath.row]
+        let exercise = exercises![indexPath.row]
                 
         cell!.backgroundColor = UIColor.clear
-        cell!.num.text = String(indexPath.row + 1) + " of " + String(exercises.count)
-        cell!.titleLabel.text = "Hip Thrusts"
+        cell!.num.text = String(indexPath.row + 1) + " of " + String(exercises!.count)
+        cell!.titleLabel.text = exercise.getName()
+
         
         return cell!
     }/// cellForRowAt
+    
+    func initializeUser() {
+           _ = SharingUser()
+           sharedUser = SharingUser.sharedUser.user
+    }
     
 // MARK: Helper Functions
      func defineConstraints(label: UILabel, width: CGFloat, height: CGFloat, leadingConstant: CGFloat, topConstant: CGFloat, top: NSLayoutAnchor<NSLayoutYAxisAnchor>, leading: NSLayoutAnchor<NSLayoutXAxisAnchor>) {
@@ -182,6 +190,14 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
 // MARK: Button functions
     @objc func finishAction() {
         print("Clicked finish")
+        workout?.setTimesCompleted(num: workout!.getTimesCompleted() + 1)
+        workout?.setLastDateCompleted(date: Date())
+        
+        var weightTotal = Float(0)
+        for exercise in workout!.getExercises() {
+            exercise.setWeightLifted(weight: exercise.getWeightLifted() + (Float(exercise.getNumReps() * exercise.getNumSets()) * exercise.getWeight()))
+            weightTotal = weightTotal + exercise.getWeightLifted()
+        }
         self.navigationController?.popViewController(animated: true)
     }
     

@@ -12,9 +12,13 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 	
 	//var exercises = [Exercise]()
 	var exercises = [1, 2, 3]
-	
+        
+    let finishButton = UIButton(type: .custom)
+
 	var header = UILabel()
 	var subtitle = UILabel()
+    var workoutTitle = UITextField()
+    var addButton = UIButton()
 
 	@IBOutlet weak var tableView: UITableView!
 	
@@ -32,17 +36,25 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 		self.tableView!.separatorStyle = UITableViewCell.SeparatorStyle.none
 		
 		
-		self.title = "Legs"
+		self.title = "New Workout"
 		
 		self.navigationController?.isNavigationBarHidden = false
 		customizeNavBar()
 		createBackground()
 		createSubtitle()
+        createAddExercise()
+        
+        self.navigationItem.setRightBarButtonItems([self.editButtonItem, UIBarButtonItem(customView: finishButton)], animated: true)
 		
 		tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 50).isActive = true
 	}/// veiwDidLoad
 	
 	
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        tableView.setEditing(editing, animated: animated)
+    }
+    
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return exercises.count
 	}
@@ -68,6 +80,22 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 		return cell!
 	}/// cellForRowAt
 	
+    // Override to support editing the table view.
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        print("in here")
+        if editingStyle == .delete {
+            // Delete the row from the data source
+            exercises.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        } else if editingStyle == .insert {
+            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
 	// MARK: Helper Functions
 	func defineConstraints(label: UILabel, width: CGFloat, height: CGFloat, leadingConstant: CGFloat, topConstant: CGFloat, top: NSLayoutAnchor<NSLayoutYAxisAnchor>, leading: NSLayoutAnchor<NSLayoutXAxisAnchor>) {
 		
@@ -94,7 +122,7 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 		label.frame = CGRect(x: 0, y: 0, width: width, height: height)
 		label.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: alpha)
 		label.font = UIFont(name: font, size: fontSize)
-		label.textAlignment = .center
+		label.textAlignment = .left
 		label.text = text
 		label.numberOfLines = 0
 		label.lineBreakMode = .byWordWrapping
@@ -145,25 +173,63 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 		self.navigationController!.navigationBar.standardAppearance = navBarAppearance
 		self.navigationController!.navigationBar.scrollEdgeAppearance = navBarAppearance
 		
-		let finishButton = UIButton(type: .custom)
-		finishButton.setTitle("Finish Workout", for: .normal)
+		finishButton.setTitle("Save", for: .normal)
 		finishButton.addTarget(self, action: #selector(finishAction), for: .touchUpInside)
-		
-		self.navigationItem.setRightBarButton(UIBarButtonItem(customView: finishButton), animated: true)
+    
 	}/// customizeNavBar
 	
 	func createSubtitle() {
-		formatLabel(label: subtitle, text: "In Progress", font: "Roboto-Bold", alpha: 0.8, width: 100, height: 25, fontSize: 16)
+		formatLabel(label: subtitle, text: "Workout Name:", font: "Roboto-Bold", alpha: 0.8, width: 125, height: 25, fontSize: 16)
+        workoutTitle.frame = CGRect(x: 0, y: 0, width: 225, height: 25)
+        workoutTitle.layer.cornerRadius = 5
+        workoutTitle.textColor = .white
+        
+        let bottomLine = CALayer()
+        bottomLine.frame = CGRect(x: 0.0, y: 25-1, width: 225, height: 1.0)
+        bottomLine.backgroundColor = UIColor.white.cgColor
+        workoutTitle.borderStyle = UITextField.BorderStyle.none
+        workoutTitle.layer.addSublayer(bottomLine)
+        
+        self.view.addSubview(workoutTitle)
 		self.view.addSubview(subtitle)
-		defineConstraints(label: subtitle, width: subtitle.frame.width, height: subtitle.frame.height, leadingConstant: 10, topConstant: 140, top: self.view.topAnchor, leading: self.view.leadingAnchor)
+        
+		defineConstraints(label: subtitle, width: subtitle.frame.width, height: subtitle.frame.height, leadingConstant: 20, topConstant: 140, top: self.view.topAnchor, leading: self.view.leadingAnchor)
+        
+        workoutTitle.translatesAutoresizingMaskIntoConstraints = false
+        workoutTitle.widthAnchor.constraint(equalToConstant: workoutTitle.frame.width).isActive = true
+        workoutTitle.heightAnchor.constraint(equalToConstant: workoutTitle.frame.height).isActive = true
+        workoutTitle.leadingAnchor.constraint(equalTo: subtitle.trailingAnchor, constant: 0).isActive = true
+        workoutTitle.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 140).isActive = true
 	}/// createSubtitle
 	
+    func createAddExercise() {
+        addButton.setTitle("Add Exercises", for: .normal)
+        addButton.setTitleColor(UIColor(red: 0.562, green: 0.562, blue: 0.562, alpha: 1), for: .normal)
+        addButton.frame = CGRect(x: 0, y: 0, width: 150, height: 16)
+        addButton.titleLabel?.textAlignment = .right
+        addButton.titleLabel?.font = UIFont(name: "Roboto-Regular", size: 16)
+        addButton.addTarget(self, action: #selector(addAction), for: .touchUpInside)
+        
+        self.view.addSubview(addButton)
+        
+        addButton.translatesAutoresizingMaskIntoConstraints = false
+        addButton.widthAnchor.constraint(equalToConstant: addButton.frame.width).isActive = true
+        addButton.heightAnchor.constraint(equalToConstant: addButton.frame.height).isActive = true
+        addButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15).isActive = true
+        addButton.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 20).isActive = true
+    }
 	
 	// MARK: Button functions
 	@objc func finishAction() {
-		print("Clicked finish")
+		print("Clicked save")
 		self.navigationController?.popViewController(animated: true)
 	}
+    
+    @objc func addAction() {
+        print("Clicked add exercises")
+        let destinationController = self.storyboard!.instantiateViewController(withIdentifier: "addExercises") as! AddExerciseViewController
+        self.navigationController!.pushViewController(destinationController, animated: true)
+    }
 	/*
 	// MARK: - Navigation
 	

@@ -39,7 +39,7 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
         
         setArray = []
         
-        for _ in 0...sets {
+        for _ in 1...sets {
             setArray.append([String(reps), String(weight)])
         }
                 

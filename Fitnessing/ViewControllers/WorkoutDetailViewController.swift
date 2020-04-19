@@ -45,8 +45,14 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         self.navigationController?.isNavigationBarHidden = false
         customizeNavBar()
         createBackground()
-        createRectangle(imgName: "circle-checked.png", rect: completedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: self.view.leadingAnchor, subtitle: "workouts completed", text: "0")
-        createRectangle(imgName: "weight-icon.png", rect: liftedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: completedRect.trailingAnchor, subtitle: "weight lifted", text: "0 lbs")
+        
+        var totalWeight = Float(0)
+        for exercise in (workout?.getExercises())! {
+            totalWeight = totalWeight + exercise.getWeightLifted()
+        }
+        
+        createRectangle(imgName: "circle-checked.png", rect: completedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: self.view.leadingAnchor, subtitle: "workouts completed", text: String(workout!.getTimesCompleted()))
+        createRectangle(imgName: "weight-icon.png", rect: liftedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: completedRect.trailingAnchor, subtitle: "weight lifted", text: String(totalWeight) + " lbs")
         createRectangle(imgName: "date-icon.png", rect: hoursRect, topNeighbour: completedRect.bottomAnchor, leadingNeighbour: self.view.leadingAnchor, subtitle: "worked out", text: "0 hrs")
         createRectangle(imgName: "clock-icon.png", rect: avgRect, topNeighbour: liftedRect.bottomAnchor, leadingNeighbour: hoursRect.trailingAnchor, subtitle: "avg duration", text: "0 hr")
         createExerciseTitle()
@@ -79,6 +85,7 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
             tableView.register(UINib(nibName: "MyCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
             cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? ExerciseTableViewCell
         }
+        workout?.setCurrentIndex(index: indexPath.row)
         
         // Fetches the appropriate meal for the data source layout.
         let exercise = exercises![indexPath.row]

@@ -103,8 +103,25 @@ class HomeViewController: UIViewController {
    
 	}/// viewDidLoad
     
+    
     override func viewDidAppear(_ animated: Bool) {
         self.navigationController?.isNavigationBarHidden = true
+        let boxSize = self.view.frame.width/3 - 30
+
+        createBackground()
+        createTitle(name: sharedUser.getFirstName())
+        createLine(line: line1, topNeighbour: nameLabel)
+        
+        createBox(box: box1, neighbour: nil, text:workoutsSubtitle, label: workoutsCompleted, numLabel: numWorkouts, num: String(sharedUser.getNumWorkoutsCompleted()), height: boxSize, width: boxSize, topNeighbour: line1)
+        
+        createBox(box: box2, neighbour: box1, text:weightSubtitle, label:currentWeight, numLabel: weight, num:String(sharedUser.getWeight()) + " lbs", height: boxSize, width: boxSize, topNeighbour: line1)
+        
+        createBox(box: box3, neighbour: box2, text:hoursSubtitle, label:hoursWorked, numLabel: workouts, num: String(sharedUser.getTotalHoursWorked()) + " hrs", height: boxSize, width: boxSize, topNeighbour: line1)
+        
+        createLine(line: line2, topNeighbour: box1)
+        createPreviousWorkout()
+        createLine(line: line3, topNeighbour: prevWorkoutButton)
+        createWorkouts()
     }
 	
     func initializeUser() {
@@ -146,6 +163,19 @@ class HomeViewController: UIViewController {
         fullBody.append(sharedExerciseCollection.getExercise(name: "Pushup")!)
         fullBody.append(sharedExerciseCollection.getExercise(name: "Bench Press")!)
         fullBody.append(sharedExerciseCollection.getExercise(name: "Bicep Curl")!)
+        
+        for exercise in fullBody {
+            exercise.setNumReps(reps: 10)
+            exercise.setNumSets(sets: 3)
+            exercise.setWeight(weight: 20)
+        }
+        
+        for exercise in legExercises {
+            exercise.setNumReps(reps: 10)
+            exercise.setNumSets(sets: 4)
+            exercise.setWeight(weight: 200)
+        }
+        
         
         let legWorkout = Workout(name: "Legs", exercises: legExercises, dateCreated: Date(), lastDateCompleted: nil, timesCompleted: 0)
         let fullBodyWorkout = Workout(name: "Full Body", exercises: fullBody, dateCreated: Date(), lastDateCompleted: nil, timesCompleted: 0)
@@ -374,12 +404,25 @@ class HomeViewController: UIViewController {
 
         let parent = self.view!
 
-        formatLabel(label: firstWorkoutTitle, text: firstWorkout, font: "Roboto-Bold", alpha: 1, width: 155, height: 28, fontSize: 24)
+        formatLabel(label: firstWorkoutTitle, text: sharedUser.getWorkoutCollection()[0].getName(), font: "Roboto-Bold", alpha: 1, width: 155, height: 28, fontSize: 24)
         firstWorkoutTitle.textColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
+        firstWorkoutTitle.textAlignment = .left
 
-        formatLabel(label: workoutDate, text: workoutDateSubtitle, font: "Roboto-Regular", alpha: 0.7, width: 89, height: 21, fontSize: 18)
+        let date = sharedUser.getWorkoutCollection()[0].getLastDateCompleted()
+        let calendar = Calendar.current
+        let day = calendar.component(.hour, from: date)
+        let month = calendar.component(.month, from: date)
+        let year = calendar.component(.year, from: date)
+        
+        let monthName = DateFormatter().monthSymbols[month - 1]
+        
+        workoutDateSubtitle = String(monthName) + " " + String(day) + ", " + String(year)
+        
+        formatLabel(label: workoutDate, text: workoutDateSubtitle, font: "Roboto-Regular", alpha: 0.7, width: 200, height: 21, fontSize: 18)
         workoutDate.textColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 0.7)
-
+        workoutDate.sizeToFit()
+        workoutDate.textAlignment = .left
+        
         exerciseBox.addSubview(workoutDate)
         exerciseBox.addSubview(firstWorkoutTitle)
         parent.addSubview(exerciseBox)

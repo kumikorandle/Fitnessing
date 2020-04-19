@@ -70,7 +70,6 @@ class WorkoutTableViewController: UITableViewController {
         
         // Fetches the appropriate meal for the data source layout.
         let workout = workouts[indexPath.row]
-        workout?.setCurrentIndex(index: indexPath.row)
                 
         cell!.startButtonLabel.tag = indexPath.row
         cell!.startButtonLabel.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
@@ -89,6 +88,7 @@ class WorkoutTableViewController: UITableViewController {
         let monthName = DateFormatter().monthSymbols[month - 1]
         
         cell!.workoutDate.text = String(monthName) + " " + String(day) + ", " + String(year)
+        cell!.timesCompleted.text = String(workout!.getTimesCompleted())
 //
 //        var i = 0
 //        let fullBarHeight = CGFloat(96)
