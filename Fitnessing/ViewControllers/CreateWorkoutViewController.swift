@@ -15,11 +15,13 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 	
 	var header = UILabel()
 	var subtitle = UILabel()
-
+	
 	@IBOutlet weak var tableView: UITableView!
+	
 	
 	//MARK: viewDidLoad
 	override func viewDidLoad() {
+		
 		super.viewDidLoad()
 		
 		self.tableView.delegate = self
@@ -32,20 +34,21 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 		self.tableView!.separatorStyle = UITableViewCell.SeparatorStyle.none
 		
 		
-		self.title = "Legs"
+		self.title = "Create / Edit Workout"
 		
 		self.navigationController?.isNavigationBarHidden = false
 		customizeNavBar()
 		createBackground()
-		createSubtitle()
+		createSubtitleLabel()
 		
 		tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 50).isActive = true
+		
 	}/// veiwDidLoad
 	
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return exercises.count
-	}
+	}/// numberOfRowsInSection
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		// Table view cells are reused and should be dequeued using a cell identifier.
@@ -58,7 +61,7 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 			cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? ExerciseTableViewCell
 		}
 		
-		// Fetches the appropriate meal for the data source layout.
+		// Fetches the appropriate exercise for the data source layout.
 		let exercise = exercises[indexPath.row]
 		
 		cell!.backgroundColor = UIColor.clear
@@ -68,7 +71,7 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 		return cell!
 	}/// cellForRowAt
 	
-	// MARK: Helper Functions
+	// MARK: Formatting Functions
 	func defineConstraints(label: UILabel, width: CGFloat, height: CGFloat, leadingConstant: CGFloat, topConstant: CGFloat, top: NSLayoutAnchor<NSLayoutYAxisAnchor>, leading: NSLayoutAnchor<NSLayoutXAxisAnchor>) {
 		
 		label.translatesAutoresizingMaskIntoConstraints = false
@@ -104,7 +107,10 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 	
 	// MARK: View functions
 	func createBackground() {
-		header.frame = CGRect(x: 0, y: (self.navigationController?.navigationBar.bounds.height)!, width: self.view.frame.width, height: 230)
+		
+		header.frame = CGRect(x: 0,
+							  y: (self.navigationController?.navigationBar.bounds.height)!,
+							  width: self.view.frame.width, height: 230)
 		header.backgroundColor = .white
 		self.view.addSubview(header)
 		
@@ -135,35 +141,43 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 		self.navigationController?.navigationBar.prefersLargeTitles = true
 		
 		let navBarAppearance = UINavigationBarAppearance()
-		
 		navBarAppearance.configureWithOpaqueBackground()
 		navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
 		navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
 		navBarAppearance.backgroundColor = UIColor(red: 1, green: 0.749, blue: 0.647, alpha: 1)
 		navBarAppearance.shadowColor = .clear
-		
 		self.navigationController!.navigationBar.standardAppearance = navBarAppearance
 		self.navigationController!.navigationBar.scrollEdgeAppearance = navBarAppearance
 		
-		let finishButton = UIButton(type: .custom)
-		finishButton.setTitle("Finish Workout", for: .normal)
-		finishButton.addTarget(self, action: #selector(finishAction), for: .touchUpInside)
 		
+		let finishButton = UIButton(type: .custom)
+		finishButton.setTitle("Finish", for: .normal)
+		finishButton.addTarget(self, action: #selector(finishAction), for: .touchUpInside)
 		self.navigationItem.setRightBarButton(UIBarButtonItem(customView: finishButton), animated: true)
+		
 	}/// customizeNavBar
 	
-	func createSubtitle() {
-		formatLabel(label: subtitle, text: "In Progress", font: "Roboto-Bold", alpha: 0.8, width: 100, height: 25, fontSize: 16)
+	func createSubtitleLabel() {
+		
+		formatLabel(label: subtitle, text: "Workout Name", font: "Roboto-Bold", alpha: 0.8, width: 100, height: 25, fontSize: 16)
+		
 		self.view.addSubview(subtitle)
-		defineConstraints(label: subtitle, width: subtitle.frame.width, height: subtitle.frame.height, leadingConstant: 10, topConstant: 140, top: self.view.topAnchor, leading: self.view.leadingAnchor)
+		
+		defineConstraints(label: subtitle, width: subtitle.frame.width, height: subtitle.frame.height, leadingConstant: 36, topConstant: 58, top: self.view.topAnchor, leading: self.view.leadingAnchor)
+		
 	}/// createSubtitle
 	
 	
 	// MARK: Button functions
 	@objc func finishAction() {
+		
+		//MARK: NOTE add button action
 		print("Clicked finish")
 		self.navigationController?.popViewController(animated: true)
-	}
+		
+	}/// finishAction
+	
+	
 	/*
 	// MARK: - Navigation
 	
