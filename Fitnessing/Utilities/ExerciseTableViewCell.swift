@@ -9,7 +9,13 @@
 import UIKit
 
 class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate {
-    var sets : [[Int]] = [[8, 350], [8, 350], [8, 350], [8, 350]]
+    var sharedUser: User!
+    var workout: Workout?
+    var exercise: Exercise?
+    var reps: Int!
+    var weight: Float!
+    var sets: Int!
+    var setArray : [[String]]!
     
     var exerciseNum = "1 of 1"
     var exerciseTitle = "Exercise"
@@ -24,6 +30,19 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        initializeUser()
+        workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()]
+        exercise = workout?.getExercises()[(workout?.getCurrentIndex())!]
+        sets = exercise?.getNumSets()
+        reps = exercise?.getNumReps()
+        weight = exercise?.getWeight()
+        
+        setArray = []
+        
+        for _ in 0...sets {
+            setArray.append([String(reps), String(weight)])
+        }
+                
         // Initialization code
         tableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.contentView.frame.width, height: self.contentView.frame.height - num.frame.height - titleLabel.frame.height - 60))
         
@@ -50,6 +69,11 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
         tableView!.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 0).isActive = true
         tableView!.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0).isActive = true
     }
+    
+    func initializeUser() {
+        _ = SharingUser()
+        sharedUser = SharingUser.sharedUser.user
+    }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -58,7 +82,7 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sets.count
+        return setArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -70,8 +94,7 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
             cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? SetTableViewCell
         }
         
-        // Fetches the appropriate meal for the data source layout.
-        let set = sets[indexPath.row]
+        let set = setArray[indexPath.row]
                 
         cell!.backgroundColor = UIColor.clear
         cell!.setNumLabel.text = "SET " + String(indexPath.row + 1)
@@ -87,7 +110,7 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
          label.frame = CGRect(x: 0, y: 0, width: width, height: height)
          label.textColor = UIColor(red: 0.562, green: 0.562, blue: 0.562, alpha: alpha)
          label.font = UIFont(name: font, size: fontSize)
-         label.textAlignment = .center
+         label.textAlignment = .left
          label.text = text
          label.numberOfLines = 0
          label.lineBreakMode = .byWordWrapping

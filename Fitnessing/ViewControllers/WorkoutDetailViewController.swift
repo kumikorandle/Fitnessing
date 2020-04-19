@@ -12,9 +12,10 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
 
     // MARK: Properties
     @IBOutlet weak var tableView: UITableView!
+    var sharedUser: User!
     
-    //var exercises = [Exercise]()
-    var exercises = [1, 2, 3]
+    var exercises: [Exercise]?
+    var workout: Workout?
     
     let header = UILabel()
     var exerciseLabel = UILabel()
@@ -26,6 +27,9 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        initializeUser()
+        workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()]
+        exercises = workout!.getExercises()
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -36,7 +40,7 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         // Remove cell separators
         self.tableView!.separatorStyle = UITableViewCell.SeparatorStyle.none
         
-        self.title = "Legs"
+        self.title = workout?.getName()
 
         self.navigationController?.isNavigationBarHidden = false
         customizeNavBar()
@@ -50,9 +54,19 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        sharedUser = SharingUser.sharedUser.user
+    }
+    
+    func initializeUser() {
+        _ = SharingUser()
+        sharedUser = SharingUser.sharedUser.user
+    }
+    
     // MARK: Table functions
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return exercises.count
+        return exercises!.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -67,11 +81,12 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         }
         
         // Fetches the appropriate meal for the data source layout.
-        let exercise = exercises[indexPath.row]
+        let exercise = exercises![indexPath.row]
                 
         cell!.backgroundColor = UIColor.clear
-        cell!.num.text = String(indexPath.row + 1) + " of " + String(exercises.count)
-        cell!.titleLabel.text = "Hip Thrusts"
+        cell!.num.text = String(indexPath.row + 1) + " of " + String(exercises!.count)
+        cell!.titleLabel.text = exercise.getName()
+        
         
         return cell!
     }

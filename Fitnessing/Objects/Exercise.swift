@@ -82,6 +82,10 @@ class Exercise: NSObject, NSCoding {
         return self.weightLifted
     }
     
+    func getWeight() -> Float {
+        return self.weight
+    }
+    
     func setNumReps(reps: Int) {
         self.numReps = reps
     }
@@ -93,6 +97,10 @@ class Exercise: NSObject, NSCoding {
     func setWeightLifted(weight: Float) {
         self.weightLifted = weight
     }
+    
+    func setWeight(weight: Float) {
+           self.weight = weight
+       }
     
     func encode(with aCoder: NSCoder) {
         aCoder.encode(name, forKey: PropertyKey.name)

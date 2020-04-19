@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import os.log
 
 class HomeViewController: UIViewController {
 	
@@ -83,7 +84,7 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         initializeExerciseCollection()
         initializeUser()
-        
+                
         createBackground()
         createTitle(name: sharedUser.getFirstName())
         createLine(line: line1, topNeighbour: nameLabel)
@@ -133,15 +134,23 @@ class HomeViewController: UIViewController {
     func createUserWorkoutCollection() -> [Workout]{
         var workouts = [Workout]()
         var legExercises = [Exercise]()
+        var fullBody = [Exercise]()
         
         legExercises.append(sharedExerciseCollection.getExercise(name: "Squat")!)
         legExercises.append(sharedExerciseCollection.getExercise(name: "Lunge")!)
         legExercises.append(sharedExerciseCollection.getExercise(name: "Hip Thrusts")!)
         legExercises.append(sharedExerciseCollection.getExercise(name: "Deadlift")!)
         
+        fullBody.append(sharedExerciseCollection.getExercise(name: "Squat")!)
+        fullBody.append(sharedExerciseCollection.getExercise(name: "Pushup")!)
+        fullBody.append(sharedExerciseCollection.getExercise(name: "Bench Press")!)
+        fullBody.append(sharedExerciseCollection.getExercise(name: "Bicep Curl")!)
+        
         let legWorkout = Workout(name: "Legs", exercises: legExercises, dateCreated: Date(), lastDateCompleted: nil, timesCompleted: 0)
+        let fullBodyWorkout = Workout(name: "Full Body", exercises: fullBody, dateCreated: Date(), lastDateCompleted: nil, timesCompleted: 0)
         
         workouts.append(legWorkout)
+        workouts.append(fullBodyWorkout)
         
         return workouts
     }
@@ -209,7 +218,7 @@ class HomeViewController: UIViewController {
         
         // Constraints
         defineConstraints(label: welcomeLabel, width: welcomeLabel.frame.width, height: welcomeLabel.frame.height, leadingConstant: 36, topConstant: 75, top: self.view!.topAnchor, leading: self.view!.leadingAnchor)
-        defineConstraints(label: nameLabel, width: 164, height: 56, leadingConstant: 36, topConstant: 5, top: welcomeLabel.bottomAnchor, leading: self.view.leadingAnchor)
+        defineConstraints(label: nameLabel, width: welcomeLabel.frame.width, height: welcomeLabel.frame.height, leadingConstant: 36, topConstant: 5, top: welcomeLabel.bottomAnchor, leading: self.view.leadingAnchor)
     }/// createTitle
     
     func createLine(line: UIView, topNeighbour: Any?) {
@@ -371,9 +380,9 @@ class HomeViewController: UIViewController {
 // MARK: Button Actions
     @objc func previousWorkoutSelected() {
         print("Clicked previous workout")
-        let dc : UIViewController?
-		dc = self.storyboard!.instantiateViewController(withIdentifier: "workoutDetails") as! WorkoutDetailViewController
-		self.navigationController!.pushViewController(dc!, animated: true)
+        let dc = self.storyboard!.instantiateViewController(withIdentifier: "workoutDetails") as! WorkoutDetailViewController
+        sharedUser.setCurrentIndex(index: sharedUser.getPreviousWorkout())
+        self.navigationController!.pushViewController(dc, animated: true)
 		
     }/// previousWorkoutSelected
     
@@ -386,11 +395,9 @@ class HomeViewController: UIViewController {
     
     @objc func workoutSelected() {
         print("Clicked workout")
-        let dc : UIViewController?
-        dc = self.storyboard!.instantiateViewController(withIdentifier: "workoutDetails") as! WorkoutDetailViewController
-        self.navigationController!.pushViewController(dc!, animated: true)
-    
+        let dc = self.storyboard!.instantiateViewController(withIdentifier: "workoutDetails") as! WorkoutDetailViewController 
+        sharedUser.setCurrentIndex(index: 0)
+        self.navigationController!.pushViewController(dc, animated: true)
     }/// workoutSelected
-	
-   
-}/// HomeViewController
+
+} /// HomeViewController

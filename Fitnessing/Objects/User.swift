@@ -18,6 +18,7 @@ class User: NSObject, NSCoding {
     private var totalWeightLifted: Float = 0.0
     private var workoutCollection: [Workout]
     private var weightLBS: Float
+    private var current: Int = 0
     //public var userName: String?
     //public var password: String?
     
@@ -39,8 +40,16 @@ class User: NSObject, NSCoding {
         static let totalHoursWorked = "totalHoursWorked"
         static let totalWeightLifted = "totalWeightLifted"
         static let workoutCollection = "workoutCollection"
+        static let current = "current"
     }
 
+    func getCurrentIndex() -> Int {
+        return self.current
+    }
+    
+    func setCurrentIndex(index: Int) {
+        self.current = index
+    }
     
     func getFirstName() -> String {
         return self.firstName
@@ -69,13 +78,26 @@ class User: NSObject, NSCoding {
     func getNumWorkoutsCompleted() -> Int{
         var total = 0
         for workout in self.workoutCollection {
-            total = total + workout.timesCompleted
+            total = total + workout.getTimesCompleted()
         }
         return total
     }
     
     func getWorkoutCollection() -> [Workout] {
         return self.workoutCollection
+    }
+    
+    func getPreviousWorkout() -> Int {
+        var recentDate = Date(timeIntervalSinceReferenceDate: 0)
+        var prevWorkout: Int = 0
+        
+        for workout in self.workoutCollection {
+            if workout.getLastDateCompleted() > recentDate {
+                recentDate = workout.getLastDateCompleted()
+                prevWorkout = self.workoutCollection.firstIndex(of: workout)!
+            }
+        }
+        return prevWorkout
     }
     
     func setTotalHoursWorked(hours: Float) {
@@ -102,7 +124,7 @@ class User: NSObject, NSCoding {
         aCoder.encode(totalWeightLifted, forKey: PropertyKey.totalWeightLifted)
         aCoder.encode(totalHoursWorked, forKey: PropertyKey.totalHoursWorked)
         aCoder.encode(workoutCollection, forKey: PropertyKey.workoutCollection)
-
+        aCoder.encode(current, forKey: PropertyKey.current)
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
@@ -125,6 +147,8 @@ class User: NSObject, NSCoding {
         
          // Must call designated initializer.
         self.init(firstName: firstNameDecoded, lastName: lastNameDecoded, heightCM: heightDecoded, weightLBS: weightDecoded, totalHoursWorked: totalHoursWorkedDecoded, totalWeightLifted: totalWeightLiftedDecoded, workoutCollection: workoutCollectionDecoded)
+        
+        current = aDecoder.decodeInteger(forKey: PropertyKey.current) as Int
     }
 }
 

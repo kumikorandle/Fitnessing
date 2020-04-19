@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import os.log
 
 class WorkoutTableViewController: UITableViewController {
 // MARK: Properties
@@ -34,13 +35,6 @@ class WorkoutTableViewController: UITableViewController {
     
     func initializeUser() {
         _ = SharingUser()
-        
-        SharingUser.sharedUser.loadUser() // un-archive data
-        
-        if (SharingUser.sharedUser.user == nil) {
-            SharingUser.sharedUser.user = User(firstName: "First Name", lastName: "Last Name", heightCM: 0, weightLBS: 0, totalHoursWorked: 0, totalWeightLifted: 0, workoutCollection: [])
-        }
-        
         sharedUser = SharingUser.sharedUser.user
     }
 
@@ -76,19 +70,25 @@ class WorkoutTableViewController: UITableViewController {
         
         // Fetches the appropriate meal for the data source layout.
         let workout = workouts[indexPath.row]
+        workout?.setCurrentIndex(index: indexPath.row)
                 
+        cell!.startButtonLabel.tag = indexPath.row
+        cell!.startButtonLabel.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+        
         cell!.Background.layer.cornerRadius = 10
         cell!.Background.layer.backgroundColor = UIColor.white.cgColor
         cell!.backgroundColor = UIColor.clear
-        cell!.workoutTitle.text = workout?.name
+        cell!.workoutTitle.text = workout?.getName()
         
-        let date = workout?.lastDateCompleted ?? workout?.dateCreated
+        let date = workout?.getLastDateCompleted()
         let calendar = Calendar.current
         let day = calendar.component(.hour, from: date!)
         let month = calendar.component(.month, from: date!)
         let year = calendar.component(.year, from: date!)
         
-        cell!.workoutDate.text = String(month) + " " + String(day) + ", " + String(year)
+        let monthName = DateFormatter().monthSymbols[month - 1]
+        
+        cell!.workoutDate.text = String(monthName) + " " + String(day) + ", " + String(year)
 //
 //        var i = 0
 //        let fullBarHeight = CGFloat(96)
@@ -134,6 +134,11 @@ class WorkoutTableViewController: UITableViewController {
         }    
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        sharedUser.setCurrentIndex(index: indexPath.row)
+        print("index set")
+    }
+    
 
 // MARK: Button functions
     @objc func backAction() {
@@ -144,6 +149,12 @@ class WorkoutTableViewController: UITableViewController {
     @objc func createAction() {
         print("Clicked create")
         destinationController = self.storyboard!.instantiateViewController(withIdentifier: "create") as! CreateWorkoutViewController
+        self.navigationController!.pushViewController(destinationController!, animated: true)
+    }
+    
+    @objc func buttonAction(sender: UIButton) {
+        sharedUser.setCurrentIndex(index: sender.tag)
+        destinationController = self.storyboard!.instantiateViewController(withIdentifier: "workoutDetails") as! WorkoutDetailViewController
         self.navigationController!.pushViewController(destinationController!, animated: true)
     }
     
@@ -201,6 +212,7 @@ class WorkoutTableViewController: UITableViewController {
         // Create button
         createButton.setTitle("Create", for: .normal)
         createButton.addTarget(self, action: #selector(createAction), for: .touchUpInside)
+        
     }
     
     /*
@@ -217,15 +229,4 @@ class WorkoutTableViewController: UITableViewController {
         return true
     }
     */
-
-    
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    
-
 }
