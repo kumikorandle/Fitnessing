@@ -1,4 +1,4 @@
-	//
+//
 //  FirstViewController.swift
 //  Fitnessing
 //
@@ -81,8 +81,10 @@ class HomeViewController: UIViewController {
 	
 //MARK: viewDidLoad
 	override func viewDidLoad() {
+		
         let boxSize = self.view.frame.width/3 - 30
         super.viewDidLoad()
+		
         initializeExerciseCollection()
         initializeUser()
                 
@@ -122,9 +124,11 @@ class HomeViewController: UIViewController {
         createPreviousWorkout()
         createLine(line: line3, topNeighbour: prevWorkoutButton)
         createWorkouts()
-    }
+    }/// viewDidAppear
 	
-    func initializeUser() {
+    
+//MARK: Utility Functions
+	func initializeUser() {
         _ = SharingUser()
         
         SharingUser.sharedUser.loadUser() // un-archive data
@@ -134,7 +138,7 @@ class HomeViewController: UIViewController {
         }
         
         sharedUser = SharingUser.sharedUser.user
-    }
+    }/// initializeUser
     
     func initializeExerciseCollection() {
         _ = SharingExerciseCollection()
@@ -448,6 +452,7 @@ class HomeViewController: UIViewController {
     
 // MARK: Button Actions
     @objc func previousWorkoutSelected() {
+		
         print("Clicked previous workout")
         let dc = self.storyboard!.instantiateViewController(withIdentifier: "workoutDetails") as! WorkoutDetailViewController
         sharedUser.setCurrentIndex(index: sharedUser.getPreviousWorkout())
@@ -456,6 +461,7 @@ class HomeViewController: UIViewController {
     }/// previousWorkoutSelected
     
     @objc func showAllButtonSelected() {
+		
 		print("Clicked show all")
         destinationController = self.storyboard!.instantiateViewController(withIdentifier: "workouts") as! WorkoutTableViewController
         self.navigationController!.pushViewController(destinationController!, animated: true)
@@ -463,11 +469,12 @@ class HomeViewController: UIViewController {
 	}/// showAllButtonSelected
     
     @objc func workoutSelected() {
+		
         print("Clicked workout")
-        let dc = self.storyboard!.instantiateViewController(withIdentifier: "workoutDetails") as! WorkoutDetailViewController 
+        let dc = self.storyboard!.instantiateViewController(withIdentifier: "workoutDetails") as! WorkoutDetailViewController
         sharedUser.setCurrentIndex(index: 0)
         self.navigationController!.pushViewController(dc, animated: true)
-    }/// workoutSelected
-
+    
+	}/// workoutSelected
 
 } /// HomeViewController

@@ -113,7 +113,7 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
      }/// formatLabel
 	
     
-    // MARK: View functions
+// MARK: View functions
       func createBackground() {
           header.frame = CGRect(x: 0, y: (self.navigationController?.navigationBar.bounds.height)!, width: self.view.frame.width, height: 230)
           header.backgroundColor = .white
@@ -216,4 +216,4 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
     }
     */
 
-}
+}/// WorkoutInProgressViewController

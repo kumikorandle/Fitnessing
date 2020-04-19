@@ -22,8 +22,10 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 
 	@IBOutlet weak var tableView: UITableView!
 	
+	
 	//MARK: viewDidLoad
 	override func viewDidLoad() {
+		
 		super.viewDidLoad()
 		
 		self.tableView.delegate = self
@@ -35,8 +37,8 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 		// Remove cell separators
 		self.tableView!.separatorStyle = UITableViewCell.SeparatorStyle.none
 		
-		
 		self.title = "New Workout"
+
 		
 		self.navigationController?.isNavigationBarHidden = false
 		customizeNavBar()
@@ -46,7 +48,6 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
         
         self.navigationItem.setRightBarButtonItems([self.editButtonItem, UIBarButtonItem(customView: finishButton)], animated: true)
 		
-		tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 50).isActive = true
 	}/// veiwDidLoad
 	
 	
@@ -57,7 +58,7 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
     
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return exercises.count
-	}
+	}/// numberOfRowsInSection
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		// Table view cells are reused and should be dequeued using a cell identifier.
@@ -70,7 +71,7 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 			cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? ExerciseTableViewCell
 		}
 		
-		// Fetches the appropriate meal for the data source layout.
+		// Fetches the appropriate exercise for the data source layout.
 		let exercise = exercises[indexPath.row]
 		
 		cell!.backgroundColor = UIColor.clear
@@ -97,6 +98,7 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
 	// MARK: Helper Functions
+	// MARK: Formatting Functions
 	func defineConstraints(label: UILabel, width: CGFloat, height: CGFloat, leadingConstant: CGFloat, topConstant: CGFloat, top: NSLayoutAnchor<NSLayoutYAxisAnchor>, leading: NSLayoutAnchor<NSLayoutXAxisAnchor>) {
 		
 		label.translatesAutoresizingMaskIntoConstraints = false
@@ -132,7 +134,10 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 	
 	// MARK: View functions
 	func createBackground() {
-		header.frame = CGRect(x: 0, y: (self.navigationController?.navigationBar.bounds.height)!, width: self.view.frame.width, height: 230)
+		
+		header.frame = CGRect(x: 0,
+							  y: (self.navigationController?.navigationBar.bounds.height)!,
+							  width: self.view.frame.width, height: 230)
 		header.backgroundColor = .white
 		self.view.addSubview(header)
 		
@@ -163,13 +168,11 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 		self.navigationController?.navigationBar.prefersLargeTitles = true
 		
 		let navBarAppearance = UINavigationBarAppearance()
-		
 		navBarAppearance.configureWithOpaqueBackground()
 		navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
 		navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
 		navBarAppearance.backgroundColor = UIColor(red: 1, green: 0.749, blue: 0.647, alpha: 1)
 		navBarAppearance.shadowColor = .clear
-		
 		self.navigationController!.navigationBar.standardAppearance = navBarAppearance
 		self.navigationController!.navigationBar.scrollEdgeAppearance = navBarAppearance
 		
@@ -200,7 +203,7 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
         workoutTitle.heightAnchor.constraint(equalToConstant: workoutTitle.frame.height).isActive = true
         workoutTitle.leadingAnchor.constraint(equalTo: subtitle.trailingAnchor, constant: 0).isActive = true
         workoutTitle.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 140).isActive = true
-	}/// createSubtitle
+	}/// customizeNavBar
 	
     func createAddExercise() {
         addButton.setTitle("Add Exercises", for: .normal)
@@ -230,6 +233,9 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
         let destinationController = self.storyboard!.instantiateViewController(withIdentifier: "addExercises") as! AddExerciseViewController
         self.navigationController!.pushViewController(destinationController, animated: true)
     }
+
+	
+	
 	/*
 	// MARK: - Navigation
 	

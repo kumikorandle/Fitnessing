@@ -193,10 +193,10 @@
 			children = (
 				07C095FC244B9C1700C9C9FA /* Exercise.swift */,
 				07C095FE244B9C2300C9C9FA /* ExerciseCollection.swift */,
-				07C09600244B9C2F00C9C9FA /* User.swift */,
-				07C09602244B9C3B00C9C9FA /* Workout.swift */,
 				07C09604244BAB5200C9C9FA /* SharingExerciseCollection.swift */,
 				07C09606244BAB5B00C9C9FA /* SharingUser.swift */,
+				07C09600244B9C2F00C9C9FA /* User.swift */,
+				07C09602244B9C3B00C9C9FA /* Workout.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -204,16 +204,16 @@
 		9091AF472447CE9900449196 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				90E1E151244A1A5B0086E8A5 /* AddExercisesViewController.swift */,
+				07B4C68F244A6DF700B33186 /* CreateWorkoutViewController.swift */,
+				9042611724494190003E000B /* ExerciseDetailViewController.swift */,
 				07BC131E2443AD0400C117CD /* HomeViewController.swift */,
 				07BC13202443AD0400C117CD /* ProfileViewController.swift */,
-				07495A2324440EC80099C15A /* WorkoutTableViewController.swift */,
-				90E1E155244A1BAC0086E8A5 /* WorkoutDetailViewControllerOld.swift */,
 				07B4C689244A63CB00B33186 /* WorkoutDetailViewController.swift */,
-				90E1E153244A1ADA0086E8A5 /* WorkoutInProgressViewControllerOld.swift */,
+				90E1E155244A1BAC0086E8A5 /* WorkoutDetailViewControllerOld.swift */,
 				078AB953244ACE750081F201 /* WorkoutInProgressViewController.swift */,
-				07B4C68F244A6DF700B33186 /* CreateWorkoutViewController.swift */,
-				90E1E151244A1A5B0086E8A5 /* AddExercisesViewController.swift */,
-				9042611724494190003E000B /* ExerciseDetailViewController.swift */,
+				90E1E153244A1ADA0086E8A5 /* WorkoutInProgressViewControllerOld.swift */,
+				07495A2324440EC80099C15A /* WorkoutTableViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -240,10 +240,10 @@
 			isa = PBXGroup;
 			children = (
 				90426113244901F4003E000B /* Constants.swift */,
-				904261152449022B003E000B /* HelperFunctions.swift */,
-				07495A212443FF950099C15A /* WorkoutTableViewCell.swift */,
 				07B4C68B244A63E300B33186 /* ExerciseTableViewCell.swift */,
+				904261152449022B003E000B /* HelperFunctions.swift */,
 				078AB951244A941B0081F201 /* SetTableViewCell.swift */,
+				07495A212443FF950099C15A /* WorkoutTableViewCell.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";

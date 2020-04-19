@@ -10,7 +10,7 @@ import UIKit
 
 class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource {
 
-    // MARK: Properties
+// MARK: Properties
     @IBOutlet weak var tableView: UITableView!
     var sharedUser: User!
     
@@ -70,7 +70,7 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         sharedUser = SharingUser.sharedUser.user
     }
     
-    // MARK: Table functions
+// MARK: Table functions
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return exercises!.count
     }
@@ -257,7 +257,7 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         startButton.bottomAnchor.constraint(equalTo: header.bottomAnchor, constant: 0).isActive = true
     }
     
-    // MARK: Button Methods
+// MARK: Button Methods
     @objc func editAction() {
         print("Clicked edit")
         let dc : UIViewController?

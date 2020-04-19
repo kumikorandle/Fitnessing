@@ -1,5 +1,5 @@
 //
-//  ExerciseViewController.swift
+//  ExerciseDetailViewController.swift
 //  Fitnessing
 //
 //  Created by Justin Harrott on 04-16-2020.
