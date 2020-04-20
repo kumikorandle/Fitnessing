@@ -9,10 +9,12 @@
 import UIKit
 
 class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    // MARK: Properties
     var sharedUser: User!
     var exercises: [Exercise]?
     var workout: Workout?
     
+    // View elements
     var header = UILabel()
     var subtitle = UILabel()
     var editButton = UIButton()
@@ -28,14 +30,20 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
 //MARK: viewDidLoad
 	override func viewDidLoad() {
         super.viewDidLoad()
+        
         time = Date()
-        startTime = Date()
-        runningTime = 0
+        startTime = Date() // Get starting time that user opens view
+        runningTime = 0 // Time passed since start time
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerAction), userInfo: nil, repeats: true)
                 
         initializeUser()
-        workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()]
-        exercises = workout!.getExercises()
+        
+        workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()] // Get current workout
+        exercises = workout!.getExercises() // Get exercises from workout
+        
+        print("IN PROGRESS")
+        workout?.printWorkout()
+        print("---")
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -49,6 +57,7 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
         self.title = workout?.getName()
         
         self.navigationController?.isNavigationBarHidden = false
+        
         customizeNavBar()
         createBackground()
         createSubtitle()
@@ -61,7 +70,13 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
     override func viewDidAppear(_ animated: Bool) {
         tableView.reloadData()
     }
-
+    
+    func initializeUser() {
+           _ = SharingUser()
+           sharedUser = SharingUser.sharedUser.user
+    }
+    
+    // MARK: TableView Functions
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return exercises!.count
     }
@@ -70,28 +85,23 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
         // Table view cells are reused and should be dequeued using a cell identifier.
         let cellIdentifier = "ExerciseTableViewCell"
         
-        var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? ExerciseTableViewCell
-        
-        if cell == nil {
-            tableView.register(UINib(nibName: "MyCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
-            cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? ExerciseTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? ExerciseTableViewCell  else {
+            fatalError("The dequeued cell is not an instance of ExerciseTableViewCell.")
         }
                 
         // Fetches the appropriate meal for the data source layout.
         let exercise = exercises![indexPath.row]
+        workout?.setCurrentIndex(index: indexPath.row) // Set current index of exercise to be used in cell
                 
-        cell!.backgroundColor = UIColor.clear
-        cell!.num.text = String(indexPath.row + 1) + " of " + String(exercises!.count)
-        cell!.titleLabel.text = exercise.getName()
+        cell.backgroundColor = UIColor.clear
+        cell.num.text = String(indexPath.row + 1) + " of " + String(exercises!.count)
+        cell.titleLabel.text = exercise.getName()
 
         
-        return cell!
+        return cell
     }/// cellForRowAt
     
-    func initializeUser() {
-           _ = SharingUser()
-           sharedUser = SharingUser.sharedUser.user
-    }
+
     
 // MARK: Helper Functions
      func defineConstraints(label: UILabel, width: CGFloat, height: CGFloat, leadingConstant: CGFloat, topConstant: CGFloat, top: NSLayoutAnchor<NSLayoutYAxisAnchor>, leading: NSLayoutAnchor<NSLayoutXAxisAnchor>) {
@@ -233,17 +243,18 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
 // MARK: Button functions
     @objc func finishAction() {
         print("Clicked finish")
-        workout?.setTimesCompleted(num: workout!.getTimesCompleted() + 1)
-        workout?.setLastDateCompleted(date: Date())
+        workout?.setTimesCompleted(num: workout!.getTimesCompleted() + 1) // Increases times workout completed by 1
+        workout?.setLastDateCompleted(date: Date()) // Set current date as last date completed
         
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.hour, .minute, .second]
         formatter.zeroFormattingBehavior = .pad
         formatter.unitsStyle = .positional
         
-        workout?.setTotalTime(time: (workout?.getTotalTime())! + runningTime!)
+        workout?.setTotalTime(time: (workout?.getTotalTime())! + runningTime!) // Add time passed to total time spent on this workout
+        // Updated avg time completed by dividing new total time by number of times completed
         workout?.setAvgTimeCompleted(time: (workout?.getTotalTime())!/Double((workout?.getTimesCompleted())!))
-        sharedUser.setTotalHoursWorked(hours: sharedUser.getTotalHoursWorked() + Float(workout?.getTotalTime() ?? 0)/3600)
+        sharedUser.setTotalHoursWorked(hours: sharedUser.getTotalHoursWorked() + Float(workout?.getTotalTime() ?? 0)/3600) // Set users total time spent working out by converting from seconds to hours and adding to users total hours worked out
         
         var weightTotal = Float(0)
         for exercise in workout!.getExercises() {
@@ -260,6 +271,7 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
         destinationController.workout = self.workout!
         destinationController.exercises = self.exercises!
         destinationController.workoutTitle.text = self.workout!.getName()
+        sharedUser.setTempExercises(exercises: exercises!)
         self.navigationController!.pushViewController(destinationController, animated: true)
     }
     

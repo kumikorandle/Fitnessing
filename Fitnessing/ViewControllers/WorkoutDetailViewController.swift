@@ -17,6 +17,8 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
     var exercises: [Exercise]?
     var workout: Workout?
     
+    // Constants
+    // View Elements
     let header = UILabel()
 
     var exerciseLabel = UILabel()
@@ -33,14 +35,17 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.hour, .minute, .second]
         formatter.zeroFormattingBehavior = .pad
         formatter.unitsStyle = .positional
         
         initializeUser()
-        workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()]
-        exercises = workout!.getExercises()
+        
+        workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()] // Get current workout (should have been set by previous VC)
+        exercises = workout!.getExercises() // Get exercises from workout
+        workout?.setCurrentIndex(index: 0) // Set index of current exercise in workout
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -77,16 +82,13 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // Updates components of view that may have changed upon leaving view
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.hour, .minute, .second]
         formatter.zeroFormattingBehavior = .pad
         formatter.unitsStyle = .positional
-
-        sharedUser = SharingUser.sharedUser.user
         
-        workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()]
-        exercises = workout!.getExercises()
-        
+        // Calculate total weight lifted for a workout (add weight lifted from all exercises)
         var totalWeight = Float(0)
         for exercise in (workout?.getExercises())! {
             totalWeight = totalWeight + exercise.getWeightLifted()
@@ -96,7 +98,8 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         liftedLabel.text = String(totalWeight) + " lbs"
         hoursLabel.text = formatter.string(from: workout?.getTotalTime() ?? 0)! + " hrs"
         avgLabel.text = formatter.string(from: workout?.getAvgTimeCompleted() ?? 0)! + " hr"
-        self.tableView.reloadData()
+        
+        self.tableView.reloadData() // Reload table data if workout has changed
     }
     
     func initializeUser() {
@@ -113,35 +116,32 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         // Table view cells are reused and should be dequeued using a cell identifier.
         let cellIdentifier = "ExerciseTableViewCell"
         
-        var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? ExerciseTableViewCell
-        
-        if cell == nil {
-            tableView.register(UINib(nibName: "MyCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
-            cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? ExerciseTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? ExerciseTableViewCell  else {
+            fatalError("The dequeued cell is not an instance of ExerciseTableViewCell.")
         }
-        workout?.setCurrentIndex(index: indexPath.row)
         
         // Fetches the appropriate meal for the data source layout.
         let exercise = exercises![indexPath.row]
-                
-        cell!.backgroundColor = UIColor.clear
-        cell!.num.text = String(indexPath.row + 1) + " of " + String(exercises!.count)
-        cell!.titleLabel.text = exercise.getName()
         
+        workout?.setCurrentIndex(index: indexPath.row) // Set index of current exercise in workout
         
-        return cell!
+        cell.backgroundColor = UIColor.clear
+        cell.num.text = String(indexPath.row + 1) + " of " + String(exercises!.count)
+        cell.titleLabel.text = exercise.getName()
+        
+        return cell
     }
     
     // MARK: Helper functions
     func formatLabel(label: UILabel, text: String, font: String, alpha: CGFloat, width: CGFloat, height: CGFloat, fontSize: CGFloat) {
          
-         label.frame = CGRect(x: 0, y: 0, width: width, height: height)
-         label.textColor = UIColor(red: 0.562, green: 0.562, blue: 0.562, alpha: alpha)
-         label.font = UIFont(name: font, size: fontSize)
+        label.frame = CGRect(x: 0, y: 0, width: width, height: height)
+        label.textColor = UIColor(red: 0.562, green: 0.562, blue: 0.562, alpha: alpha)
+        label.font = UIFont(name: font, size: fontSize)
         label.textAlignment = .left
-         label.text = text
-         label.numberOfLines = 0
-         label.lineBreakMode = .byWordWrapping
+        label.text = text
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
     
      }/// formatLabel
      
@@ -295,9 +295,10 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         print("Clicked edit")
         let dc = self.storyboard!.instantiateViewController(withIdentifier: "create") as! CreateWorkoutViewController
         dc.title = "Edit Workout"
-        dc.workout = self.workout!
-        dc.exercises = self.exercises!
+        dc.workout = self.workout! // Set workout of Create/Edit Workout VC to the current workout
+        dc.exercises = self.exercises! // Set exercises of Create/Edit Workout VC to current exercises (should be equal to exercises of workout)
         dc.workoutTitle.text = self.workout!.getName()
+        //sharedUser.setTempExercises(exercises: exercises!)
         self.navigationController!.pushViewController(dc, animated: true)
     }
     

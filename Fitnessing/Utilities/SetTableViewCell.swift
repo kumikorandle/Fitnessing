@@ -9,11 +9,14 @@
 import UIKit
 
 class SetTableViewCell: UITableViewCell {
+    // MARK: Properties
+    // View elements
     var setNumLabel = UILabel()
     var repNumLabel = UILabel()
     var weightLabel = UILabel()
     var starLabel = UILabel()
     
+    // Strings
     var setNum = "Set 1"
     var weight = "0\nlbs"
     var repNum = "0\nreps"

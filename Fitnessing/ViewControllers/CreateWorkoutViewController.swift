@@ -9,10 +9,13 @@
 import UIKit
 
 class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+    // MARK: Properties
     var sharedUser: User!
     var workout:Workout?
 	var exercises = [Exercise]()
         
+    // Constants
+    // View elements
     let finishButton = UIButton(type: .custom)
 
 	var header = UILabel()
@@ -27,7 +30,10 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 	override func viewDidLoad() {
 		super.viewDidLoad()
         initializeUser()
-		
+		print("CREATE/EDIT")
+        workout?.printWorkout()
+        print("---")
+        
 		self.tableView.delegate = self
 		self.tableView.dataSource = self
         
@@ -37,6 +43,7 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
         // Enable the Save button only if the text field has a valid Workout name.
         updateSaveButtonState()
         
+        // Disable save if no title or no exercises in workout
         if workoutTitle.text!.isEmpty || exercises.count == 0{
             finishButton.isEnabled = false
             finishButton.alpha = 0.5
@@ -49,7 +56,8 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 		self.tableView!.separatorStyle = UITableViewCell.SeparatorStyle.none
 		
 		self.navigationController?.isNavigationBarHidden = false
-		customizeNavBar()
+		
+        customizeNavBar()
 		createBackground()
         createEmptyWorkoutMessage()
 		createSubtitle()
@@ -58,12 +66,11 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
         self.navigationItem.setRightBarButtonItems([self.editButtonItem, UIBarButtonItem(customView: finishButton)], animated: true)
         
         tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 50).isActive = true
-		
 	}/// viewDidLoad
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        sharedUser.setTempExercises(exercises: exercises)
+        sharedUser.setTempExercises(exercises: exercises) // Exercises that have been added to workout are temporarily set in user to pass to cell
     }
 	
     func initializeUser() {
@@ -71,6 +78,7 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
         sharedUser = SharingUser.sharedUser.user
     }
     
+    // MARK: TableView Functions
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return exercises.count
 	}/// numberOfRowsInSection
@@ -79,24 +87,22 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 		// Table view cells are reused and should be dequeued using a cell identifier.
 		let cellIdentifier = "CreateWorkoutTableViewCell"
 		
-		var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? CreateWorkoutTableViewCell
-		
-		if cell == nil {
-			tableView.register(UINib(nibName: "MyCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
-			cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? CreateWorkoutTableViewCell
-		}
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? CreateWorkoutTableViewCell  else {
+            fatalError("The dequeued cell is not an instance of CreateWorkoutTableViewCell.")
+        }
 		
 		// Fetches the appropriate exercise for the data source layout.
 		let exercise = exercises[indexPath.row]
-        sharedUser.setTempExercisesIndex(index: indexPath.row)
+        sharedUser.setTempExercisesIndex(index: indexPath.row) // Set index of current exercise for temp exercise array
 		
-		cell!.backgroundColor = UIColor.clear
-		cell!.num.text = String(indexPath.row + 1) + " of " + String(exercises.count)
-        cell!.titleLabel.text = exercise.getName()
-        cell!.exercise = exercise
-        cell!.tableView?.reloadData()
+		cell.backgroundColor = UIColor.clear
+		cell.num.text = String(indexPath.row + 1) + " of " + String(exercises.count)
+        cell.titleLabel.text = exercise.getName()
+        
+        cell.exercise = exercise
+        cell.tableView?.reloadData()
 		
-		return cell!
+		return cell
 	}/// cellForRowAt
 	
     // Override to support editing the table view.
@@ -283,7 +289,7 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 	// MARK: Button functions
 	@objc func finishAction() {
 		print("Clicked save")
-        if (exercises.count < 1) {
+        if (exercises.count < 1) { // No exercises in workout, cannot save
             let alert = UIAlertController(title: "Cannot Save", message: "Need at least 1 exercise", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
                   switch action.style{
@@ -298,16 +304,17 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
             }}))
             self.present(alert, animated: true, completion: nil)
         } else {
-            self.navigationController?.popViewController(animated: true)
+            self.navigationController?.popViewController(animated: true) // Return to previous view
 
-            if (self.title == "New Workout") {
-                let previousViewController = self.navigationController?.viewControllers.last as! WorkoutTableViewController
-                workout = Workout(name: workoutTitle.text!, exercises: exercises, dateCreated: Date(), lastDateCompleted: nil, timesCompleted: 0)
-                sharedUser.addWorkout(workout: workout!)
+            if (self.title == "New Workout") { // If creating new workout...
+                _ = self.navigationController?.viewControllers.last as! WorkoutTableViewController // Must have came from workout table view (only place you can create new workout)
+                workout = Workout(name: workoutTitle.text!, exercises: exercises, dateCreated: Date(), lastDateCompleted: nil, timesCompleted: 0) // Create new workout object
+                sharedUser.addWorkout(workout: workout!) // Add workout to user workout collection
 
             } else {
-                workout?.setName(name: workoutTitle.text!)
-                workout?.setExercises(exerciseList: exercises)
+                workout?.setName(name: workoutTitle.text!) // Set new name for exercise
+                workout?.setExercises(exerciseList: exercises) // Set new exercises for workout
+                // Replace workout
                 sharedUser.replaceWorkout(index: sharedUser.getCurrentIndex(), workout: workout!)
             }
 

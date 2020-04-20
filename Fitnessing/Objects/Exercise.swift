@@ -58,6 +58,14 @@ class Exercise: NSObject, NSCoding {
         self.init(name: nameDecoded, musclesWorked: musclesWorkedDecoded, videoLink: videoLinkDecoded!, numReps: numRepsDecoded, numSets: numSetsDecoded, weightLifted: weightLiftedDecoded, weight: weightDecoded)
     }
     
+    func printExercise() {
+        print("Name: " + String(self.getName()))
+        print("Reps: " + String(self.getNumReps()))
+        print("Sets: " + String(self.getNumSets()))
+        print("Weight: " + String(self.getWeight()))
+        print("----")
+    }
+    
     func getName() -> String {
         return self.name
     }

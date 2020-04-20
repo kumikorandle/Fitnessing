@@ -9,10 +9,16 @@
 import UIKit
 
 class AddExerciseViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    // MARK: Properties
     var sharedUser: User!
-    var exerciseCollection: ExerciseCollection! = ExerciseCollection()
-    var exercises: [Exercise]!
-    var selectedExercises = [Exercise]()
+    var exerciseCollection: ExerciseCollection! = ExerciseCollection() // New exercise collection to get exercises for workout
+    var exercises: [Exercise]! // Array of exercises to choose from
+    var selectedExercises = [Exercise]() // Exercises to add to workout
+    
+    // Constants
+    // View elements
+    let finishButton = UIButton(type: .custom)
+    let detailButton = UIButton(type: .custom)
     
     var header = UILabel()
     var subtitle = UILabel()
@@ -24,8 +30,10 @@ class AddExerciseViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         initializeUser()
+        
+        self.title = "Add Exercises"
                 
-        exercises = exerciseCollection.getCollection()
+        exercises = exerciseCollection.getCollection() // Initialize exercise collection
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -36,17 +44,19 @@ class AddExerciseViewController: UIViewController, UITableViewDelegate, UITableV
         // Remove cell separators
         self.tableView!.separatorStyle = UITableViewCell.SeparatorStyle.none
         
-        self.title = "Add Exercises"
-        
         self.navigationController?.isNavigationBarHidden = false
         customizeNavBar()
         createBackground()
-        //createSubtitle()
         
         tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 20).isActive = true
-    }/// veiwDidLoad
+    }/// viewDidLoad
     
-
+    func initializeUser() {
+           _ = SharingUser()
+           sharedUser = SharingUser.sharedUser.user
+    }
+    
+    // MARK: TableView Functions
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return exercises!.count
     }
@@ -55,84 +65,75 @@ class AddExerciseViewController: UIViewController, UITableViewDelegate, UITableV
         // Table view cells are reused and should be dequeued using a cell identifier.
         let cellIdentifier = "AddExerciseTableViewCell"
         
-        var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? AddExerciseTableViewCell
-        
-        if cell == nil {
-            tableView.register(UINib(nibName: "AddExerciseCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
-            cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? AddExerciseTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? AddExerciseTableViewCell  else {
+            fatalError("The dequeued cell is not an instance of AddExerciseTableViewCell.")
         }
                 
         // Fetches the appropriate exercise for the data source layout.
         let exercise = exercises![indexPath.row]
 
-        cell!.backgroundColor = UIColor.clear
-        cell!.exerciseName.text = exercise.getName()
+        cell.backgroundColor = UIColor.clear
+        cell.exerciseName.text = exercise.getName()
         
         var i = 1
+        // Adds label for muscles involved in exercise to cell
         for muscle in exercise.getMusclesWorked() {
-            if i == 1 {
-                formatLabel(label: cell!.muscleOne, muscle: muscle)
-            } else if i == 2 {
-                formatLabel(label: cell!.muscleTwo, muscle: muscle)
+            if i == 1 { // First label
+                formatLabel(label: cell.muscleOne, muscle: muscle)
+            } else if i == 2 { // Second label, etc.
+                formatLabel(label: cell.muscleTwo, muscle: muscle)
             } else if i == 3 {
-                formatLabel(label: cell!.muscleThree, muscle: muscle)
+                formatLabel(label: cell.muscleThree, muscle: muscle)
             } else if i == 4 {
-                formatLabel(label: cell!.muscleFour, muscle: muscle)
+                formatLabel(label: cell.muscleFour, muscle: muscle)
             } else if i == 5 {
-                formatLabel(label: cell!.muscleFive, muscle: muscle)
+                formatLabel(label: cell.muscleFive, muscle: muscle)
             } else if i == 6 {
-                formatLabel(label: cell!.muscleSix, muscle: muscle)
+                formatLabel(label: cell.muscleSix, muscle: muscle)
             }
             i = i + 1
         }
         
-        if i == 2 {
-            cell!.muscleTwo.isHidden = true
-            cell!.muscleThree.isHidden = true
-            cell!.muscleFour.isHidden = true
-            cell!.muscleFive.isHidden = true
-            cell!.muscleSix.isHidden = true
-        } else if i == 3 {
-            cell!.muscleTwo.isHidden = false
-            cell!.muscleThree.isHidden = true
-            cell!.muscleFour.isHidden = true
-            cell!.muscleFive.isHidden = true
-            cell!.muscleSix.isHidden = true
-        } else if i == 4 {
-            cell!.muscleTwo.isHidden = false
-            cell!.muscleThree.isHidden = false
-            cell!.muscleFour.isHidden = true
-            cell!.muscleFive.isHidden = true
-            cell!.muscleSix.isHidden = true
-        } else if i == 5 {
-            cell!.muscleTwo.isHidden = false
-            cell!.muscleThree.isHidden = false
-            cell!.muscleFour.isHidden = false
-            cell!.muscleFive.isHidden = true
-            cell!.muscleSix.isHidden = true
-        } else if i == 6 {
-            cell!.muscleTwo.isHidden = false
-            cell!.muscleThree.isHidden = false
-            cell!.muscleFour.isHidden = false
-            cell!.muscleFive.isHidden = false
-            cell!.muscleSix.isHidden = true
+        if i == 2 { // Remaining 5 unset labels hidden (each exercise has at least 1 muscle group)
+            cell.muscleTwo.isHidden = true
+            cell.muscleThree.isHidden = true
+            cell.muscleFour.isHidden = true
+            cell.muscleFive.isHidden = true
+            cell.muscleSix.isHidden = true
+        } else if i == 3 { // Remaining 4 unset labels hidden
+            cell.muscleTwo.isHidden = false
+            cell.muscleThree.isHidden = true
+            cell.muscleFour.isHidden = true
+            cell.muscleFive.isHidden = true
+            cell.muscleSix.isHidden = true
+        } else if i == 4 { // Remaining 3 unset labels hidden
+            cell.muscleTwo.isHidden = false
+            cell.muscleThree.isHidden = false
+            cell.muscleFour.isHidden = true
+            cell.muscleFive.isHidden = true
+            cell.muscleSix.isHidden = true
+        } else if i == 5 { // Remaining 2 unset labels hidden
+            cell.muscleTwo.isHidden = false
+            cell.muscleThree.isHidden = false
+            cell.muscleFour.isHidden = false
+            cell.muscleFive.isHidden = true
+            cell.muscleSix.isHidden = true
+        } else if i == 6 { // Remaining 1 unset label hidden
+            cell.muscleTwo.isHidden = false
+            cell.muscleThree.isHidden = false
+            cell.muscleFour.isHidden = false
+            cell.muscleFive.isHidden = false
+            cell.muscleSix.isHidden = true
         }
         
-        return cell!
+        return cell
     }/// cellForRowAt
-    
-    func formatLabel(label: UILabel, muscle: String) {
-        label.text = muscle
-        label.sizeToFit()
-        label.layer.masksToBounds = true
-        label.layer.cornerRadius = 2
-    }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! AddExerciseTableViewCell
         cell.addIcon.image = UIImage(named: "added-icon.png")
         cell.background.backgroundColor = UIColor(red: 1, green: 0.969, blue: 0.965, alpha: 1)
-        selectedExercises.append(exercises[indexPath.row])
+        selectedExercises.append(exercises[indexPath.row]) // Add exercise to exercises to be added to workout
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -141,14 +142,10 @@ class AddExerciseViewController: UIViewController, UITableViewDelegate, UITableV
         cell.addIcon.contentMode = .scaleAspectFit
         cell.background.backgroundColor = .white
         
+        // Remove first occurence of deselected exercise from selected exercises
         if let index = selectedExercises.firstIndex(of: exercises[indexPath.row]) {
             selectedExercises.remove(at: index)
         }
-    }
-    
-    func initializeUser() {
-           _ = SharingUser()
-           sharedUser = SharingUser.sharedUser.user
     }
     
 // MARK: Helper Functions
@@ -184,6 +181,12 @@ class AddExerciseViewController: UIViewController, UITableViewDelegate, UITableV
     
      }/// formatLabel
     
+    func formatLabel(label: UILabel, muscle: String) {
+        label.text = muscle
+        label.sizeToFit()
+        label.layer.masksToBounds = true
+        label.layer.cornerRadius = 5
+    }
     
 // MARK: View functions
       func createBackground() {
@@ -228,11 +231,10 @@ class AddExerciseViewController: UIViewController, UITableViewDelegate, UITableV
         self.navigationController!.navigationBar.standardAppearance = navBarAppearance
         self.navigationController!.navigationBar.scrollEdgeAppearance = navBarAppearance
                 
-        let finishButton = UIButton(type: .custom)
         finishButton.setTitle("Add Selected", for: .normal)
         finishButton.addTarget(self, action: #selector(finishAction), for: .touchUpInside)
         
-        self.navigationItem.setRightBarButton(UIBarButtonItem(customView: finishButton), animated: true)
+        self.navigationItem.setRightBarButton(UIBarButtonItem(customView: finishButton), animated: true) // Adds button to nav bar
     }/// customizeNavBar
     
     func createSubtitle() {
@@ -245,25 +247,14 @@ class AddExerciseViewController: UIViewController, UITableViewDelegate, UITableV
     @objc func finishAction() {
         print("Clicked add selected")
         
-        _ = self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true) // Return to previous controller
         let previousViewController = self.navigationController?.viewControllers.last as! CreateWorkoutViewController
         
         for exercise in self.selectedExercises {
-            previousViewController.exercises.append(exercise)
+            previousViewController.exercises.append(exercise) // Add selected exercises to workout
         }
         
-        previousViewController.tableView.reloadData()
+        previousViewController.tableView.reloadData() // Reload data in edit/create workout table
         
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }/// WorkoutInProgressViewController

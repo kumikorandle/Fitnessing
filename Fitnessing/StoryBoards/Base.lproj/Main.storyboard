@@ -392,7 +392,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6dh-PJ-pqB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1926" y="362"/>
+            <point key="canvasLocation" x="2010" y="362"/>
         </scene>
         <!--Workout In Progress View Controller-->
         <scene sceneID="GnS-ex-ONk">
@@ -487,10 +487,6 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="add-icon" translatesAutoresizingMaskIntoConstraints="NO" id="YJq-LM-j3L">
-                                                            <rect key="frame" x="346" y="38" width="20" height="19"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fa4-mZ-6S8">
                                                             <rect key="frame" x="62" y="61" width="42" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -540,6 +536,12 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add-icon" translatesAutoresizingMaskIntoConstraints="NO" id="YJq-LM-j3L">
+                                                    <rect key="frame" x="350" y="38" width="24" height="24"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="24" id="EMS-JR-jW3"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="ICV-ct-tVi" firstAttribute="centerX" secondItem="Ut2-CK-qJ8" secondAttribute="centerX" id="30v-nR-3WN"/>
@@ -549,11 +551,14 @@
                                                 <constraint firstAttribute="trailing" secondItem="ICV-ct-tVi" secondAttribute="trailing" constant="10" id="Dbd-zF-3h2"/>
                                                 <constraint firstItem="ICV-ct-tVi" firstAttribute="top" secondItem="Ut2-CK-qJ8" secondAttribute="top" constant="5" id="Doa-Ha-Am1"/>
                                                 <constraint firstItem="ICV-ct-tVi" firstAttribute="centerY" secondItem="Ut2-CK-qJ8" secondAttribute="centerY" id="Ke3-O5-05m"/>
+                                                <constraint firstItem="YJq-LM-j3L" firstAttribute="top" secondItem="Ut2-CK-qJ8" secondAttribute="topMargin" constant="27" id="MIk-6g-OTx"/>
                                                 <constraint firstItem="jVd-7x-OQ1" firstAttribute="leading" secondItem="2yU-Ur-EGt" secondAttribute="trailing" constant="10" id="NCP-p5-bEn"/>
                                                 <constraint firstItem="Fty-wW-8Nb" firstAttribute="leading" secondItem="jVd-7x-OQ1" secondAttribute="trailing" constant="10" id="Pwx-Ia-wXg"/>
                                                 <constraint firstItem="2yU-Ur-EGt" firstAttribute="top" secondItem="Ut2-CK-qJ8" secondAttribute="topMargin" constant="29" id="ayu-Kj-4mS"/>
                                                 <constraint firstItem="jVd-7x-OQ1" firstAttribute="top" secondItem="Ut2-CK-qJ8" secondAttribute="topMargin" constant="29" id="m8q-SV-qhK"/>
                                                 <constraint firstItem="2yU-Ur-EGt" firstAttribute="leading" secondItem="Ut2-CK-qJ8" secondAttribute="leadingMargin" id="rSb-cA-Mom"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="YJq-LM-j3L" secondAttribute="bottom" constant="27" id="vqO-8s-Bii"/>
+                                                <constraint firstItem="YJq-LM-j3L" firstAttribute="trailing" secondItem="Ut2-CK-qJ8" secondAttribute="trailingMargin" id="w1U-2M-7cs"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>

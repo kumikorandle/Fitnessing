@@ -19,6 +19,8 @@ class HomeViewController: UIViewController {
     var welcomeLabel = UILabel()
     var nameLabel = UILabel()
 
+    // Constants
+    // View Elements
     let line1 = UIView()
     let line2 = UIView()
     var line3 = UIView()
@@ -94,13 +96,9 @@ class HomeViewController: UIViewController {
         createBackground()
         createTitle(name: sharedUser.getFirstName())
         createLine(line: line1, topNeighbour: nameLabel)
-        
         createBox(box: box1, neighbour: nil, text:workoutsSubtitle, label: workoutsCompleted, numLabel: numWorkouts, num: String(sharedUser.getNumWorkoutsCompleted()), height: boxSize, width: boxSize, topNeighbour: line1)
-        
         createBox(box: box2, neighbour: box1, text:weightSubtitle, label:currentWeight, numLabel: weight, num:String(sharedUser.getWeight()) + " lbs", height: boxSize, width: boxSize, topNeighbour: line1)
-        
         createBox(box: box3, neighbour: box2, text:hoursSubtitle, label:hoursWorked, numLabel: workouts, num: String(Int(sharedUser.getTotalHoursWorked())) + " hrs", height: boxSize, width: boxSize, topNeighbour: line1)
-        
 		createLine(line: line2, topNeighbour: box1)
         createPreviousWorkout()
         createLine(line: line3, topNeighbour: prevWorkoutButton)
@@ -110,19 +108,17 @@ class HomeViewController: UIViewController {
     
     
     override func viewDidAppear(_ animated: Bool) {
+        // Hide nav bar in case returning from view with nav bar showing
         self.navigationController?.isNavigationBarHidden = true
         let boxSize = self.view.frame.width/3 - 30
 
+        // Redraw elements with updated user values
         createBackground()
         createTitle(name: sharedUser.getFirstName())
         createLine(line: line1, topNeighbour: nameLabel)
-        
         createBox(box: box1, neighbour: nil, text:workoutsSubtitle, label: workoutsCompleted, numLabel: numWorkouts, num: String(sharedUser.getNumWorkoutsCompleted()), height: boxSize, width: boxSize, topNeighbour: line1)
-        
         createBox(box: box2, neighbour: box1, text:weightSubtitle, label:currentWeight, numLabel: weight, num:String(sharedUser.getWeight()) + " lbs", height: boxSize, width: boxSize, topNeighbour: line1)
-        
         createBox(box: box3, neighbour: box2, text:hoursSubtitle, label:hoursWorked, numLabel: workouts, num: String(Int(sharedUser.getTotalHoursWorked())) + " hrs", height: boxSize, width: boxSize, topNeighbour: line1)
-        
         createLine(line: line2, topNeighbour: box1)
         createPreviousWorkout()
         createLine(line: line3, topNeighbour: prevWorkoutButton)
@@ -154,6 +150,7 @@ class HomeViewController: UIViewController {
         legExercises.append(exerciseCollection.getExercise(name: "Hip Thrusts")!)
         legExercises.append(exerciseCollection.getExercise(name: "Deadlift")!)
         
+        // Creating workouts from two separate exercise collections so exercises will not refer to the same object (and therefore will not have same reps/sets/weight)
         let newExerciseCollection = ExerciseCollection()
         
         fullBody.append(newExerciseCollection.getExercise(name: "Squat")!)
@@ -173,7 +170,7 @@ class HomeViewController: UIViewController {
             exercise.setWeight(weight: 200)
         }
         
-        
+        // Create new workout objects
         let legWorkout = Workout(name: "Legs", exercises: legExercises, dateCreated: Date(), lastDateCompleted: nil, timesCompleted: 0)
         let fullBodyWorkout = Workout(name: "Full Body", exercises: fullBody, dateCreated: Date(), lastDateCompleted: nil, timesCompleted: 0)
         
@@ -491,16 +488,15 @@ class HomeViewController: UIViewController {
     
 // MARK: Button Actions
     @objc func previousWorkoutSelected() {
-		
+		// Most recent workout selected
         print("Clicked previous workout")
         let dc = self.storyboard!.instantiateViewController(withIdentifier: "workoutDetails") as! WorkoutDetailViewController
-        sharedUser.setCurrentIndex(index: sharedUser.getPreviousWorkout())
+        sharedUser.setCurrentIndex(index: sharedUser.getPreviousWorkout()) // Set index of current workout to most recent workout
         self.navigationController!.pushViewController(dc, animated: true)
 		
     }/// previousWorkoutSelected
     
     @objc func showAllButtonSelected() {
-		
 		print("Clicked show all")
         destinationController = self.storyboard!.instantiateViewController(withIdentifier: "workouts") as! WorkoutTableViewController
         self.navigationController!.pushViewController(destinationController!, animated: true)
@@ -510,7 +506,7 @@ class HomeViewController: UIViewController {
     @objc func workoutSelected() {
         print("Clicked workout")
         let dc = self.storyboard!.instantiateViewController(withIdentifier: "workoutDetails") as! WorkoutDetailViewController
-        sharedUser.setCurrentIndex(index: 0)
+        sharedUser.setCurrentIndex(index: 0) // Set index to workout at front of array
         self.navigationController!.pushViewController(dc, animated: true)
     
 	}/// workoutSelected
@@ -519,7 +515,7 @@ class HomeViewController: UIViewController {
         print("Clicked start workout")
         let dc : UIViewController?
         dc = self.storyboard!.instantiateViewController(withIdentifier: "inProgressWorkout") as! WorkoutInProgressViewController
-        sharedUser.setCurrentIndex(index: 0)
+        sharedUser.setCurrentIndex(index: 0) // Set index to workout at front of array
         self.navigationController!.pushViewController(dc!, animated: true)
     }
 

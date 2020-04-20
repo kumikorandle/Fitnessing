@@ -9,37 +9,45 @@
 import UIKit
 
 class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate {
+    // MARK: Properties
     var sharedUser: User!
+    
     var workout: Workout?
     var exercise: Exercise?
+    
     var reps: Int!
     var weight: Float!
     var sets: Int!
     var setArray : [[String]]!
     
+    // Strings
     var exerciseNum = "1 of 1"
     var exerciseTitle = "Exercise"
     let cellIdentifier = "SetTableViewCell"
     
+    // View Elements
     let num = UILabel()
     let titleLabel = UILabel()
     let background = UIView()
-    
     var tableView : UITableView?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         initializeUser()
-        workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()]
-        exercise = workout?.getExercises()[(workout?.getCurrentIndex())!]
+        // Assumes that workout already exists in workout collection (editing existing workout)
+        workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()] // Get current workout
+        exercise = workout?.getExercises()[(workout?.getCurrentIndex())!] // Get current exercise
+                
         sets = exercise?.getNumSets()
         reps = exercise?.getNumReps()
         weight = exercise?.getWeight()
         
         setArray = []
         
-        if (sets > 0) {
+        // Create array of sets (reps * weight)
+        if (sets > 0) { // If exercise has more than 0 sets...
             for _ in 1...sets {
+                // Add pair reps * weight to array
                 setArray.append([String(reps), String(weight)])
             }
         }
@@ -47,13 +55,13 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
         // Initialization code
         tableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.contentView.frame.width-20, height: self.contentView.frame.height - num.frame.height - titleLabel.frame.height - 65))
         
-        tableView!.register(SetTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-
-        self.tableView!.delegate = self
-        self.tableView!.dataSource = self
-        
         self.background.addSubview(tableView!)
         
+        tableView!.register(SetTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        
+        self.tableView!.delegate = self
+        self.tableView!.dataSource = self
+
         createBackground()
         createExerciseNum()
         createTitle()
@@ -89,28 +97,26 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Table view cells are reused and should be dequeued using a cell identifier.
-        var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? SetTableViewCell
-        
-        if cell == nil {
-            tableView.register(UINib(nibName: "MyCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
-            cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? SetTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? SetTableViewCell  else {
+            fatalError("The dequeued cell is not an instance of SetTableViewCell.")
         }
         
         let set = setArray[indexPath.row]
                 
-        cell!.backgroundColor = UIColor.clear
-        cell!.setNumLabel.text = "SET " + String(indexPath.row + 1)
-        cell!.repNumLabel.text = String(set[0]) + "\nreps"
-        cell!.weightLabel.text = String(set[1]) + "\nlbs"
-        cell!.selectionStyle = .none
+        cell.backgroundColor = UIColor.clear
+        // Set ? of ?
+        cell.setNumLabel.text = "SET " + String(indexPath.row + 1)
+        cell.repNumLabel.text = String(set[0]) + "\nreps"
+        cell.weightLabel.text = String(set[1]) + "\nlbs"
+        cell.selectionStyle = .none
         
-        return cell!
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! SetTableViewCell
         cell.backgroundColor = UIColor(red: 1, green: 0.969, blue: 0.965, alpha: 1)
-        cell.accessoryType = UITableViewCell.AccessoryType.checkmark
+        cell.accessoryType = UITableViewCell.AccessoryType.checkmark // Adds checkmark to set if selected to mark as done
         cell.tintColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
 
     }
@@ -118,7 +124,7 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! SetTableViewCell
         cell.backgroundColor = .clear
-        cell.accessoryType = UITableViewCell.AccessoryType.none
+        cell.accessoryType = UITableViewCell.AccessoryType.none // Removes checkmark from selected
         cell.tintColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
 
     }
@@ -126,13 +132,13 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
     // MARK: Helper functions
     func formatLabel(label: UILabel, text: String, font: String, alpha: CGFloat, width: CGFloat, height: CGFloat, fontSize: CGFloat) {
          
-         label.frame = CGRect(x: 0, y: 0, width: width, height: height)
-         label.textColor = UIColor(red: 0.562, green: 0.562, blue: 0.562, alpha: alpha)
-         label.font = UIFont(name: font, size: fontSize)
-         label.textAlignment = .left
-         label.text = text
-         label.numberOfLines = 0
-         label.lineBreakMode = .byWordWrapping
+        label.frame = CGRect(x: 0, y: 0, width: width, height: height)
+        label.textColor = UIColor(red: 0.562, green: 0.562, blue: 0.562, alpha: alpha)
+        label.font = UIFont(name: font, size: fontSize)
+        label.textAlignment = .left
+        label.text = text
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
     
      }/// formatLabel
      
@@ -147,7 +153,7 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
      }/// defineConstraints
     
     func defineConstraints(view: UIView, width: CGFloat, height: CGFloat, leadingConstant: CGFloat, topConstant: CGFloat, top: NSLayoutAnchor<NSLayoutYAxisAnchor>, leading: NSLayoutAnchor<NSLayoutXAxisAnchor>) {
-         
+        
          view.translatesAutoresizingMaskIntoConstraints = false
          view.widthAnchor.constraint(equalToConstant: width).isActive = true
          view.heightAnchor.constraint(equalToConstant: height).isActive = true

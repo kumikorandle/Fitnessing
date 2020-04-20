@@ -9,8 +9,10 @@
 import UIKit
 
 class AddExerciseTableViewCell: UITableViewCell {
+    // MARK: Properties
     var colours = [UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1), UIColor(red: 1, green: 0.773, blue: 0.729, alpha: 1), UIColor(red: 1, green: 0.723, blue: 0.671, alpha: 1)]
 
+    // View elements
     @IBOutlet weak var background: UIView!
     @IBOutlet weak var exerciseName: UILabel!
     @IBOutlet weak var addIcon: UIImageView!
@@ -28,14 +30,16 @@ class AddExerciseTableViewCell: UITableViewCell {
         background.backgroundColor = .white
         background.layer.borderColor = UIColor(red: 0.942, green: 0.942, blue: 0.942, alpha: 1).cgColor
         background.layer.borderWidth = 1
+       
         exerciseName.textColor = UIColor(red: 0.562, green: 0.562, blue: 0.562, alpha: 1)
         
-        formatMuscleLable(muscleLabel: muscleOne, colour: colours[0])
-        formatMuscleLable(muscleLabel: muscleTwo, colour: colours[1])
-        formatMuscleLable(muscleLabel: muscleThree, colour: colours[2])
-        formatMuscleLable(muscleLabel: muscleFour, colour: colours[0])
-        formatMuscleLable(muscleLabel: muscleFive, colour: colours[1])
-        formatMuscleLable(muscleLabel: muscleSix, colour: colours[2])
+        // Set colour and format muscle labels
+        formatMuscleLabel(muscleLabel: muscleOne, colour: colours[0])
+        formatMuscleLabel(muscleLabel: muscleTwo, colour: colours[1])
+        formatMuscleLabel(muscleLabel: muscleThree, colour: colours[2])
+        formatMuscleLabel(muscleLabel: muscleFour, colour: colours[0])
+        formatMuscleLabel(muscleLabel: muscleFive, colour: colours[1])
+        formatMuscleLabel(muscleLabel: muscleSix, colour: colours[2])
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -50,7 +54,7 @@ class AddExerciseTableViewCell: UITableViewCell {
         
     }
     
-    func formatMuscleLable(muscleLabel: UILabel, colour: UIColor) {
+    func formatMuscleLabel(muscleLabel: UILabel, colour: UIColor) {
         muscleLabel.textColor = .white
         muscleLabel.font = UIFont(name: "Roboto-Regular", size: 16)
         muscleLabel.backgroundColor = colour

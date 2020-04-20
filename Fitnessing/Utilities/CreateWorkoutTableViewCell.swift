@@ -10,8 +10,9 @@ import UIKit
 
 class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     // MARK: Properties
-    // constants
+    // Constants
     let cellIdentifier = "SetTableViewCell"
+    // View elements
     let num = UILabel()
     let titleLabel = UILabel()
     let background = UIView()
@@ -21,6 +22,7 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
     let repsField = UITextField()
     let weightLabel = UILabel()
     let repsLabel = UILabel()
+    var tableView : UITableView?
     
     var sharedUser: User!
     var exercise: Exercise?
@@ -29,21 +31,24 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
     var sets: Int!
     var setArray : [[String]] = []
     
+    // Strings
     var exerciseNum = "1 of 1"
     var exerciseTitle = "Exercise"
-
-    var tableView : UITableView?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         initializeUser()
+        // Adds label to textfield
         weightField.leftViewMode = .always
         repsField.leftViewMode = .always
         
         repsField.delegate = self
         weightField.delegate = self
         
+        // If exercises have been added to list
         if sharedUser.getTempExercises().count > 1 {
+            
+            // Get current exercise
             exercise = sharedUser.getTempExercises()[sharedUser.getTempExercisesIndex()]
 
             sets = exercise?.getNumSets()
@@ -52,6 +57,7 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
 
             setArray = []
 
+            // Create set of reps * weight
             if (sets > 0) {
                 for _ in 1...sets {
                     setArray.append([String(reps), String(weight)])
@@ -64,10 +70,10 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
         
         tableView!.register(SetTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
 
+        self.background.addSubview(tableView!)
+        
         self.tableView!.delegate = self
         self.tableView!.dataSource = self
-        
-        self.background.addSubview(tableView!)
         
         createBackground()
         createExerciseNum()
@@ -99,39 +105,25 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
         sharedUser = SharingUser.sharedUser.user
     }
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return setArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Table view cells are reused and should be dequeued using a cell identifier.
-        var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? SetTableViewCell
-        
-        if cell == nil {
-            tableView.register(UINib(nibName: "MyCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
-            cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? SetTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? SetTableViewCell  else {
+            fatalError("The dequeued cell is not an instance of WorkoutTableViewCell.")
         }
         
         let set = setArray[indexPath.row]
                 
-        cell!.backgroundColor = UIColor.clear
-        cell!.setNumLabel.text = "SET " + String(indexPath.row + 1)
-        cell!.repNumLabel.text = String(set[0]) + "\nreps"
-        cell!.weightLabel.text = String(set[1]) + "\nlbs"
-        cell!.selectionStyle = .none
+        cell.backgroundColor = UIColor.clear
+        cell.setNumLabel.text = "SET " + String(indexPath.row + 1)
+        cell.repNumLabel.text = String(set[0]) + "\nreps"
+        cell.weightLabel.text = String(set[1]) + "\nlbs"
+        cell.selectionStyle = .none
         
-        return cell!
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        tableView?.reloadData()
+        return cell
     }
     
     // MARK: Helper functions
@@ -234,45 +226,6 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
         repsField.topAnchor.constraint(equalTo: background.topAnchor, constant: 10).isActive = true
     }
     
-    // MARK: Text field functions
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        // remove non-numerics and compare with original string
-        return string == string.filter("0123456789".contains)
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if let weight = weightField.text {
-            if weight != "" {
-                exercise?.setWeight(weight: Float(weight)!)
-                if setArray.count > 0 {
-                    for i in 0...setArray.count-1 {
-                        setArray[i][1] = weight
-                        tableView!.reloadData()
-                    }
-                }
-            }
-        }
-        
-        if let reps = repsField.text {
-            if reps != "" {
-                exercise?.setNumReps(reps: Int(reps)!)
-                if setArray.count > 0 {
-                    for i in 0...setArray.count-1 {
-                        setArray[i][0] = reps
-                        tableView!.reloadData()
-
-                    }
-                }
-            }
-        }
-    }
-    
-    // MARK: Button functions
     func createAddButton() {
         addButton.setTitle("ADD SET", for: .normal)
         addButton.frame = CGRect(x: 0, y: 0, width: self.background.frame.width/2 + 10, height: 60)
@@ -307,20 +260,62 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
         deleteButton.bottomAnchor.constraint(equalTo: background.bottomAnchor, constant: 0).isActive = true
     }
     
+    // MARK: Text field functions
+    // Method allows only numbers to be written in text fields
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // remove non-numerics and compare with original string
+        return string == string.filter("0123456789".contains)
+    }
+    
+    // Dismiss keyboard on return
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    // When user has finished typing, extract user input for weight and reps
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let weight = weightField.text {
+            if weight != "" { // If weight field is not empty
+                exercise?.setWeight(weight: Float(weight)!) // Set weight for exercise
+                if setArray.count > 0 { // Add weight to sets if exercise has more than 0 sets
+                    for i in 0...setArray.count-1 {
+                        setArray[i][1] = weight
+                        tableView!.reloadData()
+                    }
+                }
+            }
+        }
+        
+        if let reps = repsField.text {
+            if reps != "" { // If reps field is not empty
+                exercise?.setNumReps(reps: Int(reps)!) // Set reps for exercise
+                if setArray.count > 0 { // Add reps to sets if exercise has more than 0 sets
+                    for i in 0...setArray.count-1 {
+                        setArray[i][0] = reps
+                        tableView!.reloadData()
+
+                    }
+                }
+            }
+        }
+    }
+    
+    // MARK: Button functions
     @objc func deleteAction() {
         print("Clicked delete set")
-        if (exercise!.getNumSets() > 0) {
-            exercise!.setNumSets(sets: (exercise?.getNumSets())! - 1)
-            setArray.removeLast()
+        if (exercise!.getNumSets() > 0) { // If sets exist
+            exercise!.setNumSets(sets: (exercise?.getNumSets())! - 1) // Decrease number of sets by 1
+            setArray.removeLast()  // Remove last set from exercise
         }
         tableView?.reloadData()
     }
     
     @objc func addAction() {
         print("Clicked add set")
-        exercise?.setNumSets(sets: (exercise?.getNumSets())! + 1)
-        setArray.append([String(exercise!.getNumReps()), String(exercise!.getWeight())])
-        tableView?.reloadData()
+        exercise?.setNumSets(sets: (exercise?.getNumSets())! + 1) // Increase number of sets by 1
+        setArray.append([String(exercise!.getNumReps()), String(exercise!.getWeight())]) // Add set to array
+        tableView?.reloadData() // Reload table so set appears in array
     }
 
 }
