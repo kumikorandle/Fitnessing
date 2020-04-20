@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate {
+class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     // MARK: Properties
     // constants
     let cellIdentifier = "SetTableViewCell"
@@ -17,6 +17,10 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
     let background = UIView()
     let addButton = UIButton()
     let deleteButton = UIButton()
+    let weightField = UITextField()
+    let repsField = UITextField()
+    let weightLabel = UILabel()
+    let repsLabel = UILabel()
     
     var sharedUser: User!
     var exercise: Exercise?
@@ -33,6 +37,11 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
     override func awakeFromNib() {
         super.awakeFromNib()
         initializeUser()
+        weightField.leftViewMode = .always
+        repsField.leftViewMode = .always
+        
+        repsField.delegate = self
+        weightField.delegate = self
         
         if sharedUser.getTempExercises().count > 1 {
             exercise = sharedUser.getTempExercises()[sharedUser.getTempExercisesIndex()]
@@ -51,7 +60,7 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
         }
                 
         // Initialization code
-        tableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.contentView.frame.width-20, height: self.contentView.frame.height - num.frame.height - titleLabel.frame.height - addButton.frame.height - deleteButton.frame.height - 60))
+        tableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.contentView.frame.width, height: self.contentView.frame.height - num.frame.height - titleLabel.frame.height - addButton.frame.height - deleteButton.frame.height - 60))
         
         tableView!.register(SetTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
 
@@ -63,6 +72,8 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
         createBackground()
         createExerciseNum()
         createTitle()
+        createRepsField()
+        createWeightField()
         
         self.tableView!.rowHeight = 60
         self.tableView!.backgroundColor = .clear
@@ -154,14 +165,16 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
     //MARK: View functions
     func createExerciseNum() {
         formatLabel(label: num, text: exerciseNum, font: "Roboto-Regular", alpha: 0.8, width: 52, height: 19, fontSize: 16)
+        num.sizeToFit()
         self.background.addSubview(num)
         defineConstraints(label: num, width: num.frame.width, height: num.frame.height, leadingConstant: 10, topConstant: 20, top: self.contentView.topAnchor, leading: self.background.leadingAnchor)
     }
     
     func createTitle() {
         formatLabel(label: titleLabel, text: exerciseTitle, font: "Roboto-Bold", alpha: 1, width: 130, height: 28, fontSize: 24)
+        titleLabel.sizeToFit()
         self.background.addSubview(titleLabel)
-        defineConstraints(label: titleLabel, width: titleLabel.frame.width, height: titleLabel.frame.height, leadingConstant: 10, topConstant: 10, top: self.num.bottomAnchor, leading: self.background.leadingAnchor)
+        defineConstraints(label: titleLabel, width: titleLabel.frame.width, height: titleLabel.frame.height, leadingConstant: 10, topConstant: 5, top: self.num.bottomAnchor, leading: self.background.leadingAnchor)
     }
 
     func createBackground() {
@@ -174,6 +187,83 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
         self.contentView.addSubview(background)
         
         defineConstraints(view: background, width: background.frame.width, height: background.frame.height, leadingConstant: 10, topConstant: 10, top: self.contentView.topAnchor, leading: self.contentView.leadingAnchor)
+    }
+    
+    func createWeightField() {
+        formatLabel(label: weightLabel, text: "Weight: ", font: "Roboto-Medium", alpha: 1, width: 100, height: 50, fontSize: 16)
+        //weightLabel.sizeToFit()
+        weightLabel.textColor = .white
+        
+        weightField.leftView = weightLabel
+        weightField.backgroundColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
+        weightField.layer.cornerRadius = 5
+        weightField.frame = CGRect(x: 0, y: 0, width: 100, height: 30)
+        weightField.textColor = .white
+    
+        background.addSubview(weightField)
+        
+        weightField.translatesAutoresizingMaskIntoConstraints = false
+        weightField.widthAnchor.constraint(equalToConstant: weightField.frame.width).isActive = true
+        weightField.heightAnchor.constraint(equalToConstant: weightField.frame.height).isActive = true
+        weightField.trailingAnchor.constraint(equalTo: repsField.leadingAnchor, constant: -5).isActive = true
+        weightField.topAnchor.constraint(equalTo: background.topAnchor, constant: 10).isActive = true
+    }
+    func createRepsField() {
+        formatLabel(label: repsLabel, text: "Reps: ", font: "Roboto-Medium", alpha: 1, width: 100, height: 50, fontSize: 16)
+        repsLabel.textColor = .white
+        //repsLabel.sizeToFit()
+        
+        repsField.leftView = repsLabel
+        repsField.backgroundColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
+        repsField.layer.cornerRadius = 5
+        repsField.frame = CGRect(x: 0, y: 0, width: 100, height: 30)
+        repsField.textColor = .white
+        
+        background.addSubview(repsField)
+        
+        repsField.translatesAutoresizingMaskIntoConstraints = false
+        repsField.widthAnchor.constraint(equalToConstant: repsField.frame.width).isActive = true
+        repsField.heightAnchor.constraint(equalToConstant: repsField.frame.height).isActive = true
+        repsField.trailingAnchor.constraint(equalTo: background.trailingAnchor, constant: -10).isActive = true
+        repsField.topAnchor.constraint(equalTo: background.topAnchor, constant: 10).isActive = true
+    }
+    
+    // MARK: Text field functions
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // remove non-numerics and compare with original string
+        return string == string.filter("0123456789".contains)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let weight = weightField.text {
+            if weight != "" {
+                exercise?.setWeight(weight: Float(weight)!)
+                if setArray.count > 0 {
+                    for i in 0...setArray.count-1 {
+                        setArray[i][1] = weight
+                        tableView!.reloadData()
+                    }
+                }
+            }
+        }
+        
+        if let reps = repsField.text {
+            if reps != "" {
+                exercise?.setNumReps(reps: Int(reps)!)
+                if setArray.count > 0 {
+                    for i in 0...setArray.count-1 {
+                        setArray[i][0] = reps
+                        tableView!.reloadData()
+
+                    }
+                }
+            }
+        }
     }
     
     // MARK: Button functions

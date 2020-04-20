@@ -71,26 +71,6 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
         sharedUser = SharingUser.sharedUser.user
     }
     
-    override func setEditing(_ editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated: animated)
-        tableView.setEditing(editing, animated: animated)
-    }
-    
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-
-        let text = (textField.text! as NSString).replacingCharacters(in: range, with: string)
-
-        if !text.isEmpty{
-            finishButton.isUserInteractionEnabled = true
-            finishButton.alpha = 1.0
-
-        } else {
-            finishButton.isUserInteractionEnabled = false
-            finishButton.alpha = 0.5
-        }
-        return true
-    }
     
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return exercises.count
@@ -136,6 +116,8 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
         return true
     }
     
+    
+    // MARK: TextField functions
     func textFieldDidBeginEditing(_ textField: UITextField) {
         // Disable the Save button while editing.
         finishButton.isEnabled = false
@@ -159,6 +141,23 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
             finishButton.alpha = 1.0
         }
 
+    }
+    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        tableView.setEditing(editing, animated: animated)
+    }
+    
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+
+        let text = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+
+        if text.isEmpty {
+            finishButton.isUserInteractionEnabled = false
+            finishButton.alpha = 0.5
+        }
+        return true
     }
     
 	// MARK: Formatting Functions
@@ -245,13 +244,13 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 	}/// customizeNavBar
 	
 	func createSubtitle() {
-		formatLabel(label: subtitle, text: "Workout Name:", font: "Roboto-Bold", alpha: 0.8, width: 125, height: 25, fontSize: 16)
-        workoutTitle.frame = CGRect(x: 0, y: 0, width: 225, height: 25)
+		formatLabel(label: subtitle, text: "Workout Name:", font: "Roboto-Regular", alpha: 0.8, width: 125, height: 25, fontSize: 16)
+        workoutTitle.frame = CGRect(x: 0, y: 0, width: 235, height: 25)
         workoutTitle.layer.cornerRadius = 5
         workoutTitle.textColor = .white
         
         let bottomLine = CALayer()
-        bottomLine.frame = CGRect(x: 0.0, y: 25-1, width: 225, height: 1.0)
+        bottomLine.frame = CGRect(x: 0.0, y: 25-1, width: 235, height: 1.0)
         bottomLine.backgroundColor = UIColor.white.cgColor
         workoutTitle.borderStyle = UITextField.BorderStyle.none
         workoutTitle.layer.addSublayer(bottomLine)
