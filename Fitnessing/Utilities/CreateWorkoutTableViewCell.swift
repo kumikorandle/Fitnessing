@@ -9,21 +9,25 @@
 import UIKit
 
 class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate {
+    // MARK: Properties
+    // constants
+    let cellIdentifier = "SetTableViewCell"
+    let num = UILabel()
+    let titleLabel = UILabel()
+    let background = UIView()
+    let addButton = UIButton()
+    let deleteButton = UIButton()
+    
     var sharedUser: User!
     var exercise: Exercise?
     var reps: Int!
     var weight: Float!
     var sets: Int!
-    var setArray : [[String]]!
+    var setArray : [[String]] = []
     
     var exerciseNum = "1 of 1"
     var exerciseTitle = "Exercise"
-    let cellIdentifier = "SetTableViewCell"
-    
-    let num = UILabel()
-    let titleLabel = UILabel()
-    let background = UIView()
-    
+
     var tableView : UITableView?
     
     override func awakeFromNib() {
@@ -32,24 +36,22 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
         
         if sharedUser.getTempExercises().count > 1 {
             exercise = sharedUser.getTempExercises()[sharedUser.getTempExercisesIndex()]
-            
+
             sets = exercise?.getNumSets()
             reps = exercise?.getNumReps()
             weight = exercise?.getWeight()
-            
+
             setArray = []
-            
+
             if (sets > 0) {
                 for _ in 1...sets {
                     setArray.append([String(reps), String(weight)])
                 }
             }
-        } else {
-            setArray = []
         }
                 
         // Initialization code
-        tableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.contentView.frame.width-20, height: self.contentView.frame.height - num.frame.height - titleLabel.frame.height - 65))
+        tableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.contentView.frame.width-20, height: self.contentView.frame.height - num.frame.height - titleLabel.frame.height - addButton.frame.height - deleteButton.frame.height - 60))
         
         tableView!.register(SetTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
 
@@ -64,23 +66,28 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
         
         self.tableView!.rowHeight = 60
         self.tableView!.backgroundColor = .clear
-        self.tableView!.allowsMultipleSelection = true
+        self.tableView!.allowsSelection = false
         
         // Remove cell separators
         self.tableView!.separatorStyle = UITableViewCell.SeparatorStyle.none
+        
+        createAddButton()
+        createDeleteButton()
         
         tableView!.translatesAutoresizingMaskIntoConstraints = false
         tableView!.widthAnchor.constraint(equalToConstant: tableView!.frame.width).isActive = true
         tableView!.heightAnchor.constraint(equalToConstant: tableView!.frame.height).isActive = true
         tableView!.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10).isActive = true
         tableView!.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0).isActive = true
+        tableView!.bottomAnchor.constraint(equalTo: addButton.topAnchor, constant: -10).isActive = true
+        
     }
         
     func initializeUser() {
         _ = SharingUser()
         sharedUser = SharingUser.sharedUser.user
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
@@ -109,22 +116,6 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
         cell!.selectionStyle = .none
         
         return cell!
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! SetTableViewCell
-        cell.backgroundColor = UIColor(red: 1, green: 0.969, blue: 0.965, alpha: 1)
-        cell.accessoryType = UITableViewCell.AccessoryType.checkmark
-        cell.tintColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
-
-    }
-    
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! SetTableViewCell
-        cell.backgroundColor = .clear
-        cell.accessoryType = UITableViewCell.AccessoryType.none
-        cell.tintColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
-
     }
     
     // MARK: Helper functions
@@ -183,5 +174,56 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
         self.contentView.addSubview(background)
         
         defineConstraints(view: background, width: background.frame.width, height: background.frame.height, leadingConstant: 10, topConstant: 10, top: self.contentView.topAnchor, leading: self.contentView.leadingAnchor)
+    }
+    
+    // MARK: Button functions
+    func createAddButton() {
+        addButton.setTitle("ADD SET", for: .normal)
+        addButton.frame = CGRect(x: 0, y: 0, width: self.background.frame.width/2 + 10, height: 60)
+        addButton.titleLabel!.font = UIFont(name: "Roboto-Medium", size: 18)
+        addButton.backgroundColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
+        addButton.layer.cornerRadius = 15
+        addButton.addTarget(self, action: #selector(addAction), for: .touchUpInside)
+        
+        background.addSubview(addButton)
+        
+        addButton.translatesAutoresizingMaskIntoConstraints = false
+        addButton.widthAnchor.constraint(equalToConstant:addButton.frame.width).isActive = true
+        addButton.heightAnchor.constraint(equalToConstant: addButton.frame.height).isActive = true
+        addButton.leadingAnchor.constraint(equalTo: background.leadingAnchor, constant: 0).isActive = true
+        addButton.bottomAnchor.constraint(equalTo: background.bottomAnchor, constant: 0).isActive = true
+    }
+    
+    func createDeleteButton() {
+        deleteButton.setTitle("DELETE SET", for: .normal)
+        deleteButton.frame = CGRect(x: 0, y: 0, width: self.background.frame.width/2 + 10, height: 60)
+        deleteButton.titleLabel!.font = UIFont(name: "Roboto-Medium", size: 18)
+        deleteButton.backgroundColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
+        deleteButton.layer.cornerRadius = 15
+        deleteButton.addTarget(self, action: #selector(deleteAction), for: .touchUpInside)
+
+        background.addSubview(deleteButton)
+        
+        deleteButton.translatesAutoresizingMaskIntoConstraints = false
+        deleteButton.widthAnchor.constraint(equalToConstant:deleteButton.frame.width).isActive = true
+        deleteButton.heightAnchor.constraint(equalToConstant: deleteButton.frame.height).isActive = true
+        deleteButton.trailingAnchor.constraint(equalTo: background.trailingAnchor, constant: 0).isActive = true
+        deleteButton.bottomAnchor.constraint(equalTo: background.bottomAnchor, constant: 0).isActive = true
+    }
+    
+    @objc func deleteAction() {
+        print("Clicked delete set")
+        if (exercise!.getNumSets() > 0) {
+            exercise!.setNumSets(sets: (exercise?.getNumSets())! - 1)
+            setArray.removeLast()
+        }
+        tableView?.reloadData()
+    }
+    
+    @objc func addAction() {
+        print("Clicked add set")
+        exercise?.setNumSets(sets: (exercise?.getNumSets())! + 1)
+        setArray.append([String(exercise!.getNumReps()), String(exercise!.getWeight())])
+        tableView?.reloadData()
     }
 }
