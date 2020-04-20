@@ -19,6 +19,8 @@ class User: NSObject, NSCoding {
     private var workoutCollection: [Workout]
     private var weightLBS: Float
     private var current: Int = 0
+    private var tempExercises: [Exercise] = []
+    private var tempExerciseIndex = 0
     //public var userName: String?
     //public var password: String?
     
@@ -43,6 +45,22 @@ class User: NSObject, NSCoding {
         static let current = "current"
     }
 
+    func setTempExercises(exercises: [Exercise]) {
+        self.tempExercises = exercises
+    }
+    
+    func getTempExercises() -> [Exercise] {
+        return self.tempExercises
+    }
+    
+    func getTempExercisesIndex() -> Int {
+        return self.tempExerciseIndex
+    }
+    
+    func setTempExercisesIndex(index: Int) {
+        self.tempExerciseIndex = index
+    }
+    
     func getCurrentIndex() -> Int {
         return self.current
     }

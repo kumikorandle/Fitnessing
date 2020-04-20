@@ -44,8 +44,8 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 		
 		self.tableView.rowHeight = 365
 		self.tableView.backgroundColor = .clear
-		
-		// Remove cell separators
+
+        // Remove cell separators
 		self.tableView!.separatorStyle = UITableViewCell.SeparatorStyle.none
 		
 		self.navigationController?.isNavigationBarHidden = false
@@ -60,7 +60,11 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
         tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 50).isActive = true
 		
 	}/// viewDidLoad
-
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        sharedUser.setTempExercises(exercises: exercises)
+    }
 	
     func initializeUser() {
         _ = SharingUser()
@@ -94,21 +98,24 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		// Table view cells are reused and should be dequeued using a cell identifier.
-		let cellIdentifier = "ExerciseTableViewCell"
+		let cellIdentifier = "CreateWorkoutTableViewCell"
 		
-		var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? ExerciseTableViewCell
+		var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? CreateWorkoutTableViewCell
 		
 		if cell == nil {
 			tableView.register(UINib(nibName: "MyCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
-			cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? ExerciseTableViewCell
+			cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? CreateWorkoutTableViewCell
 		}
 		
 		// Fetches the appropriate exercise for the data source layout.
 		let exercise = exercises[indexPath.row]
+        sharedUser.setTempExercisesIndex(index: indexPath.row)
 		
 		cell!.backgroundColor = UIColor.clear
 		cell!.num.text = String(indexPath.row + 1) + " of " + String(exercises.count)
         cell!.titleLabel.text = exercise.getName()
+        cell!.exercise = exercise
+        cell!.tableView?.reloadData()
 		
 		return cell!
 	}/// cellForRowAt

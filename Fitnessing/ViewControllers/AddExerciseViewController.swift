@@ -13,7 +13,6 @@ class AddExerciseViewController: UIViewController, UITableViewDelegate, UITableV
     var exerciseCollection: ExerciseCollection! = ExerciseCollection()
     var exercises: [Exercise]!
     var selectedExercises = [Exercise]()
-    var workout: Workout?
     
     var header = UILabel()
     var subtitle = UILabel()
@@ -26,7 +25,6 @@ class AddExerciseViewController: UIViewController, UITableViewDelegate, UITableV
         super.viewDidLoad()
         initializeUser()
                 
-        workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()]
         exercises = exerciseCollection.getCollection()
         
         self.tableView.delegate = self

@@ -17,7 +17,6 @@ class ExerciseCollection: NSObject, NSCoding {
     
     override init() {
         super.init()
-        
         // Lower body workouts
         addExercise(name: "Squat", musclesWorked: ["Quadriceps", "Glutes", "Hamstrings", "Lower Back"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
         addExercise(name: "Leg Press", musclesWorked: ["Quadriceps", "Glutes", "Hamstrings", "Calves"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)

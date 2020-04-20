@@ -8,9 +8,8 @@
 
 import UIKit
 
-class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate {
+class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate {
     var sharedUser: User!
-    var workout: Workout?
     var exercise: Exercise?
     var reps: Int!
     var weight: Float!
@@ -30,18 +29,23 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
     override func awakeFromNib() {
         super.awakeFromNib()
         initializeUser()
-        workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()]
-        exercise = workout?.getExercises()[(workout?.getCurrentIndex())!]
-        sets = exercise?.getNumSets()
-        reps = exercise?.getNumReps()
-        weight = exercise?.getWeight()
         
-        setArray = []
-        
-        if (sets > 0) {
-            for _ in 1...sets {
-                setArray.append([String(reps), String(weight)])
+        if sharedUser.getTempExercises().count > 1 {
+            exercise = sharedUser.getTempExercises()[sharedUser.getTempExercisesIndex()]
+            
+            sets = exercise?.getNumSets()
+            reps = exercise?.getNumReps()
+            weight = exercise?.getWeight()
+            
+            setArray = []
+            
+            if (sets > 0) {
+                for _ in 1...sets {
+                    setArray.append([String(reps), String(weight)])
+                }
             }
+        } else {
+            setArray = []
         }
                 
         // Initialization code

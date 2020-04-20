@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0704CD4D244DEEB400252CE9 /* CreateWorkoutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0704CD4C244DEEB400252CE9 /* CreateWorkoutTableViewCell.swift */; };
 		07495A222443FF950099C15A /* WorkoutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07495A212443FF950099C15A /* WorkoutTableViewCell.swift */; };
 		07495A2424440EC80099C15A /* WorkoutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07495A2324440EC80099C15A /* WorkoutTableViewController.swift */; };
 		07698B5B244D0C5600DBF674 /* AddExerciseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07698B5A244D0C5600DBF674 /* AddExerciseViewController.swift */; };
@@ -62,6 +63,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0704CD4C244DEEB400252CE9 /* CreateWorkoutTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWorkoutTableViewCell.swift; sourceTree = "<group>"; };
 		07495A212443FF950099C15A /* WorkoutTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTableViewCell.swift; sourceTree = "<group>"; };
 		07495A2324440EC80099C15A /* WorkoutTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTableViewController.swift; sourceTree = "<group>"; };
 		07698B5A244D0C5600DBF674 /* AddExerciseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseViewController.swift; sourceTree = "<group>"; };
@@ -243,6 +245,7 @@
 			children = (
 				90426113244901F4003E000B /* Constants.swift */,
 				07B4C68B244A63E300B33186 /* ExerciseTableViewCell.swift */,
+				0704CD4C244DEEB400252CE9 /* CreateWorkoutTableViewCell.swift */,
 				904261152449022B003E000B /* HelperFunctions.swift */,
 				078AB951244A941B0081F201 /* SetTableViewCell.swift */,
 				07495A212443FF950099C15A /* WorkoutTableViewCell.swift */,
@@ -404,6 +407,7 @@
 				90E1E156244A1BAC0086E8A5 /* WorkoutDetailViewControllerOld.swift in Sources */,
 				07BC131D2443AD0400C117CD /* SceneDelegate.swift in Sources */,
 				07495A2424440EC80099C15A /* WorkoutTableViewController.swift in Sources */,
+				0704CD4D244DEEB400252CE9 /* CreateWorkoutTableViewCell.swift in Sources */,
 				07C09603244B9C3B00C9C9FA /* Workout.swift in Sources */,
 				90426114244901F4003E000B /* Constants.swift in Sources */,
 				07B4C690244A6DF700B33186 /* CreateWorkoutViewController.swift in Sources */,

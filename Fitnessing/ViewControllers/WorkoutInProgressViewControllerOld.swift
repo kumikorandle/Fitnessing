@@ -97,7 +97,7 @@ class WorkoutInProgressViewControllerOld: UIViewController {
 		view.backgroundColor = .white
 		
 		view.layer.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
-		var stroke = UIView()
+		let stroke = UIView()
 		stroke.bounds = view.bounds.insetBy(dx: -0.75, dy: -0.75)
 		stroke.center = view.center
 		view.addSubview(stroke)

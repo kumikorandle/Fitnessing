@@ -154,11 +154,13 @@ class HomeViewController: UIViewController {
         legExercises.append(exerciseCollection.getExercise(name: "Hip Thrusts")!)
         legExercises.append(exerciseCollection.getExercise(name: "Deadlift")!)
         
-        fullBody.append(exerciseCollection.getExercise(name: "Squat")!)
-        fullBody.append(exerciseCollection.getExercise(name: "Pushup")!)
-        fullBody.append(exerciseCollection.getExercise(name: "Bench Press")!)
-        fullBody.append(exerciseCollection.getExercise(name: "Bicep Curl")!)
+        let newExerciseCollection = ExerciseCollection()
         
+        fullBody.append(newExerciseCollection.getExercise(name: "Squat")!)
+        fullBody.append(newExerciseCollection.getExercise(name: "Pushup")!)
+        fullBody.append(newExerciseCollection.getExercise(name: "Bench Press")!)
+        fullBody.append(newExerciseCollection.getExercise(name: "Bicep Curl")!)
+                
         for exercise in fullBody {
             exercise.setNumReps(reps: 10)
             exercise.setNumSets(sets: 3)
@@ -492,6 +494,7 @@ class HomeViewController: UIViewController {
 		
         print("Clicked previous workout")
         let dc = self.storyboard!.instantiateViewController(withIdentifier: "workoutDetails") as! WorkoutDetailViewController
+        sharedUser.setCurrentIndex(index: sharedUser.getPreviousWorkout())
         self.navigationController!.pushViewController(dc, animated: true)
 		
     }/// previousWorkoutSelected
