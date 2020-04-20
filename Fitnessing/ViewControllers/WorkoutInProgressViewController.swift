@@ -16,6 +16,11 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
     var header = UILabel()
     var subtitle = UILabel()
     var editButton = UIButton()
+    var timerLabel = UILabel()
+    var timer = Timer()
+    var time: Date?
+    var startTime: Date?
+    var runningTime: TimeInterval?
     
     @IBOutlet weak var tableView: UITableView!
 
@@ -23,6 +28,11 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
 //MARK: viewDidLoad
 	override func viewDidLoad() {
         super.viewDidLoad()
+        time = Date()
+        startTime = Date()
+        runningTime = 0
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerAction), userInfo: nil, repeats: true)
+                
         initializeUser()
         workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()]
         exercises = workout!.getExercises()
@@ -43,6 +53,7 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
         createBackground()
         createSubtitle()
         createEditWorkout()
+        createTimer()
         
         tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 50).isActive = true
     }/// viewDidLoad
@@ -190,11 +201,56 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
         editButton.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 20).isActive = true
     }
     
+    func createTimer() {
+        // Create Attachment
+        formatLabel(label: timerLabel, text: "00:00", font: "Roboto-Regular", alpha: 1, width: 100, height: 20, fontSize: 16)
+        timerLabel.textColor = UIColor(red: 0.583, green: 0.583, blue: 0.583, alpha: 1)
+        
+        let imageAttachment = NSTextAttachment()
+        imageAttachment.image = UIImage(named:"grey-clock-icon.png")
+        // Set bound to reposition
+        let imageOffsetY: CGFloat = -5.0
+        let imageOffsetX: CGFloat = -5.0
+
+        imageAttachment.bounds = CGRect(x: imageOffsetX, y: imageOffsetY, width: imageAttachment.image!.size.width, height: imageAttachment.image!.size.height)
+        // Create string with attachment
+        let attachmentString = NSAttributedString(attachment: imageAttachment)
+        // Initialize mutable string
+        let completeText = NSMutableAttributedString(string: "")
+        // Add image to mutable string
+        completeText.append(attachmentString)
+        // Add your text to mutable string
+        let textAfterIcon = NSAttributedString(string: "00:00:00")
+        completeText.append(textAfterIcon)
+        self.timerLabel.textAlignment = .center
+        self.timerLabel.attributedText = completeText
+        
+        self.view.addSubview(timerLabel)
+        
+        defineConstraints(label: timerLabel, width: timerLabel.frame.width, height: timerLabel.frame.height, leadingConstant: 20, topConstant: 20, top: header.bottomAnchor, leading: self.view.leadingAnchor)
+    }
+    
 // MARK: Button functions
     @objc func finishAction() {
         print("Clicked finish")
         workout?.setTimesCompleted(num: workout!.getTimesCompleted() + 1)
         workout?.setLastDateCompleted(date: Date())
+        
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.zeroFormattingBehavior = .pad
+        formatter.unitsStyle = .positional
+        
+        print("Workout #: " + String(sharedUser.getCurrentIndex()))
+        print("Total time BEFORE:" + formatter.string(from: (workout?.getTotalTime())!)!)
+        workout?.setTotalTime(time: (workout?.getTotalTime())! + runningTime!)
+        print("Total time AFTER:" + formatter.string(from: (sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()].getTotalTime()))!)
+
+        print("Avg time BEFORE:" + formatter.string(from: (workout?.getAvgTimeCompleted())!)!)
+        workout?.setAvgTimeCompleted(time: (workout?.getTotalTime())!/Double((workout?.getTimesCompleted())!))
+        print("Avg time AFTER:" + formatter.string(from: (workout?.getAvgTimeCompleted())!)!)
+
+        sharedUser.setTotalHoursWorked(hours: sharedUser.getTotalHoursWorked() + Float(workout?.getTotalTime() ?? 0)/3600)
         
         var weightTotal = Float(0)
         for exercise in workout!.getExercises() {
@@ -212,6 +268,40 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
         destinationController.exercises = self.exercises!
         destinationController.workoutTitle.text = self.workout!.getName()
         self.navigationController!.pushViewController(destinationController, animated: true)
+    }
+    
+    @objc func timerAction() {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.zeroFormattingBehavior = .pad
+        formatter.unitsStyle = .positional
+        
+        // The amount of time which has past since we started
+        let cal: Calendar = Calendar.current
+
+        time = cal.date(byAdding: .second, value: 1, to: time!)!
+        
+        // How long have we been running for?
+        runningTime = time!.timeIntervalSince(startTime!)
+        
+        let imageAttachment = NSTextAttachment()
+        imageAttachment.image = UIImage(named:"grey-clock-icon.png")
+        // Set bound to reposition
+        let imageOffsetY: CGFloat = -5.0
+        let imageOffsetX: CGFloat = -5.0
+
+        imageAttachment.bounds = CGRect(x: imageOffsetX, y: imageOffsetY, width: imageAttachment.image!.size.width, height: imageAttachment.image!.size.height)
+        // Create string with attachment
+        let attachmentString = NSAttributedString(attachment: imageAttachment)
+        // Initialize mutable string
+        let completeText = NSMutableAttributedString(string: "")
+        // Add image to mutable string
+        completeText.append(attachmentString)
+        // Add your text to mutable string
+        let textAfterIcon = NSAttributedString(string:formatter.string(from: runningTime!)!)
+        completeText.append(textAfterIcon)
+        self.timerLabel.attributedText = completeText
+
     }
     /*
     // MARK: - Navigation

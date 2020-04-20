@@ -44,7 +44,7 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
         }
                 
         // Initialization code
-        tableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.contentView.frame.width, height: self.contentView.frame.height - num.frame.height - titleLabel.frame.height - 60))
+        tableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.contentView.frame.width-20, height: self.contentView.frame.height - num.frame.height - titleLabel.frame.height - 65))
         
         tableView!.register(SetTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
 
@@ -59,6 +59,7 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
         
         self.tableView!.rowHeight = 60
         self.tableView!.backgroundColor = .clear
+        self.tableView!.allowsMultipleSelection = true
         
         // Remove cell separators
         self.tableView!.separatorStyle = UITableViewCell.SeparatorStyle.none
@@ -66,7 +67,7 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
         tableView!.translatesAutoresizingMaskIntoConstraints = false
         tableView!.widthAnchor.constraint(equalToConstant: tableView!.frame.width).isActive = true
         tableView!.heightAnchor.constraint(equalToConstant: tableView!.frame.height).isActive = true
-        tableView!.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 0).isActive = true
+        tableView!.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10).isActive = true
         tableView!.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0).isActive = true
     }
         
@@ -100,8 +101,25 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
         cell!.setNumLabel.text = "SET " + String(indexPath.row + 1)
         cell!.repNumLabel.text = String(set[0]) + "\nreps"
         cell!.weightLabel.text = String(set[1]) + "\nlbs"
+        cell!.selectionStyle = .none
         
         return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! SetTableViewCell
+        cell.backgroundColor = UIColor(red: 1, green: 0.969, blue: 0.965, alpha: 1)
+        cell.accessoryType = UITableViewCell.AccessoryType.checkmark
+        cell.tintColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
+
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! SetTableViewCell
+        cell.backgroundColor = .clear
+        cell.accessoryType = UITableViewCell.AccessoryType.none
+        cell.tintColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
+
     }
     
     // MARK: Helper functions

@@ -13,7 +13,7 @@ class HomeViewController: UIViewController {
 	
 // MARK: Property Initialization
     var sharedUser: User!
-    var sharedExerciseCollection: ExerciseCollection!
+    var exerciseCollection: ExerciseCollection! = ExerciseCollection()
     
     // Title
     var welcomeLabel = UILabel()
@@ -89,7 +89,6 @@ class HomeViewController: UIViewController {
         let boxSize = self.view.frame.width/3 - 30
         super.viewDidLoad()
 		
-        initializeExerciseCollection()
         initializeUser()
                 
         createBackground()
@@ -100,7 +99,7 @@ class HomeViewController: UIViewController {
         
         createBox(box: box2, neighbour: box1, text:weightSubtitle, label:currentWeight, numLabel: weight, num:String(sharedUser.getWeight()) + " lbs", height: boxSize, width: boxSize, topNeighbour: line1)
         
-        createBox(box: box3, neighbour: box2, text:hoursSubtitle, label:hoursWorked, numLabel: workouts, num: String(sharedUser.getTotalHoursWorked()) + " hrs", height: boxSize, width: boxSize, topNeighbour: line1)
+        createBox(box: box3, neighbour: box2, text:hoursSubtitle, label:hoursWorked, numLabel: workouts, num: String(Int(sharedUser.getTotalHoursWorked())) + " hrs", height: boxSize, width: boxSize, topNeighbour: line1)
         
 		createLine(line: line2, topNeighbour: box1)
         createPreviousWorkout()
@@ -122,7 +121,7 @@ class HomeViewController: UIViewController {
         
         createBox(box: box2, neighbour: box1, text:weightSubtitle, label:currentWeight, numLabel: weight, num:String(sharedUser.getWeight()) + " lbs", height: boxSize, width: boxSize, topNeighbour: line1)
         
-        createBox(box: box3, neighbour: box2, text:hoursSubtitle, label:hoursWorked, numLabel: workouts, num: String(sharedUser.getTotalHoursWorked()) + " hrs", height: boxSize, width: boxSize, topNeighbour: line1)
+        createBox(box: box3, neighbour: box2, text:hoursSubtitle, label:hoursWorked, numLabel: workouts, num: String(Int(sharedUser.getTotalHoursWorked())) + " hrs", height: boxSize, width: boxSize, topNeighbour: line1)
         
         createLine(line: line2, topNeighbour: box1)
         createPreviousWorkout()
@@ -144,33 +143,21 @@ class HomeViewController: UIViewController {
         sharedUser = SharingUser.sharedUser.user
     }/// initializeUser
     
-    func initializeExerciseCollection() {
-        _ = SharingExerciseCollection()
-        
-        SharingExerciseCollection.sharedExerciseCollection.loadExerciseCollection() // un-archive data
-        
-        if (SharingExerciseCollection.sharedExerciseCollection.exerciseCollection == nil) {
-            SharingExerciseCollection.sharedExerciseCollection.exerciseCollection = ExerciseCollection()
-        }
-        
-        sharedExerciseCollection = SharingExerciseCollection.sharedExerciseCollection.exerciseCollection
-    }
-    
     // Random workout collection data for testing
     func createUserWorkoutCollection() -> [Workout]{
         var workouts = [Workout]()
         var legExercises = [Exercise]()
         var fullBody = [Exercise]()
         
-        legExercises.append(sharedExerciseCollection.getExercise(name: "Squat")!)
-        legExercises.append(sharedExerciseCollection.getExercise(name: "Lunge")!)
-        legExercises.append(sharedExerciseCollection.getExercise(name: "Hip Thrusts")!)
-        legExercises.append(sharedExerciseCollection.getExercise(name: "Deadlift")!)
+        legExercises.append(exerciseCollection.getExercise(name: "Squat")!)
+        legExercises.append(exerciseCollection.getExercise(name: "Lunge")!)
+        legExercises.append(exerciseCollection.getExercise(name: "Hip Thrusts")!)
+        legExercises.append(exerciseCollection.getExercise(name: "Deadlift")!)
         
-        fullBody.append(sharedExerciseCollection.getExercise(name: "Squat")!)
-        fullBody.append(sharedExerciseCollection.getExercise(name: "Pushup")!)
-        fullBody.append(sharedExerciseCollection.getExercise(name: "Bench Press")!)
-        fullBody.append(sharedExerciseCollection.getExercise(name: "Bicep Curl")!)
+        fullBody.append(exerciseCollection.getExercise(name: "Squat")!)
+        fullBody.append(exerciseCollection.getExercise(name: "Pushup")!)
+        fullBody.append(exerciseCollection.getExercise(name: "Bench Press")!)
+        fullBody.append(exerciseCollection.getExercise(name: "Bicep Curl")!)
         
         for exercise in fullBody {
             exercise.setNumReps(reps: 10)
@@ -505,7 +492,6 @@ class HomeViewController: UIViewController {
 		
         print("Clicked previous workout")
         let dc = self.storyboard!.instantiateViewController(withIdentifier: "workoutDetails") as! WorkoutDetailViewController
-        sharedUser.setCurrentIndex(index: sharedUser.getPreviousWorkout())
         self.navigationController!.pushViewController(dc, animated: true)
 		
     }/// previousWorkoutSelected
@@ -519,7 +505,6 @@ class HomeViewController: UIViewController {
 	}/// showAllButtonSelected
     
     @objc func workoutSelected() {
-		
         print("Clicked workout")
         let dc = self.storyboard!.instantiateViewController(withIdentifier: "workoutDetails") as! WorkoutDetailViewController
         sharedUser.setCurrentIndex(index: 0)
@@ -531,6 +516,7 @@ class HomeViewController: UIViewController {
         print("Clicked start workout")
         let dc : UIViewController?
         dc = self.storyboard!.instantiateViewController(withIdentifier: "inProgressWorkout") as! WorkoutInProgressViewController
+        sharedUser.setCurrentIndex(index: 0)
         self.navigationController!.pushViewController(dc!, animated: true)
     }
 

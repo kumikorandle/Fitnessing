@@ -17,6 +17,8 @@ class Workout: NSObject, NSCoding {
     private var lastDateCompleted: Date?
     private var name: String
     private var current: Int = 0
+    private var avgTimeCompleted: TimeInterval?
+    private var totalTime: TimeInterval?
     
     struct PropertyKey {
         static let name = "name"
@@ -25,6 +27,8 @@ class Workout: NSObject, NSCoding {
         static let dateCreated = "dateCreated"
         static let lastDateCompleted = "lastDateCompleted"
         static let current = "current"
+        static let avgTimeCompleted = "avgTimeCompleted"
+        static let totalTime = "totalTime"
     }
     
     func encode(with aCoder: NSCoder) {
@@ -34,6 +38,8 @@ class Workout: NSObject, NSCoding {
         aCoder.encode(dateCreated, forKey: PropertyKey.dateCreated)
         aCoder.encode(lastDateCompleted, forKey: PropertyKey.lastDateCompleted)
         aCoder.encode(current, forKey: PropertyKey.current)
+        aCoder.encode(avgTimeCompleted, forKey: PropertyKey.avgTimeCompleted)
+        aCoder.encode(totalTime, forKey: PropertyKey.totalTime)
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
@@ -52,6 +58,8 @@ class Workout: NSObject, NSCoding {
         self.init (name: nameDecoded, exercises: exercisesDecoded, dateCreated: dateCreatedDecoded, lastDateCompleted: lastDateCompletedDecoded, timesCompleted: timesCompletedDecoded)
         
         current = aDecoder.decodeInteger(forKey: PropertyKey.current)
+        avgTimeCompleted = aDecoder.decodeObject(forKey: PropertyKey.avgTimeCompleted) as? TimeInterval
+        totalTime = aDecoder.decodeObject(forKey: PropertyKey.totalTime) as? TimeInterval
     }
         
     init (name: String, exercises: [Exercise], dateCreated: Date, lastDateCompleted: Date?, timesCompleted: Int){
@@ -60,6 +68,22 @@ class Workout: NSObject, NSCoding {
         self.dateCreated = dateCreated
         self.lastDateCompleted = lastDateCompleted
         self.timesCompleted = timesCompleted
+    }
+    
+    func getTotalTime() -> TimeInterval {
+        return self.totalTime ?? TimeInterval(0)
+    }
+    
+    func getAvgTimeCompleted() -> TimeInterval {
+        return (self.avgTimeCompleted) ?? TimeInterval(0)
+    }
+    
+    func setTotalTime(time: TimeInterval) {
+        self.totalTime = time
+    }
+    
+    func setAvgTimeCompleted(time: TimeInterval){
+        self.avgTimeCompleted = time
     }
     
     func getName() -> String {

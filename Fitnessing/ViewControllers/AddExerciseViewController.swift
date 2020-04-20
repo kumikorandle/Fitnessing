@@ -10,7 +10,7 @@ import UIKit
 
 class AddExerciseViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var sharedUser: User!
-    var sharedExerciseCollection: ExerciseCollection!
+    var exerciseCollection: ExerciseCollection! = ExerciseCollection()
     var exercises: [Exercise]!
     var selectedExercises = [Exercise]()
     var workout: Workout?
@@ -25,11 +25,9 @@ class AddExerciseViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         initializeUser()
-        initializeExerciseCollection()
-        
-        
+                
         workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()]
-        exercises = sharedExerciseCollection.getCollection()
+        exercises = exerciseCollection.getCollection()
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -154,11 +152,6 @@ class AddExerciseViewController: UIViewController, UITableViewDelegate, UITableV
            _ = SharingUser()
            sharedUser = SharingUser.sharedUser.user
     }
-    
-    func initializeExerciseCollection() {
-         _ = SharingExerciseCollection()
-         sharedExerciseCollection = SharingExerciseCollection.sharedExerciseCollection.exerciseCollection
-     }
     
 // MARK: Helper Functions
      func defineConstraints(label: UILabel, width: CGFloat, height: CGFloat, leadingConstant: CGFloat, topConstant: CGFloat, top: NSLayoutAnchor<NSLayoutYAxisAnchor>, leading: NSLayoutAnchor<NSLayoutXAxisAnchor>) {

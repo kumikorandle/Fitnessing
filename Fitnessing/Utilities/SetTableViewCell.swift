@@ -76,18 +76,18 @@ class SetTableViewCell: UITableViewCell {
     func createRepNum() {
         formatLabel(label: repNumLabel, text: repNum, font: "Roboto-Bold", alpha: 1, width: 100, height: 50, fontSize: 18)
         self.contentView.addSubview(repNumLabel)
-        defineConstraints(label: repNumLabel, width: repNumLabel.frame.width, height: repNumLabel.frame.height, leadingConstant: 30, topConstant: 10, top: self.contentView.topAnchor, leading: setNumLabel.trailingAnchor)
+        defineConstraints(label: repNumLabel, width: repNumLabel.frame.width, height: repNumLabel.frame.height, leadingConstant: 10, topConstant: 10, top: self.contentView.topAnchor, leading: setNumLabel.trailingAnchor)
     }
     
     func createStar() {
         formatLabel(label: starLabel, text: star, font: "Roboto-Bold", alpha: 1, width: 20, height: 50, fontSize: 18)
         self.contentView.addSubview(starLabel)
-        defineConstraints(label: starLabel, width: starLabel.frame.width, height: starLabel.frame.height, leadingConstant: 30, topConstant: 10, top: self.contentView.topAnchor, leading: repNumLabel.trailingAnchor)
+        defineConstraints(label: starLabel, width: starLabel.frame.width, height: starLabel.frame.height, leadingConstant: 10, topConstant: 10, top: self.contentView.topAnchor, leading: repNumLabel.trailingAnchor)
     }
     
     func createWeight() {
         formatLabel(label: weightLabel, text: weight, font: "Roboto-Bold", alpha: 1, width: 100, height: 50, fontSize: 18)
         self.contentView.addSubview(weightLabel)
-        defineConstraints(label: weightLabel, width: weightLabel.frame.width, height: weightLabel.frame.height, leadingConstant: 30, topConstant: 10, top: self.contentView.topAnchor, leading: starLabel.trailingAnchor)
+        defineConstraints(label: weightLabel, width: weightLabel.frame.width, height: weightLabel.frame.height, leadingConstant: 10, topConstant: 10, top: self.contentView.topAnchor, leading: starLabel.trailingAnchor)
     }
 }

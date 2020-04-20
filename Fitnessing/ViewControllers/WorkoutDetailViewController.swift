@@ -18,6 +18,7 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
     var workout: Workout?
     
     let header = UILabel()
+
     var exerciseLabel = UILabel()
     var completedRect = UIView()
     var liftedRect = UIView()
@@ -32,6 +33,11 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.zeroFormattingBehavior = .pad
+        formatter.unitsStyle = .positional
+        
         initializeUser()
         workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()]
         exercises = workout!.getExercises()
@@ -62,8 +68,8 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         
         createRectangle(textLabel: completedLabel, imgName: "circle-checked.png", rect: completedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: self.view.leadingAnchor, subtitle: "workouts completed", text: String(workout!.getTimesCompleted()))
         createRectangle(textLabel: liftedLabel, imgName: "weight-icon.png", rect: liftedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: completedRect.trailingAnchor, subtitle: "weight lifted", text: String(totalWeight) + " lbs")
-        createRectangle(textLabel: hoursLabel, imgName: "date-icon.png", rect: hoursRect, topNeighbour: completedRect.bottomAnchor, leadingNeighbour: self.view.leadingAnchor, subtitle: "worked out", text: "0 hrs")
-        createRectangle(textLabel: avgLabel, imgName: "clock-icon.png", rect: avgRect, topNeighbour: liftedRect.bottomAnchor, leadingNeighbour: hoursRect.trailingAnchor, subtitle: "avg duration", text: "0 hr")
+        createRectangle(textLabel: hoursLabel, imgName: "date-icon.png", rect: hoursRect, topNeighbour: completedRect.bottomAnchor, leadingNeighbour: self.view.leadingAnchor, subtitle: "worked out", text: (formatter.string(for: workout?.getTotalTime()) ?? String(0)) + " hrs")
+        createRectangle(textLabel: avgLabel, imgName: "clock-icon.png", rect: avgRect, topNeighbour: liftedRect.bottomAnchor, leadingNeighbour: hoursRect.trailingAnchor, subtitle: "avg duration", text: (formatter.string(for: workout?.getAvgTimeCompleted()) ?? String(0)) + " hr")
     
         createExerciseTitle()
 
@@ -71,6 +77,11 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.zeroFormattingBehavior = .pad
+        formatter.unitsStyle = .positional
+
         sharedUser = SharingUser.sharedUser.user
         
         workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()]
@@ -81,13 +92,12 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
             totalWeight = totalWeight + exercise.getWeightLifted()
         }
         
+        print("Workout #: " + String(sharedUser.getCurrentIndex()))
         completedLabel.text = String(workout!.getTimesCompleted())
         liftedLabel.text = String(totalWeight) + " lbs"
-
-        //var avgLabel = UILabel()
-        //var hoursLabel = UILabel()
-
-
+        hoursLabel.text = (formatter.string(for: workout!.getTotalTime()) ?? String(0)) + " hrs"
+        print("Total time DETAIL VIEW:" + (formatter.string(for: workout!.getTotalTime()) ?? String(0)))
+        avgLabel.text = (formatter.string(for: workout!.getAvgTimeCompleted()) ?? String(0)) + " hr"
         
         self.tableView.reloadData()
     }
