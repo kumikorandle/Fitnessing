@@ -55,15 +55,18 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         }
         
         self.title = workout?.getName()
+        
+        customizeNavBar()
+        createBackground()
+        createStartButton()
+        
         createRectangle(textLabel: completedLabel, imgName: "circle-checked.png", rect: completedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: self.view.leadingAnchor, subtitle: "workouts completed", text: String(workout!.getTimesCompleted()))
         createRectangle(textLabel: liftedLabel, imgName: "weight-icon.png", rect: liftedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: completedRect.trailingAnchor, subtitle: "weight lifted", text: String(totalWeight) + " lbs")
         createRectangle(textLabel: hoursLabel, imgName: "date-icon.png", rect: hoursRect, topNeighbour: completedRect.bottomAnchor, leadingNeighbour: self.view.leadingAnchor, subtitle: "worked out", text: "0 hrs")
         createRectangle(textLabel: avgLabel, imgName: "clock-icon.png", rect: avgRect, topNeighbour: liftedRect.bottomAnchor, leadingNeighbour: hoursRect.trailingAnchor, subtitle: "avg duration", text: "0 hr")
-        
+    
         createExerciseTitle()
-        createStartButton()
-        customizeNavBar()
-        createBackground()
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
