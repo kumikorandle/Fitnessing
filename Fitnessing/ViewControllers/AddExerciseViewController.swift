@@ -44,7 +44,7 @@ class AddExerciseViewController: UIViewController, UITableViewDelegate, UITableV
         self.navigationController?.isNavigationBarHidden = false
         customizeNavBar()
         createBackground()
-        createSubtitle()
+        //createSubtitle()
         
         tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 20).isActive = true
     }/// veiwDidLoad
@@ -134,6 +134,7 @@ class AddExerciseViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! AddExerciseTableViewCell
         cell.addIcon.image = UIImage(named: "added-icon.png")
+        cell.background.backgroundColor = UIColor(red: 1, green: 0.969, blue: 0.965, alpha: 1)
         selectedExercises.append(exercises[indexPath.row])
     }
     
@@ -141,6 +142,7 @@ class AddExerciseViewController: UIViewController, UITableViewDelegate, UITableV
         let cell = tableView.cellForRow(at: indexPath) as! AddExerciseTableViewCell
         cell.addIcon.image = UIImage(named:"add-icon.png")
         cell.addIcon.contentMode = .scaleAspectFit
+        cell.background.backgroundColor = .white
         
         if let index = selectedExercises.firstIndex(of: exercises[indexPath.row]) {
             selectedExercises.remove(at: index)

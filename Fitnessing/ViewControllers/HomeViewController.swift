@@ -48,6 +48,10 @@ class HomeViewController: UIViewController {
     var day = UILabel()
     
     var arrow = UIImageView()
+    var graph = UIImageView()
+    var startButton = UIButton()
+    var timesCompleted = UILabel()
+    var timesCompletedSubtitle = UILabel()
     var prevWorkoutButton = UIButton()
     var showAll = UIButton()
     var workoutButton = UIButton()
@@ -395,7 +399,6 @@ class HomeViewController: UIViewController {
         createExercise()
     }/// createWorkouts
     
-    
     func createExercise() {
         workoutButton.frame = CGRect(x: 0, y:0, width: self.view.frame.width - 60, height: 190)
         workoutButton.layer.cornerRadius = 20
@@ -406,6 +409,23 @@ class HomeViewController: UIViewController {
         exerciseBox.layer.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
         exerciseBox.layer.cornerRadius = 20
 
+        graph.image = UIImage(named:"Graph.png")
+        graph.frame = CGRect(x: 0, y: 0, width: 175, height: 100)
+        
+        formatLabel(label: timesCompleted, text: String(sharedUser.getWorkoutCollection()[0].getTimesCompleted()), font: "Roboto-Bold", alpha: 1, width:100, height: 20, fontSize: 18)
+        timesCompleted.textColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
+        
+        formatLabel(label: timesCompletedSubtitle, text: "times\ncompleted", font: "Roboto-Regular", alpha: 1, width: 100, height: 50, fontSize: 18)
+        timesCompletedSubtitle.textColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
+        
+        startButton.frame = CGRect(x: 0, y: 0, width: 100, height: 50)
+        startButton.setTitleColor(.white, for: .normal)
+        startButton.layer.cornerRadius = 15
+        startButton.setTitle("START", for: .normal)
+        startButton.backgroundColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
+        startButton.titleLabel!.font = UIFont(name: "Roboto-Bold", size: 18)
+        startButton.addTarget(self, action: #selector(startWorkout), for: .touchUpInside)
+        
         let parent = self.view!
 
         formatLabel(label: firstWorkoutTitle, text: sharedUser.getWorkoutCollection()[0].getName(), font: "Roboto-Bold", alpha: 1, width: 155, height: 28, fontSize: 24)
@@ -429,17 +449,47 @@ class HomeViewController: UIViewController {
         
         exerciseBox.addSubview(workoutDate)
         exerciseBox.addSubview(firstWorkoutTitle)
+        exerciseBox.addSubview(graph)
+        exerciseBox.addSubview(timesCompleted)
+        exerciseBox.addSubview(timesCompletedSubtitle)
+        exerciseBox.insertSubview(startButton, at: 1)
+        exerciseBox.addSubview(workoutButton)
         parent.addSubview(exerciseBox)
-        parent.addSubview(workoutButton)
+        exerciseBox.bringSubviewToFront(startButton)
+
                 
         defineConstraints(label: firstWorkoutTitle, width: firstWorkoutTitle.frame.width, height: firstWorkoutTitle.frame.height, leadingConstant: 20, topConstant: 20, top: exerciseBox.topAnchor, leading: exerciseBox.leadingAnchor)
         defineConstraints(label: workoutDate, width: workoutDate.frame.width, height: workoutDate.frame.height, leadingConstant: 20, topConstant: 1, top: firstWorkoutTitle.bottomAnchor, leading: exerciseBox.leadingAnchor)
+
+        timesCompleted.translatesAutoresizingMaskIntoConstraints = false
+        timesCompleted.widthAnchor.constraint(equalToConstant: timesCompleted.frame.width).isActive = true
+        timesCompleted.heightAnchor.constraint(equalToConstant: timesCompleted.frame.height).isActive = true
+        timesCompleted.trailingAnchor.constraint(equalTo: exerciseBox.trailingAnchor, constant: -20).isActive = true
+        timesCompleted.topAnchor.constraint(equalTo: exerciseBox.topAnchor, constant: 30).isActive = true
+        
+        timesCompletedSubtitle.translatesAutoresizingMaskIntoConstraints = false
+        timesCompletedSubtitle.widthAnchor.constraint(equalToConstant: timesCompletedSubtitle.frame.width).isActive = true
+        timesCompletedSubtitle.heightAnchor.constraint(equalToConstant: timesCompletedSubtitle.frame.height).isActive = true
+        timesCompletedSubtitle.trailingAnchor.constraint(equalTo: exerciseBox.trailingAnchor, constant: -20).isActive = true
+        timesCompletedSubtitle.topAnchor.constraint(equalTo: timesCompleted.bottomAnchor, constant: 0).isActive = true
+        
+        startButton.translatesAutoresizingMaskIntoConstraints = false
+        startButton.widthAnchor.constraint(equalToConstant: startButton.frame.width).isActive = true
+        startButton.heightAnchor.constraint(equalToConstant: startButton.frame.height).isActive = true
+        startButton.trailingAnchor.constraint(equalTo: exerciseBox.trailingAnchor, constant: -20).isActive = true
+        startButton.topAnchor.constraint(equalTo: timesCompletedSubtitle.bottomAnchor, constant: 20).isActive = true
         
         workoutButton.translatesAutoresizingMaskIntoConstraints = false
         workoutButton.widthAnchor.constraint(equalToConstant: workoutButton.frame.width).isActive = true
         workoutButton.heightAnchor.constraint(equalToConstant: workoutButton.frame.height).isActive = true
         workoutButton.leadingAnchor.constraint(equalTo: exerciseBox.leadingAnchor, constant: 0).isActive = true
         workoutButton.topAnchor.constraint(equalTo: exerciseBox.topAnchor, constant: 0).isActive = true
+        
+        graph.translatesAutoresizingMaskIntoConstraints = false
+        graph.widthAnchor.constraint(equalToConstant: graph.frame.width).isActive = true
+        graph.heightAnchor.constraint(equalToConstant: graph.frame.height).isActive = true
+        graph.leadingAnchor.constraint(equalTo: exerciseBox.leadingAnchor, constant: 20).isActive = true
+        graph.topAnchor.constraint(equalTo: workoutDate.bottomAnchor, constant: 5).isActive = true
         
         exerciseBox.translatesAutoresizingMaskIntoConstraints = false
         exerciseBox.widthAnchor.constraint(equalToConstant: exerciseBox.frame.width).isActive = true
@@ -476,5 +526,12 @@ class HomeViewController: UIViewController {
         self.navigationController!.pushViewController(dc, animated: true)
     
 	}/// workoutSelected
+    
+    @objc func startWorkout() {
+        print("Clicked start workout")
+        let dc : UIViewController?
+        dc = self.storyboard!.instantiateViewController(withIdentifier: "inProgressWorkout") as! WorkoutInProgressViewController
+        self.navigationController!.pushViewController(dc!, animated: true)
+    }
 
 } /// HomeViewController

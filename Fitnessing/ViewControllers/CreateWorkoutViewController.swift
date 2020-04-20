@@ -51,6 +51,7 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 		self.navigationController?.isNavigationBarHidden = false
 		customizeNavBar()
 		createBackground()
+        createEmptyWorkoutMessage()
 		createSubtitle()
         createAddExercise()
         
@@ -59,6 +60,7 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
         tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 50).isActive = true
 		
 	}/// viewDidLoad
+
 	
     func initializeUser() {
         _ = SharingUser()
@@ -273,6 +275,15 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
         addButton.heightAnchor.constraint(equalToConstant: addButton.frame.height).isActive = true
         addButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15).isActive = true
         addButton.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 20).isActive = true
+    }
+    
+    func createEmptyWorkoutMessage() {
+        let message = UILabel()
+        formatLabel(label: message, text: "You have no exercises added yet. Go on and add your first one!", font: "Roboto-Bold", alpha: 1, width: self.view.frame.width - 50, height: 100, fontSize: 25)
+        message.textColor = UIColor(red: 0.562, green: 0.562, blue: 0.562, alpha: 1)
+        message.textAlignment = .center
+        self.view.insertSubview(message, at: 0)
+        defineConstraints(label: message, width: message.frame.width, height: message.frame.height, leadingConstant: 20, topConstant: 100, top: header.bottomAnchor, leading: self.view.leadingAnchor)
     }
 	
 	// MARK: Button functions
