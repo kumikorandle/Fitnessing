@@ -94,27 +94,30 @@ class WorkoutTableViewController: UITableViewController {
         
         cell.workoutDate.text = String(monthName) + " " + String(day) + ", " + String(year)
         cell.timesCompleted.text = String(workout.getTimesCompleted())
-//
-//        var i = 0
-//        let fullBarHeight = CGFloat(96)
-//        for exercise in workout!.exercises {
-//            var percent = CGFloat(exercise.getWeightLifted()/5000)
-//            if percent > 1 {
-//                percent = 1
-//            }
-//            if i == 0 {
-//                cell!.bar1.heightAnchor.constraint(equalToConstant: percent * fullBarHeight).isActive = true
-//            } else if i == 1 {
-//                cell!.bar2.heightAnchor.constraint(equalToConstant: percent * fullBarHeight).isActive = true
-//            } else if i == 2 {
-//                cell!.bar3.heightAnchor.constraint(equalToConstant: percent * fullBarHeight).isActive = true
-//            } else if i == 3 {
-//                cell!.bar4.heightAnchor.constraint(equalToConstant: percent * fullBarHeight).isActive = true
-//            } else if i == 4 {
-//                cell!.bar5.heightAnchor.constraint(equalToConstant: percent * fullBarHeight).isActive = true
-//            }
-//            i = i + 1
-//        }
+
+        var i = 0
+        let fullBarHeight = CGFloat(96)
+        for exercise in workout.getExercises() {
+            var percent = CGFloat(exercise.getWeightLifted()/5000)
+            if percent > 1 {
+                percent = 1
+            }
+            
+            print(percent*fullBarHeight)
+            
+            if i == 0 {
+                cell.bar1.frame = CGRect(x: 0, y: 0, width: cell.bar1.frame.width, height: percent*fullBarHeight)
+            } else if i == 1 {
+                cell.bar2.frame = CGRect(x: 0, y: 0, width: cell.bar2.frame.width, height: percent*fullBarHeight)
+            } else if i == 2 {
+                cell.bar3.frame = CGRect(x: 0, y: 0, width: cell.bar3.frame.width, height: percent*fullBarHeight)
+            } else if i == 3 {
+                cell.bar4.frame = CGRect(x: 0, y: 0, width: cell.bar4.frame.width, height: percent*fullBarHeight)
+            } else if i == 4 {
+                cell.bar5.frame = CGRect(x: 0, y: 0, width: cell.bar5.frame.width, height: percent*fullBarHeight)
+            }
+            i = i + 1
+        }
  
         return cell
     }

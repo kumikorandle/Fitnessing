@@ -21,18 +21,19 @@ class AddExerciseViewController: UIViewController, UITableViewDelegate, UITableV
     
     @IBOutlet weak var tableView: UITableView!
     
-//MARK: viewDidLoad
+    //MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         initializeUser()
         initializeExerciseCollection()
+        
         
         workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()]
         exercises = sharedExerciseCollection.getCollection()
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        
+                
         self.tableView.rowHeight = 100
         self.tableView.backgroundColor = .clear
         
