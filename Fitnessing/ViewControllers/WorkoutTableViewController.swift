@@ -102,7 +102,7 @@ class WorkoutTableViewController: UITableViewController {
             if percent > 1 {
                 percent = 1
             }
-                        
+            
             if i == 0 {
                 cell.bar1.frame = CGRect(x: 0, y: 0, width: cell.bar1.frame.width, height: percent*fullBarHeight)
             } else if i == 1 {
@@ -116,7 +116,7 @@ class WorkoutTableViewController: UITableViewController {
             }
             i = i + 1
         }
- 
+        
         return cell
     }
     

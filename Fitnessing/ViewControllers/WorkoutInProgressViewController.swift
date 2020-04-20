@@ -241,15 +241,8 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
         formatter.zeroFormattingBehavior = .pad
         formatter.unitsStyle = .positional
         
-        print("Workout #: " + String(sharedUser.getCurrentIndex()))
-        print("Total time BEFORE:" + formatter.string(from: (workout?.getTotalTime())!)!)
         workout?.setTotalTime(time: (workout?.getTotalTime())! + runningTime!)
-        print("Total time AFTER:" + formatter.string(from: (sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()].getTotalTime()))!)
-
-        print("Avg time BEFORE:" + formatter.string(from: (workout?.getAvgTimeCompleted())!)!)
         workout?.setAvgTimeCompleted(time: (workout?.getTotalTime())!/Double((workout?.getTimesCompleted())!))
-        print("Avg time AFTER:" + formatter.string(from: (workout?.getAvgTimeCompleted())!)!)
-
         sharedUser.setTotalHoursWorked(hours: sharedUser.getTotalHoursWorked() + Float(workout?.getTotalTime() ?? 0)/3600)
         
         var weightTotal = Float(0)

@@ -44,6 +44,12 @@ class AddExerciseTableViewCell: UITableViewCell {
 
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        isSelected = false
+        
+    }
+    
     func formatMuscleLable(muscleLabel: UILabel, colour: UIColor) {
         muscleLabel.textColor = .white
         muscleLabel.font = UIFont(name: "Roboto-Regular", size: 16)

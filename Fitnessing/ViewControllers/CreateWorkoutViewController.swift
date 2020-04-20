@@ -38,7 +38,7 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
         updateSaveButtonState()
         
         if workoutTitle.text!.isEmpty || exercises.count == 0{
-            finishButton.isUserInteractionEnabled = false
+            finishButton.isEnabled = false
             finishButton.alpha = 0.5
         }
 		
@@ -70,7 +70,6 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
         _ = SharingUser()
         sharedUser = SharingUser.sharedUser.user
     }
-    
     
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return exercises.count
@@ -146,18 +145,6 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         tableView.setEditing(editing, animated: animated)
-    }
-    
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-
-        let text = (textField.text! as NSString).replacingCharacters(in: range, with: string)
-
-        if text.isEmpty {
-            finishButton.isUserInteractionEnabled = false
-            finishButton.alpha = 0.5
-        }
-        return true
     }
     
 	// MARK: Formatting Functions

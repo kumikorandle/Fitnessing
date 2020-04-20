@@ -90,4 +90,5 @@ class SetTableViewCell: UITableViewCell {
         self.contentView.addSubview(weightLabel)
         defineConstraints(label: weightLabel, width: weightLabel.frame.width, height: weightLabel.frame.height, leadingConstant: 10, topConstant: 10, top: self.contentView.topAnchor, leading: starLabel.trailingAnchor)
     }
+    
 }

@@ -70,6 +70,30 @@ class Workout: NSObject, NSCoding {
         self.timesCompleted = timesCompleted
     }
     
+    func printWorkout() {
+
+        print("Workout name: " + self.name)
+
+        print("Exercises: " )
+        for exercise in self.exercises{
+            print("Name: " + String(exercise.getName()))
+            print("Reps: " + String(exercise.getNumReps()))
+            print("Sets: " + String(exercise.getNumSets()))
+            print("Weight: " + String(exercise.getWeight()))
+            print("----")
+        }
+        
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.zeroFormattingBehavior = .pad
+        formatter.unitsStyle = .positional
+        
+        print("Times completed: " + String(self.timesCompleted))
+        print("Total time: " + formatter.string(from: self.totalTime ?? 0)!)
+        print("Avg time: " + formatter.string(from:self.avgTimeCompleted ?? 0)!)
+    }
+
+    
     func getTotalTime() -> TimeInterval {
         return self.totalTime ?? TimeInterval(0)
     }

@@ -68,8 +68,8 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         
         createRectangle(textLabel: completedLabel, imgName: "circle-checked.png", rect: completedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: self.view.leadingAnchor, subtitle: "workouts completed", text: String(workout!.getTimesCompleted()))
         createRectangle(textLabel: liftedLabel, imgName: "weight-icon.png", rect: liftedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: completedRect.trailingAnchor, subtitle: "weight lifted", text: String(totalWeight) + " lbs")
-        createRectangle(textLabel: hoursLabel, imgName: "date-icon.png", rect: hoursRect, topNeighbour: completedRect.bottomAnchor, leadingNeighbour: self.view.leadingAnchor, subtitle: "worked out", text: (formatter.string(for: workout?.getTotalTime()) ?? String(0)) + " hrs")
-        createRectangle(textLabel: avgLabel, imgName: "clock-icon.png", rect: avgRect, topNeighbour: liftedRect.bottomAnchor, leadingNeighbour: hoursRect.trailingAnchor, subtitle: "avg duration", text: (formatter.string(for: workout?.getAvgTimeCompleted()) ?? String(0)) + " hr")
+        createRectangle(textLabel: hoursLabel, imgName: "date-icon.png", rect: hoursRect, topNeighbour: completedRect.bottomAnchor, leadingNeighbour: self.view.leadingAnchor, subtitle: "worked out", text: formatter.string(from: workout?.getTotalTime() ?? 0)! + " hrs")
+        createRectangle(textLabel: avgLabel, imgName: "clock-icon.png", rect: avgRect, topNeighbour: liftedRect.bottomAnchor, leadingNeighbour: hoursRect.trailingAnchor, subtitle: "avg duration", text: formatter.string(from: workout?.getAvgTimeCompleted() ?? 0)! + " hr")
     
         createExerciseTitle()
 
@@ -92,13 +92,10 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
             totalWeight = totalWeight + exercise.getWeightLifted()
         }
         
-        print("Workout #: " + String(sharedUser.getCurrentIndex()))
         completedLabel.text = String(workout!.getTimesCompleted())
         liftedLabel.text = String(totalWeight) + " lbs"
-        hoursLabel.text = (formatter.string(for: workout!.getTotalTime()) ?? String(0)) + " hrs"
-        print("Total time DETAIL VIEW:" + (formatter.string(for: workout!.getTotalTime()) ?? String(0)))
-        avgLabel.text = (formatter.string(for: workout!.getAvgTimeCompleted()) ?? String(0)) + " hr"
-        
+        hoursLabel.text = formatter.string(from: workout?.getTotalTime() ?? 0)! + " hrs"
+        avgLabel.text = formatter.string(from: workout?.getAvgTimeCompleted() ?? 0)! + " hr"
         self.tableView.reloadData()
     }
     

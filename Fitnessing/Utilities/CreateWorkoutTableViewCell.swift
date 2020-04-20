@@ -129,6 +129,11 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
         return cell!
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        tableView?.reloadData()
+    }
+    
     // MARK: Helper functions
     func formatLabel(label: UILabel, text: String, font: String, alpha: CGFloat, width: CGFloat, height: CGFloat, fontSize: CGFloat) {
          
@@ -161,6 +166,7 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
          view.topAnchor.constraint(equalTo: top, constant: topConstant).isActive = true
     
      }/// defineConstraints
+
     
     //MARK: View functions
     func createExerciseNum() {
@@ -316,4 +322,5 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
         setArray.append([String(exercise!.getNumReps()), String(exercise!.getWeight())])
         tableView?.reloadData()
     }
+
 }
