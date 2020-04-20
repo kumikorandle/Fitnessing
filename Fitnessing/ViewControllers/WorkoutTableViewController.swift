@@ -11,7 +11,6 @@ import os.log
 
 class WorkoutTableViewController: UITableViewController {
 // MARK: Properties
-    var workouts = [Workout?]()
     var sharedUser: User!
     var createButton = UIButton(type: .custom)
     var destinationController : UIViewController?
@@ -19,10 +18,12 @@ class WorkoutTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initializeUser()
-        workouts = sharedUser.getWorkoutCollection()
-
+        createBackground()
+        
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        
+        self.tableView.rowHeight = 200
         
         self.navigationController?.isNavigationBarHidden = false
                 
@@ -39,13 +40,16 @@ class WorkoutTableViewController: UITableViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.navigationBar.prefersLargeTitles = true
+        
+        self.tableView.reloadData()
     }
     
-    override func viewDidLayoutSubviews() {
-        createBackground()
-    }
+//    override func viewDidLayoutSubviews() {
+//        createBackground()
+//    }
     
 // MARK: - Table view data source
 
@@ -54,41 +58,42 @@ class WorkoutTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return workouts.count
+        return sharedUser.getWorkoutCollection().count
+    }
+    
+    override open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 200.0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Table view cells are reused and should be dequeued using a cell identifier.
         let cellIdentifier = "WorkoutTableViewCell"
-        
-        var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? WorkoutTableViewCell
-        
-        if cell == nil {
-            tableView.register(UINib(nibName: "MyCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
-            cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? WorkoutTableViewCell
+                
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? WorkoutTableViewCell  else {
+            fatalError("The dequeued cell is not an instance of WorkoutTableViewCell.")
         }
         
         // Fetches the appropriate meal for the data source layout.
-        let workout = workouts[indexPath.row]
+        let workout = sharedUser.getWorkoutCollection()[indexPath.row]
                 
-        cell!.startButtonLabel.tag = indexPath.row
-        cell!.startButtonLabel.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+        cell.startButtonLabel.tag = indexPath.row
+        cell.startButtonLabel.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         
-        cell!.Background.layer.cornerRadius = 10
-        cell!.Background.layer.backgroundColor = UIColor.white.cgColor
-        cell!.backgroundColor = UIColor.clear
-        cell!.workoutTitle.text = workout?.getName()
+        cell.Background.layer.cornerRadius = 10
+        cell.Background.layer.backgroundColor = UIColor.white.cgColor
+        cell.backgroundColor = UIColor.clear
+        cell.workoutTitle.text = workout.getName()
         
-        let date = workout?.getLastDateCompleted()
+        let date = workout.getLastDateCompleted()
         let calendar = Calendar.current
-        let day = calendar.component(.hour, from: date!)
-        let month = calendar.component(.month, from: date!)
-        let year = calendar.component(.year, from: date!)
+        let day = calendar.component(.day, from: date)
+        let month = calendar.component(.month, from: date)
+        let year = calendar.component(.year, from: date)
         
         let monthName = DateFormatter().monthSymbols[month - 1]
         
-        cell!.workoutDate.text = String(monthName) + " " + String(day) + ", " + String(year)
-        cell!.timesCompleted.text = String(workout!.getTimesCompleted())
+        cell.workoutDate.text = String(monthName) + " " + String(day) + ", " + String(year)
+        cell.timesCompleted.text = String(workout.getTimesCompleted())
 //
 //        var i = 0
 //        let fullBarHeight = CGFloat(96)
@@ -111,7 +116,7 @@ class WorkoutTableViewController: UITableViewController {
 //            i = i + 1
 //        }
  
-        return cell!
+        return cell
     }
     
     /*
@@ -127,7 +132,7 @@ class WorkoutTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            workouts.remove(at: indexPath.row)
+            sharedUser.removeWorkout(workout: sharedUser.getWorkoutCollection()[indexPath.row])
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -136,7 +141,6 @@ class WorkoutTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         sharedUser.setCurrentIndex(index: indexPath.row)
-        print("index set")
     }
     
 
@@ -149,6 +153,7 @@ class WorkoutTableViewController: UITableViewController {
     @objc func createAction() {
         print("Clicked create")
         destinationController = self.storyboard!.instantiateViewController(withIdentifier: "create") as! CreateWorkoutViewController
+        destinationController!.title = "New Workout"
         self.navigationController!.pushViewController(destinationController!, animated: true)
     }
     
@@ -182,7 +187,7 @@ class WorkoutTableViewController: UITableViewController {
         layer0.frame = self.view.bounds
 
         background.layer.insertSublayer(layer0, at: 0)
-        self.tableView.insertSubview(background, at: 0)
+        self.tableView.backgroundView = background
     }
     
     func customizeNavBar() {

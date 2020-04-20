@@ -69,7 +69,7 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
         tableView!.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 0).isActive = true
         tableView!.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0).isActive = true
     }
-    
+        
     func initializeUser() {
         _ = SharingUser()
         sharedUser = SharingUser.sharedUser.user

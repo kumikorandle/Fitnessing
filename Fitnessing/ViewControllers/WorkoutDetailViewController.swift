@@ -25,6 +25,11 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
     var avgRect = UIView()
     var startButton = UIButton()
     
+    var completedLabel = UILabel()
+    var avgLabel = UILabel()
+    var liftedLabel = UILabel()
+    var hoursLabel = UILabel()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         initializeUser()
@@ -43,26 +48,45 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         self.title = workout?.getName()
 
         self.navigationController?.isNavigationBarHidden = false
-        customizeNavBar()
-        createBackground()
         
         var totalWeight = Float(0)
         for exercise in (workout?.getExercises())! {
             totalWeight = totalWeight + exercise.getWeightLifted()
         }
         
-        createRectangle(imgName: "circle-checked.png", rect: completedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: self.view.leadingAnchor, subtitle: "workouts completed", text: String(workout!.getTimesCompleted()))
-        createRectangle(imgName: "weight-icon.png", rect: liftedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: completedRect.trailingAnchor, subtitle: "weight lifted", text: String(totalWeight) + " lbs")
-        createRectangle(imgName: "date-icon.png", rect: hoursRect, topNeighbour: completedRect.bottomAnchor, leadingNeighbour: self.view.leadingAnchor, subtitle: "worked out", text: "0 hrs")
-        createRectangle(imgName: "clock-icon.png", rect: avgRect, topNeighbour: liftedRect.bottomAnchor, leadingNeighbour: hoursRect.trailingAnchor, subtitle: "avg duration", text: "0 hr")
+        self.title = workout?.getName()
+        createRectangle(textLabel: completedLabel, imgName: "circle-checked.png", rect: completedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: self.view.leadingAnchor, subtitle: "workouts completed", text: String(workout!.getTimesCompleted()))
+        createRectangle(textLabel: liftedLabel, imgName: "weight-icon.png", rect: liftedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: completedRect.trailingAnchor, subtitle: "weight lifted", text: String(totalWeight) + " lbs")
+        createRectangle(textLabel: hoursLabel, imgName: "date-icon.png", rect: hoursRect, topNeighbour: completedRect.bottomAnchor, leadingNeighbour: self.view.leadingAnchor, subtitle: "worked out", text: "0 hrs")
+        createRectangle(textLabel: avgLabel, imgName: "clock-icon.png", rect: avgRect, topNeighbour: liftedRect.bottomAnchor, leadingNeighbour: hoursRect.trailingAnchor, subtitle: "avg duration", text: "0 hr")
+        
         createExerciseTitle()
         createStartButton()
-        
+        customizeNavBar()
+        createBackground()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         sharedUser = SharingUser.sharedUser.user
+        
+        workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()]
+        exercises = workout!.getExercises()
+        
+        var totalWeight = Float(0)
+        for exercise in (workout?.getExercises())! {
+            totalWeight = totalWeight + exercise.getWeightLifted()
+        }
+        
+        completedLabel.text = String(workout!.getTimesCompleted())
+        liftedLabel.text = String(totalWeight) + " lbs"
+
+        //var avgLabel = UILabel()
+        //var hoursLabel = UILabel()
+
+
+        
+        self.tableView.reloadData()
     }
     
     func initializeUser() {
@@ -180,11 +204,10 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         defineConstraints(label: header, width: self.view.frame.width, height: header.frame.height, leadingConstant: 0, topConstant: -10, top: self.view.topAnchor, leading: self.view.leadingAnchor)
     }
     
-    func createRectangle(imgName: String, rect: UIView, topNeighbour: NSLayoutYAxisAnchor, leadingNeighbour: NSLayoutXAxisAnchor, subtitle: String, text: String) {
+    func createRectangle(textLabel: UILabel, imgName: String, rect: UIView, topNeighbour: NSLayoutYAxisAnchor, leadingNeighbour: NSLayoutXAxisAnchor, subtitle: String, text: String) {
         let img = UIImage(named: imgName)
         let subtitleLabel = UILabel()
-        let textLabel = UILabel()
-        
+                
         formatLabel(label: textLabel, text: text, font: "Roboto-Bold", alpha: 1, width: 100, height: 20, fontSize: 16)
         formatLabel(label: subtitleLabel, text: subtitle, font: "Roboto-Regular", alpha: 1, width: 100, height: 20, fontSize: 16)
         
@@ -260,9 +283,12 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
 // MARK: Button Methods
     @objc func editAction() {
         print("Clicked edit")
-        let dc : UIViewController?
-        dc = self.storyboard!.instantiateViewController(withIdentifier: "create") as! CreateWorkoutViewController
-        self.navigationController!.pushViewController(dc!, animated: true)
+        let dc = self.storyboard!.instantiateViewController(withIdentifier: "create") as! CreateWorkoutViewController
+        dc.title = "Edit Workout"
+        dc.workout = self.workout!
+        dc.exercises = self.exercises!
+        dc.workoutTitle.text = self.workout!.getName()
+        self.navigationController!.pushViewController(dc, animated: true)
     }
     
     @objc func startAction() {

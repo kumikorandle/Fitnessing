@@ -87,6 +87,20 @@ class User: NSObject, NSCoding {
         return self.workoutCollection
     }
     
+    func addWorkout(workout: Workout) {
+        self.workoutCollection.append(workout)
+    }
+    
+    func removeWorkout(workout: Workout) {
+        if let index = self.workoutCollection.firstIndex(of: workout) {
+            self.workoutCollection.remove(at: index)
+        }
+    }
+    
+    func replaceWorkout(index: Int, workout: Workout) {
+        self.workoutCollection[index] = workout
+    }
+    
     func getPreviousWorkout() -> Int {
         var recentDate = Date(timeIntervalSinceReferenceDate: 0)
         var prevWorkout: Int = 0

@@ -8,10 +8,10 @@
 
 import UIKit
 
-class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-	
-	//var exercises = [Exercise]()
-	var exercises = [1, 2, 3]
+class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+    var sharedUser: User!
+    var workout:Workout?
+	var exercises = [Exercise]()
         
     let finishButton = UIButton(type: .custom)
 
@@ -25,19 +25,28 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 	
 	//MARK: viewDidLoad
 	override func viewDidLoad() {
-		
 		super.viewDidLoad()
+        initializeUser()
 		
 		self.tableView.delegate = self
 		self.tableView.dataSource = self
+        
+        // Handle the text field’s user input through delegate callbacks.
+        workoutTitle.delegate = self
+        
+        // Enable the Save button only if the text field has a valid Workout name.
+        updateSaveButtonState()
+        
+        if workoutTitle.text!.isEmpty || exercises.count == 0{
+            finishButton.isUserInteractionEnabled = false
+            finishButton.alpha = 0.5
+        }
 		
 		self.tableView.rowHeight = 365
 		self.tableView.backgroundColor = .clear
 		
 		// Remove cell separators
 		self.tableView!.separatorStyle = UITableViewCell.SeparatorStyle.none
-		
-		self.title = "New Workout"
 		
 		self.navigationController?.isNavigationBarHidden = false
 		customizeNavBar()
@@ -49,12 +58,32 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
         
         tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 50).isActive = true
 		
-	}/// veiwDidLoad
+	}/// viewDidLoad
 	
-	
+    func initializeUser() {
+        _ = SharingUser()
+        sharedUser = SharingUser.sharedUser.user
+    }
+    
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         tableView.setEditing(editing, animated: animated)
+    }
+    
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+
+        let text = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+
+        if !text.isEmpty{
+            finishButton.isUserInteractionEnabled = true
+            finishButton.alpha = 1.0
+
+        } else {
+            finishButton.isUserInteractionEnabled = false
+            finishButton.alpha = 0.5
+        }
+        return true
     }
     
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -77,14 +106,13 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 		
 		cell!.backgroundColor = UIColor.clear
 		cell!.num.text = String(indexPath.row + 1) + " of " + String(exercises.count)
-		cell!.titleLabel.text = "Hip Thrusts"
+        cell!.titleLabel.text = exercise.getName()
 		
 		return cell!
 	}/// cellForRowAt
 	
     // Override to support editing the table view.
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        print("in here")
         if editingStyle == .delete {
             // Delete the row from the data source
             exercises.remove(at: indexPath.row)
@@ -96,6 +124,31 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        // Disable the Save button while editing.
+        finishButton.isEnabled = false
+        finishButton.alpha = 0.5
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        updateSaveButtonState()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
+    
+    private func updateSaveButtonState() {
+        // Disable the Save button if the text field is empty.
+        let text = workoutTitle.text ?? ""
+        finishButton.isEnabled = !text.isEmpty
+        if (finishButton.isEnabled) {
+            finishButton.alpha = 1.0
+        }
+
     }
     
 	// MARK: Formatting Functions
@@ -225,7 +278,36 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 	// MARK: Button functions
 	@objc func finishAction() {
 		print("Clicked save")
-		self.navigationController?.popViewController(animated: true)
+        if (exercises.count < 1) {
+            let alert = UIAlertController(title: "Cannot Save", message: "Need at least 1 exercise", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                  switch action.style{
+                  case .default:
+                        print("default")
+
+                  case .cancel:
+                        print("cancel")
+
+                  case .destructive:
+                        print("destructive")
+            }}))
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            self.navigationController?.popViewController(animated: true)
+
+            if (self.title == "New Workout") {
+                let previousViewController = self.navigationController?.viewControllers.last as! WorkoutTableViewController
+                workout = Workout(name: workoutTitle.text!, exercises: exercises, dateCreated: Date(), lastDateCompleted: nil, timesCompleted: 0)
+                sharedUser.addWorkout(workout: workout!)
+
+            } else {
+                workout?.setName(name: workoutTitle.text!)
+                workout?.setExercises(exerciseList: exercises)
+                sharedUser.replaceWorkout(index: sharedUser.getCurrentIndex(), workout: workout!)
+            }
+
+            
+        }
 	}
     
     @objc func addAction() {

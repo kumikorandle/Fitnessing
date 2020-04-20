@@ -328,7 +328,7 @@ class HomeViewController: UIViewController {
             
             let date = workout.getLastDateCompleted()
             let calendar = Calendar.current
-            let calDay = calendar.component(.hour, from: date)
+            let calDay = calendar.component(.day, from: date)
             let mon = calendar.component(.month, from: date)
             
             let monthName = DateFormatter().monthSymbols[mon - 1]
@@ -414,7 +414,7 @@ class HomeViewController: UIViewController {
 
         let date = sharedUser.getWorkoutCollection()[0].getLastDateCompleted()
         let calendar = Calendar.current
-        let day = calendar.component(.hour, from: date)
+        let day = calendar.component(.day, from: date)
         let month = calendar.component(.month, from: date)
         let year = calendar.component(.year, from: date)
         

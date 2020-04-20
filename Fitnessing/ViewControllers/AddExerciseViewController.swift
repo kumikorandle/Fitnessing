@@ -8,9 +8,11 @@
 
 import UIKit
 
-class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class AddExerciseViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var sharedUser: User!
-    var exercises: [Exercise]?
+    var sharedExerciseCollection: ExerciseCollection!
+    var exercises: [Exercise]!
+    var selectedExercises = [Exercise]()
     var workout: Workout?
     
     var header = UILabel()
@@ -18,38 +20,35 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
     var editButton = UIButton()
     
     @IBOutlet weak var tableView: UITableView!
-
     
 //MARK: viewDidLoad
-	override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         initializeUser()
+        initializeExerciseCollection()
+        
         workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()]
-        exercises = workout!.getExercises()
+        exercises = sharedExerciseCollection.getCollection()
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
-        self.tableView.rowHeight = 365
+        self.tableView.rowHeight = 100
         self.tableView.backgroundColor = .clear
         
         // Remove cell separators
         self.tableView!.separatorStyle = UITableViewCell.SeparatorStyle.none
         
-        self.title = workout?.getName()
+        self.title = "Add Exercises"
         
         self.navigationController?.isNavigationBarHidden = false
         customizeNavBar()
         createBackground()
         createSubtitle()
-        createEditWorkout()
         
-        tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 50).isActive = true
-    }/// viewDidLoad
+        tableView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 20).isActive = true
+    }/// veiwDidLoad
     
-    override func viewDidAppear(_ animated: Bool) {
-        tableView.reloadData()
-    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return exercises!.count
@@ -57,30 +56,106 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Table view cells are reused and should be dequeued using a cell identifier.
-        let cellIdentifier = "ExerciseTableViewCell"
+        let cellIdentifier = "AddExerciseTableViewCell"
         
-        var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? ExerciseTableViewCell
+        var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? AddExerciseTableViewCell
         
         if cell == nil {
-            tableView.register(UINib(nibName: "MyCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
-            cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? ExerciseTableViewCell
+            tableView.register(UINib(nibName: "AddExerciseCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
+            cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? AddExerciseTableViewCell
         }
                 
-        // Fetches the appropriate meal for the data source layout.
+        // Fetches the appropriate exercise for the data source layout.
         let exercise = exercises![indexPath.row]
-                
-        cell!.backgroundColor = UIColor.clear
-        cell!.num.text = String(indexPath.row + 1) + " of " + String(exercises!.count)
-        cell!.titleLabel.text = exercise.getName()
 
+        cell!.backgroundColor = UIColor.clear
+        cell!.exerciseName.text = exercise.getName()
+        
+        var i = 1
+        for muscle in exercise.getMusclesWorked() {
+            if i == 1 {
+                formatLabel(label: cell!.muscleOne, muscle: muscle)
+            } else if i == 2 {
+                formatLabel(label: cell!.muscleTwo, muscle: muscle)
+            } else if i == 3 {
+                formatLabel(label: cell!.muscleThree, muscle: muscle)
+            } else if i == 4 {
+                formatLabel(label: cell!.muscleFour, muscle: muscle)
+            } else if i == 5 {
+                formatLabel(label: cell!.muscleFive, muscle: muscle)
+            } else if i == 6 {
+                formatLabel(label: cell!.muscleSix, muscle: muscle)
+            }
+            i = i + 1
+        }
+        
+        if i == 2 {
+            cell!.muscleTwo.isHidden = true
+            cell!.muscleThree.isHidden = true
+            cell!.muscleFour.isHidden = true
+            cell!.muscleFive.isHidden = true
+            cell!.muscleSix.isHidden = true
+        } else if i == 3 {
+            cell!.muscleTwo.isHidden = false
+            cell!.muscleThree.isHidden = true
+            cell!.muscleFour.isHidden = true
+            cell!.muscleFive.isHidden = true
+            cell!.muscleSix.isHidden = true
+        } else if i == 4 {
+            cell!.muscleTwo.isHidden = false
+            cell!.muscleThree.isHidden = false
+            cell!.muscleFour.isHidden = true
+            cell!.muscleFive.isHidden = true
+            cell!.muscleSix.isHidden = true
+        } else if i == 5 {
+            cell!.muscleTwo.isHidden = false
+            cell!.muscleThree.isHidden = false
+            cell!.muscleFour.isHidden = false
+            cell!.muscleFive.isHidden = true
+            cell!.muscleSix.isHidden = true
+        } else if i == 6 {
+            cell!.muscleTwo.isHidden = false
+            cell!.muscleThree.isHidden = false
+            cell!.muscleFour.isHidden = false
+            cell!.muscleFive.isHidden = false
+            cell!.muscleSix.isHidden = true
+        }
         
         return cell!
     }/// cellForRowAt
+    
+    func formatLabel(label: UILabel, muscle: String) {
+        label.text = muscle
+        label.sizeToFit()
+        label.layer.masksToBounds = true
+        label.layer.cornerRadius = 2
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! AddExerciseTableViewCell
+        cell.addIcon.image = UIImage(named: "added-icon.png")
+        selectedExercises.append(exercises[indexPath.row])
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! AddExerciseTableViewCell
+        cell.addIcon.image = UIImage(named:"add-icon.png")
+        cell.addIcon.contentMode = .scaleAspectFit
+        
+        if let index = selectedExercises.firstIndex(of: exercises[indexPath.row]) {
+            selectedExercises.remove(at: index)
+        }
+    }
     
     func initializeUser() {
            _ = SharingUser()
            sharedUser = SharingUser.sharedUser.user
     }
+    
+    func initializeExerciseCollection() {
+         _ = SharingExerciseCollection()
+         sharedExerciseCollection = SharingExerciseCollection.sharedExerciseCollection.exerciseCollection
+     }
     
 // MARK: Helper Functions
      func defineConstraints(label: UILabel, width: CGFloat, height: CGFloat, leadingConstant: CGFloat, topConstant: CGFloat, top: NSLayoutAnchor<NSLayoutYAxisAnchor>, leading: NSLayoutAnchor<NSLayoutXAxisAnchor>) {
@@ -114,7 +189,7 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
          label.lineBreakMode = .byWordWrapping
     
      }/// formatLabel
-	
+    
     
 // MARK: View functions
       func createBackground() {
@@ -160,7 +235,7 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
         self.navigationController!.navigationBar.scrollEdgeAppearance = navBarAppearance
                 
         let finishButton = UIButton(type: .custom)
-        finishButton.setTitle("Finish Workout", for: .normal)
+        finishButton.setTitle("Add Selected", for: .normal)
         finishButton.addTarget(self, action: #selector(finishAction), for: .touchUpInside)
         
         self.navigationItem.setRightBarButton(UIBarButtonItem(customView: finishButton), animated: true)
@@ -171,48 +246,22 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
         self.view.addSubview(subtitle)
         defineConstraints(label: subtitle, width: subtitle.frame.width, height: subtitle.frame.height, leadingConstant: 10, topConstant: 140, top: self.view.topAnchor, leading: self.view.leadingAnchor)
     }/// createSubtitle
-	
-    func createEditWorkout() {
-        editButton.setTitle("Edit Workout", for: .normal)
-        editButton.setTitleColor(UIColor(red: 0.562, green: 0.562, blue: 0.562, alpha: 1), for: .normal)
-        editButton.frame = CGRect(x: 0, y: 0, width: 150, height: 16)
-        editButton.titleLabel?.textAlignment = .right
-        editButton.titleLabel?.font = UIFont(name: "Roboto-Regular", size: 16)
-        editButton.addTarget(self, action: #selector(editAction), for: .touchUpInside)
-        editButton.setImage(UIImage(named:"pencil-icon.png"), for: .normal)
-        
-        self.view.addSubview(editButton)
-        
-        editButton.translatesAutoresizingMaskIntoConstraints = false
-        editButton.widthAnchor.constraint(equalToConstant: editButton.frame.width).isActive = true
-        editButton.heightAnchor.constraint(equalToConstant: editButton.frame.height).isActive = true
-        editButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15).isActive = true
-        editButton.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 20).isActive = true
-    }
     
 // MARK: Button functions
     @objc func finishAction() {
-        print("Clicked finish")
-        workout?.setTimesCompleted(num: workout!.getTimesCompleted() + 1)
-        workout?.setLastDateCompleted(date: Date())
+        print("Clicked add selected")
         
-        var weightTotal = Float(0)
-        for exercise in workout!.getExercises() {
-            exercise.setWeightLifted(weight: exercise.getWeightLifted() + (Float(exercise.getNumReps() * exercise.getNumSets()) * exercise.getWeight()))
-            weightTotal = weightTotal + exercise.getWeightLifted()
+        _ = self.navigationController?.popViewController(animated: true)
+        let previousViewController = self.navigationController?.viewControllers.last as! CreateWorkoutViewController
+        
+        for exercise in self.selectedExercises {
+            previousViewController.exercises.append(exercise)
         }
-        self.navigationController?.popViewController(animated: true)
+        
+        previousViewController.tableView.reloadData()
+        
     }
     
-    @objc func editAction() {
-        print("Clicked edit")
-        let destinationController = self.storyboard!.instantiateViewController(withIdentifier: "create") as! CreateWorkoutViewController
-        destinationController.title = "Edit Workout"
-        destinationController.workout = self.workout!
-        destinationController.exercises = self.exercises!
-        destinationController.workoutTitle.text = self.workout!.getName()
-        self.navigationController!.pushViewController(destinationController, animated: true)
-    }
     /*
     // MARK: - Navigation
 

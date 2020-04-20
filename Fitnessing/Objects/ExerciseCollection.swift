@@ -11,7 +11,9 @@ import UIKit
 
 class ExerciseCollection: NSObject, NSCoding {
     var collection = [Exercise]()
+    var current = 0
     let collectionKey = "collectionKey"
+    let currentKey = "currentKey"
     
     override init() {
         super.init()
@@ -48,13 +50,28 @@ class ExerciseCollection: NSObject, NSCoding {
         return nil
     }
     
+    func getCurrentIndex() -> Int {
+        return self.current
+    }
+    
+    func setCurrentIndex(index: Int) {
+        self.current = index
+    }
+    
+    func getCollection() -> [Exercise] {
+        return collection
+    }
+    
     func encode(with coder: NSCoder) {
         coder.encode(collection, forKey: collectionKey)
+        coder.encode(current, forKey: currentKey)
+
     }
     
     required convenience init?(coder decoder: NSCoder) {
         self.init()
         collection = (decoder.decodeObject(forKey: collectionKey) as? [Exercise])!
+        current = decoder.decodeInteger(forKey: currentKey)
     }
     
     

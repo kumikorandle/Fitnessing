@@ -90,6 +90,10 @@ class Workout: NSObject, NSCoding {
         self.exercises.append(exercise)
     }
     
+    func setExercises(exerciseList: [Exercise]) {
+        self.exercises = exerciseList
+    }
+    
     func removeExercise(exercise: Exercise) -> Bool {
         if let i = exercises.firstIndex(where: { $0.getName() == exercise.getName() }) {
             self.exercises.remove(at: i)

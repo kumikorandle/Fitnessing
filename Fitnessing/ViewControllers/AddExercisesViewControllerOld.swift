@@ -9,7 +9,7 @@
 import UIKit
 
 
-class AddExerciseViewController: UIViewController {
+class AddExerciseViewControllerOld: UIViewController {
 	
 	//MARK: viewDidLoad
 	override func viewDidLoad() {
