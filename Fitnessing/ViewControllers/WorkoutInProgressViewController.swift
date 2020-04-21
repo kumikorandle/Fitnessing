@@ -64,6 +64,8 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
     }/// viewDidLoad
     
     override func viewDidAppear(_ animated: Bool) {
+        self.title = workout?.getName()
+
         tableView.reloadData()
     }
     

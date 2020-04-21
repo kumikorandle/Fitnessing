@@ -35,7 +35,7 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style , reuseIdentifier: reuseIdentifier)
         initializeUser()
-        //createBackground()
+        createBackground()
         createExerciseNum()
         createTitle()
         setUpTable()

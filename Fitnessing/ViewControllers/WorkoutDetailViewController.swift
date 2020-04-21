@@ -96,7 +96,8 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         for exercise in (workout?.getExercises())! {
             totalWeight = totalWeight + exercise.getWeightLifted()
         }
-        
+        self.title = workout?.getName()
+
         completedLabel.text = String(workout!.getTimesCompleted())
         liftedLabel.text = String(totalWeight) + " lbs"
         hoursLabel.text = formatter.string(from: workout?.getTotalTime() ?? 0)! + " hrs"
