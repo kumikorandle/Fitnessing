@@ -32,7 +32,7 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
     var avgLabel = UILabel()
     var liftedLabel = UILabel()
     var hoursLabel = UILabel()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -45,7 +45,7 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         
         workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()] // Get current workout (should have been set by previous VC)
         exercises = workout!.getExercises() // Get exercises from workout
-        workout?.setCurrentIndex(index: 0) // Set index of current exercise in workout
+        //workout?.setCurrentIndex(index: 0) // Set index of current exercise in workout
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -119,6 +119,8 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         // Table view cells are reused and should be dequeued using a cell identifier.
         let cellIdentifier = "ExerciseTableViewCell"
         
+        workout?.setCurrentIndex(index: indexPath.row) // Set index of current exercise in workout
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? ExerciseTableViewCell  else {
             fatalError("The dequeued cell is not an instance of ExerciseTableViewCell.")
         }
@@ -126,7 +128,6 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         // Fetches the appropriate meal for the data source layout.
         let exercise = exercises![indexPath.row]
         
-        workout?.setCurrentIndex(index: indexPath.row) // Set index of current exercise in workout
         
         cell.backgroundColor = UIColor.clear
         cell.num.text = String(indexPath.row + 1) + " of " + String(exercises!.count)

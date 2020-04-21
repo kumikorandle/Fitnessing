@@ -18,7 +18,7 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
     var reps: Int!
     var weight: Float!
     var sets: Int!
-    var setArray : [[String]]!
+    var setArray : [[String]]! = []
     
     // Strings
     var exerciseNum = "1 of 1"
@@ -29,11 +29,26 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
     let num = UILabel()
     let titleLabel = UILabel()
     let background = UIView()
+    
     var tableView : UITableView?
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style , reuseIdentifier: reuseIdentifier)
         initializeUser()
+        //createBackground()
+        createExerciseNum()
+        createTitle()
+        setUpTable()
+        setUpArray()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+       super.init(coder: aDecoder)
+
+        setUpTable()
+    }
+    
+    func setUpArray() {
         // Assumes that workout already exists in workout collection (editing existing workout)
         workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()] // Get current workout
         exercise = workout?.getExercises()[(workout?.getCurrentIndex())!] // Get current exercise
@@ -51,20 +66,18 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
                 setArray.append([String(reps), String(weight)])
             }
         }
-                
-        // Initialization code
-        tableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.contentView.frame.width-20, height: self.contentView.frame.height - num.frame.height - titleLabel.frame.height - 65))
+    }
+    
+    func setUpTable() {
+        // Table initialization
+        self.tableView = UITableView()
         
-        self.background.addSubview(tableView!)
-        
-        tableView!.register(SetTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        self.tableView!.register(SetTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+
+        self.background.addSubview(self.tableView!)
         
         self.tableView!.delegate = self
         self.tableView!.dataSource = self
-
-        createBackground()
-        createExerciseNum()
-        createTitle()
         
         self.tableView!.rowHeight = 60
         self.tableView!.backgroundColor = .clear
@@ -72,12 +85,24 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
         
         // Remove cell separators
         self.tableView!.separatorStyle = UITableViewCell.SeparatorStyle.none
-        
-        tableView!.translatesAutoresizingMaskIntoConstraints = false
-        tableView!.widthAnchor.constraint(equalToConstant: tableView!.frame.width).isActive = true
-        tableView!.heightAnchor.constraint(equalToConstant: tableView!.frame.height).isActive = true
-        tableView!.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10).isActive = true
-        tableView!.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0).isActive = true
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setUpArray()
+        tableView?.reloadData()
+        self.tableView!.frame = CGRect(x: self.background.frame.minX, y: self.num.frame.height + self.titleLabel.frame.height + 20, width: self.contentView.frame.width-40, height: self.background.frame.height - self.num.frame.height - self.titleLabel.frame.height - 50)
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        initializeUser()
+        createBackground()
+        createExerciseNum()
+        createTitle()
+        setUpArray()
+        setUpTable()
+        tableView?.reloadData()
     }
         
     func initializeUser() {

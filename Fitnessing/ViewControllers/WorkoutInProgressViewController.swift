@@ -41,10 +41,6 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
         workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()] // Get current workout
         exercises = workout!.getExercises() // Get exercises from workout
         
-        print("IN PROGRESS")
-        workout?.printWorkout()
-        print("---")
-        
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
@@ -85,19 +81,19 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
         // Table view cells are reused and should be dequeued using a cell identifier.
         let cellIdentifier = "ExerciseTableViewCell"
         
+        workout?.setCurrentIndex(index: indexPath.row) // Set current index of exercise to be used in cell
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? ExerciseTableViewCell  else {
             fatalError("The dequeued cell is not an instance of ExerciseTableViewCell.")
         }
                 
         // Fetches the appropriate meal for the data source layout.
         let exercise = exercises![indexPath.row]
-        workout?.setCurrentIndex(index: indexPath.row) // Set current index of exercise to be used in cell
                 
         cell.backgroundColor = UIColor.clear
         cell.num.text = String(indexPath.row + 1) + " of " + String(exercises!.count)
         cell.titleLabel.text = exercise.getName()
 
-        
         return cell
     }/// cellForRowAt
     

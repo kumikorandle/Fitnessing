@@ -84,13 +84,14 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 		// Table view cells are reused and should be dequeued using a cell identifier.
 		let cellIdentifier = "CreateWorkoutTableViewCell"
 		
+        sharedUser.setTempExercisesIndex(index: indexPath.row) // Set index of current exercise for temp exercise array
+        
 		guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? CreateWorkoutTableViewCell  else {
             fatalError("The dequeued cell is not an instance of CreateWorkoutTableViewCell.")
         }
 		
 		// Fetches the appropriate exercise for the data source layout.
 		let exercise = exercises[indexPath.row]
-        sharedUser.setTempExercisesIndex(index: indexPath.row) // Set index of current exercise for temp exercise array
 		
 		cell.backgroundColor = UIColor.clear
 		cell.num.text = String(indexPath.row + 1) + " of " + String(exercises.count)
