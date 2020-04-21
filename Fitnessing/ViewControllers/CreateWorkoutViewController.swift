@@ -30,10 +30,7 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 	override func viewDidLoad() {
 		super.viewDidLoad()
         initializeUser()
-		print("CREATE/EDIT")
-        workout?.printWorkout()
-        print("---")
-        
+		
 		self.tableView.delegate = self
 		self.tableView.dataSource = self
         
