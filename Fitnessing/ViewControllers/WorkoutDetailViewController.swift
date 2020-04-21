@@ -77,7 +77,10 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         createRectangle(textLabel: avgLabel, imgName: "clock-icon.png", rect: avgRect, topNeighbour: liftedRect.bottomAnchor, leadingNeighbour: hoursRect.trailingAnchor, subtitle: "avg duration", text: formatter.string(from: workout?.getAvgTimeCompleted() ?? 0)! + " hr")
     
         createExerciseTitle()
-
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+        workout?.printWorkout()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -298,7 +301,7 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         dc.workout = self.workout! // Set workout of Create/Edit Workout VC to the current workout
         dc.exercises = self.exercises! // Set exercises of Create/Edit Workout VC to current exercises (should be equal to exercises of workout)
         dc.workoutTitle.text = self.workout!.getName()
-        //sharedUser.setTempExercises(exercises: exercises!)
+        sharedUser.setTempExercises(exercises: exercises!)
         self.navigationController!.pushViewController(dc, animated: true)
     }
     

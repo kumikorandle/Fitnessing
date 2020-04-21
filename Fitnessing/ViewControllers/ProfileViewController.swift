@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, UITextFieldDelegate {
 	
 	// MARK: Property Initialization
 	var sharedUser: User!
@@ -18,63 +18,22 @@ class ProfileViewController: UIViewController {
 	var nameLabel = UILabel()
 	
 	let line1 = UIView()
-	let line2 = UIView()
-	var line3 = UIView()
-	
-	var box1 = UIView()
-	var box2 = UIView()
-	var box3 = UIView()
-	var dateBox = UIView()
-	var exerciseBox = UIView()
-	
-	// Subtitles
-	var workoutsCompleted = UILabel()
-	var currentWeight = UILabel()
-	var hoursWorked = UILabel()
-	var prevWorkout = UILabel()
-	var workoutTitle = UILabel()
-	var exercises = UILabel()
-	var myWorkoutsLabel = UILabel()
-	var firstWorkoutTitle = UILabel()
-	var workoutDate = UILabel()
-	
-	// Numbers
-	var numWorkouts = UILabel()
-	var weight = UILabel()
-	var workouts = UILabel()
-	var month = UILabel()
-	var day = UILabel()
-	
-	var arrow = UIImageView()
-	var prevWorkoutButton = UIButton()
-	var showAll = UIButton()
-	var workoutsTableView : UITableView!
-	
-	// Subtitle strings
-	let workoutsSubtitle = "workouts\ncompleted"
-	let weightSubtitle = "current\nweight"
-	let hoursSubtitle = "worked\nout"
-	let myWorkoutsSubtile = "MY WORKOUTS"
-	let prevSubtitle = "Previous Workout"
-	
-	var workoutTitleSubtitle = "LEGS & ABS"
-	var exercisesSubtitle = "6 exercises completed"
-	var firstWorkout = "Back & Biceps"
-	var workoutDateSubtitle = "Sat, Jan 11"
-	
-	// Button String
-	let showAllButton = "Show All"
-	
-	var monthString = "JAN"
-	var dayString = "1"
-	
-	// Title
+
+    @IBOutlet weak var firstNameTextField: UITextField!
+    @IBOutlet weak var lastNameTextField: UITextField!
+    @IBOutlet weak var heightTextField: UITextField!
+    @IBOutlet weak var weightTextField: UITextField!
+    @IBOutlet weak var firstNameLabel: UILabel!
+    @IBOutlet weak var lastNameLabel: UILabel!
+    @IBOutlet weak var heightLabel: UILabel!
+    @IBOutlet weak var weightLabel: UILabel!
+    
+    @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var saveButton: UIButton!
+    
+    
+    // Title
 	let welcome = "Welcome"
-	
-	// Tracker variables
-	var selectedButton: UIButton?
-	var destinationController: UITableViewController?
-	
 	
 	//MARK: viewDidLoad
 	override func viewDidLoad() {
@@ -85,8 +44,47 @@ class ProfileViewController: UIViewController {
 		createBackground()
 		createTitle(name: sharedUser.getFirstName())
 		createLine(line: line1, topNeighbour: nameLabel)
-		
-		
+        
+        firstNameTextField.delegate = self
+        lastNameTextField.delegate = self
+        heightTextField.delegate = self
+        weightTextField.delegate = self
+        
+        defineConstraints(view: firstNameTextField, width: firstNameTextField.frame.width, height: firstNameTextField.frame.height, topConstant: 20, top: line1.bottomAnchor, leadingConstant: -20, leading: self.view.trailingAnchor)
+        defineConstraints(view: lastNameTextField, width: lastNameTextField.frame.width, height: lastNameTextField.frame.height, topConstant: 20, top: firstNameTextField.bottomAnchor, leadingConstant: -20, leading: self.view.trailingAnchor)
+        defineConstraints(view: heightTextField, width: heightTextField.frame.width, height: heightTextField.frame.height, topConstant: 20, top: lastNameTextField.bottomAnchor, leadingConstant: -20, leading: self.view.trailingAnchor)
+        defineConstraints(view: weightTextField, width: weightTextField.frame.width, height: weightTextField.frame.height, topConstant: 20, top: heightTextField.bottomAnchor, leadingConstant: -20, leading: self.view.trailingAnchor)
+        defineConstraints(view: firstNameLabel, width: firstNameLabel.frame.width, height: firstNameLabel.frame.height, topConstant: 25, top: line1.bottomAnchor, leadingConstant: -5, leading: firstNameTextField.leadingAnchor)
+        defineConstraints(view: lastNameLabel, width: lastNameLabel.frame.width, height: lastNameLabel.frame.height, topConstant: 35, top: firstNameLabel.bottomAnchor, leadingConstant: -5, leading: lastNameTextField.leadingAnchor)
+        defineConstraints(view: heightLabel, width: heightLabel.frame.width, height: heightLabel.frame.height, topConstant: 35, top: lastNameLabel.bottomAnchor,leadingConstant: -5, leading: heightTextField.leadingAnchor)
+        defineConstraints(view: weightLabel, width: weightLabel.frame.width, height: weightLabel.frame.height, topConstant: 35, top: heightLabel.bottomAnchor, leadingConstant: -5, leading: weightTextField.leadingAnchor)
+        
+        firstNameTextField.text = sharedUser.getFirstName()
+        lastNameTextField.text = sharedUser.getLastName()
+        heightTextField.text = String(sharedUser.getHeight())
+        weightTextField.text = String(sharedUser.getWeight())
+        
+        firstNameTextField.isEnabled = false
+        lastNameTextField.isEnabled = false
+        heightTextField.isEnabled = false
+        weightTextField.isEnabled = false
+        saveButton.isEnabled = false
+        saveButton.alpha = 0.5
+        
+        firstNameTextField.textColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
+        lastNameTextField.textColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
+        heightTextField.textColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
+        weightTextField.textColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
+        
+        editButton.backgroundColor = .white
+        saveButton.backgroundColor = .white
+        editButton.layer.cornerRadius = 10
+        saveButton.layer.cornerRadius = 10
+        
+        editButton.setTitleColor(UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1), for: .normal)
+        saveButton.setTitleColor(UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1), for: .normal)
+        
+       
 	}/// viewDidLoad
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -97,18 +95,20 @@ class ProfileViewController: UIViewController {
 	//MARK: Utility Functions
 	
 	func initializeUser() {
-		
 		_ = SharingUser()
-		
-		SharingUser.sharedUser.loadUser() // un-archive data
-		
-		if (SharingUser.sharedUser.user == nil) {
-			SharingUser.sharedUser.user = User(firstName: "First Name", lastName: "Last Name", heightCM: 0, weightLBS: 0, totalHoursWorked: 0, totalWeightLifted: 0, workoutCollection: [])
-		}
-		
 		sharedUser = SharingUser.sharedUser.user
 		
 	}/// initializeUser
+    
+    func defineConstraints(view: UIView, width: CGFloat, height: CGFloat, topConstant: CGFloat, top: NSLayoutAnchor<NSLayoutYAxisAnchor>, leadingConstant: CGFloat, leading: NSLayoutXAxisAnchor) {
+         
+         view.translatesAutoresizingMaskIntoConstraints = false
+         view.widthAnchor.constraint(equalToConstant: width).isActive = true
+         view.heightAnchor.constraint(equalToConstant: height).isActive = true
+         view.topAnchor.constraint(equalTo: top, constant: topConstant).isActive = true
+        view.trailingAnchor.constraint(equalTo: leading, constant: leadingConstant).isActive = true
+    
+     }
 	
 	//MARK: create view functions
 	func createBackground() {
@@ -206,5 +206,80 @@ class ProfileViewController: UIViewController {
 		}
 	}/// createLine
 	
+    // MARK: TextField functions
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        // Disable the Save button while editing.
+        saveButton.isEnabled = false
+        saveButton.alpha = 0.5
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        updateSaveButtonState()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
+    
+    private func updateSaveButtonState() {
+        // Disable the Save button if the text field is empty.
+        let text = firstNameTextField.text ?? ""
+        saveButton.isEnabled = !text.isEmpty
+        if (saveButton.isEnabled) {
+            saveButton.alpha = 1.0
+        }
+
+    }
+    
+    func reload() {
+        nameLabel.text = sharedUser.getFirstName()
+        firstNameTextField.text = sharedUser.getFirstName()
+        lastNameTextField.text = sharedUser.getLastName()
+        heightTextField.text = String(sharedUser.getHeight())
+        weightTextField.text = String(sharedUser.getWeight())
+        
+    }
+    
+    @IBAction func saveAction(_ sender: Any) {
+        editButton.isEnabled = true
+        saveButton.isEnabled = false
+        saveButton.alpha = 0.5
+        if let firstName = firstNameTextField.text {
+            if firstName != "" {
+                sharedUser.setFirstName(name: firstName)
+            }
+        }
+        if let lastName = lastNameTextField.text {
+            if lastName != "" {
+                sharedUser.setLastName(name: lastName)
+            }
+        }
+        if let height = heightTextField.text {
+            if height != "" {
+                sharedUser.setHeight(height: Float(height)!)
+            }
+        }
+        if let weight = weightTextField.text {
+            if weight != "" {
+                sharedUser.setWeight(weight: Float(weight)!)
+            }
+        }
+        
+        reload()
+    }
+    
+    @IBAction func editAction(_ sender: Any) {
+        editButton.isEnabled = false
+        editButton.alpha = 0.5
+        saveButton.isEnabled = true
+        saveButton.alpha = 1
+        
+        firstNameTextField.isEnabled = true
+        lastNameTextField.isEnabled = true
+        heightTextField.isEnabled = true
+        weightTextField.isEnabled = true
+    }
+    
 }/// ProfileViewController
 

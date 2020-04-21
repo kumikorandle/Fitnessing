@@ -46,7 +46,7 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
         weightField.delegate = self
         
         // If exercises have been added to list
-        if sharedUser.getTempExercises().count > 1 {
+        if sharedUser.getTempExercises().count > 0 {
             
             // Get current exercise
             exercise = sharedUser.getTempExercises()[sharedUser.getTempExercisesIndex()]

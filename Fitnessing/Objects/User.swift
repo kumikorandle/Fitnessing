@@ -45,6 +45,14 @@ class User: NSObject, NSCoding {
         static let current = "current"
     }
 
+    func setFirstName(name: String) {
+        self.firstName = name
+    }
+    
+    func setLastName(name: String) {
+        self.lastName = name
+    }
+    
     func setTempExercises(exercises: [Exercise]) {
         self.tempExercises = exercises
     }
