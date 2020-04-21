@@ -24,6 +24,11 @@ class WorkoutTableViewCell: UITableViewCell {
     @IBOutlet weak var bar4: UIView!
     @IBOutlet weak var bar5: UIView!
     @IBOutlet weak var graphLine: UILabel!
+    @IBOutlet weak var bar1Height: NSLayoutConstraint!
+    @IBOutlet weak var bar2Height: NSLayoutConstraint!
+    @IBOutlet weak var bar3Height: NSLayoutConstraint!
+    @IBOutlet weak var bar4Height: NSLayoutConstraint!
+    @IBOutlet weak var bar5Height: NSLayoutConstraint!
     
     // Graph Labels
     @IBOutlet weak var fiveLabel: UILabel!

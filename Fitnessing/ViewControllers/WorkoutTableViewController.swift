@@ -98,26 +98,48 @@ class WorkoutTableViewController: UITableViewController {
         var i = 0
         let fullBarHeight = CGFloat(96)
         for exercise in workout.getExercises() {
-            var percent = CGFloat(exercise.getWeightLifted()/5000)
+            var percent = CGFloat((exercise.getWeightLifted() * 0.453592)/5000) // convert to KG and get percent
             if percent > 1 {
                 percent = 1
             }
             
             if i == 0 {
-                cell.bar1.frame = CGRect(x: 0, y: 0, width: cell.bar1.frame.width, height: percent*fullBarHeight)
+                cell.bar1Height.constant = percent*fullBarHeight
             } else if i == 1 {
-                cell.bar2.frame = CGRect(x: 0, y: 0, width: cell.bar2.frame.width, height: percent*fullBarHeight)
+                cell.bar2Height.constant = percent*fullBarHeight
             } else if i == 2 {
-                cell.bar3.frame = CGRect(x: 0, y: 0, width: cell.bar3.frame.width, height: percent*fullBarHeight)
+                cell.bar3Height.constant = percent*fullBarHeight
             } else if i == 3 {
-                cell.bar4.frame = CGRect(x: 0, y: 0, width: cell.bar4.frame.width, height: percent*fullBarHeight)
+                cell.bar4Height.constant = percent*fullBarHeight
             } else if i == 4 {
-                cell.bar5.frame = CGRect(x: 0, y: 0, width: cell.bar5.frame.width, height: percent*fullBarHeight)
+                cell.bar5Height.constant = percent*fullBarHeight
             }
             i = i + 1
         }
         
+        if i == 1 { // 4 bars remain
+            cell.bar2Height.constant = 0
+            cell.bar3Height.constant = 0
+            cell.bar4Height.constant = 0
+            cell.bar5Height.constant = 0
+        } else if i == 2 { // 3 bars remain
+            cell.bar3Height.constant = 0
+            cell.bar4Height.constant = 0
+            cell.bar5Height.constant = 0
+        } else if i == 3{ // 2 bars remain
+            cell.bar4Height.constant = 0
+            cell.bar5Height.constant = 0
+        } else if i == 4 { // 1 bar remaining
+            cell.bar5Height.constant = 0
+        }
+
         return cell
+    }
+    
+    func defineConstraints(view: UIView, width: CGFloat, leadingConstant: CGFloat, leading: NSLayoutAnchor<NSLayoutXAxisAnchor>) {
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.widthAnchor.constraint(equalToConstant: width).isActive = true
+        view.leadingAnchor.constraint(equalTo: leading, constant: leadingConstant).isActive = true
     }
     
     /*
