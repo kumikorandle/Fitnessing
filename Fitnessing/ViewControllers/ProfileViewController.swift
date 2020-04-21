@@ -243,6 +243,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func saveAction(_ sender: Any) {
         editButton.isEnabled = true
+        editButton.alpha = 1.0
         saveButton.isEnabled = false
         saveButton.alpha = 0.5
         if let firstName = firstNameTextField.text {
