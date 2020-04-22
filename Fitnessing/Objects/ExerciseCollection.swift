@@ -22,6 +22,7 @@ class ExerciseCollection: NSObject, NSCoding {
         addExercise(name: "Pulse Squat", musclesWorked: ["Quadriceps", "Glutes", "Hamstrings", "Lower Back"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
         addExercise(name: "Bulgarian Split Squat", musclesWorked: ["Quadriceps", "Glutes", "Hamstrings", "Lower Back"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
         addExercise(name: "Leg Press", musclesWorked: ["Quadriceps", "Glutes", "Hamstrings", "Calves"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
+        addExercise(name: "Sideways Single Leg Press", musclesWorked: ["Quadriceps", "Glutes", "Hamstrings"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
         addExercise(name: "Reverse Lunge", musclesWorked: ["Quadriceps", "Glutes", "Hamstrings", "Calves"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
         addExercise(name: "Lunge", musclesWorked: ["Quadriceps", "Glutes", "Hamstrings", "Calves"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
          addExercise(name: "Lateral Lunge", musclesWorked: ["Quadriceps", "Glutes"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
@@ -29,17 +30,24 @@ class ExerciseCollection: NSObject, NSCoding {
         addExercise(name: "RDL", musclesWorked: ["Adductor", "Glutes", "Hamstrings"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
         addExercise(name: "Good Morning", musclesWorked: ["Glutes", "Hamstrings", "Lower Back"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
         addExercise(name: "Hip Abduction", musclesWorked: ["Glutes", "Abductors"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
+        addExercise(name: "Hip Abduction Elevated", musclesWorked: ["Glutes", "Abductors"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
+        addExercise(name: "Hip Adduction", musclesWorked: ["Adductors"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
         addExercise(name: "Cable Pull Through", musclesWorked: ["Hamstrings", "Glutes", "Lower Back"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
         addExercise(name: "Single Leg RDL", musclesWorked: ["Glutes", "Hamstrings", "Adductors"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
         addExercise(name: "Leg Extension", musclesWorked: ["Quadriceps"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
         addExercise(name: "Lying Leg Curl", musclesWorked: ["Glutes", "Hamstrings", "Calves"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
         addExercise(name: "Hip Thrusts", musclesWorked: ["Glutes", "Hamstrings"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
+        addExercise(name: "Single Leg Hip Thrusts", musclesWorked: ["Glutes", "Hamstrings"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
         addExercise(name: "Elevated Hip Thrusts", musclesWorked: ["Glutes", "Hamstrings"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
         addExercise(name: "SL Elevated Hip Thrusts", musclesWorked: ["Glutes", "Hamstrings"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
         addExercise(name: "Glute Bridge + Abduction", musclesWorked: ["Glutes", "Hamstrings"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
         addExercise(name: "Curtsy Lunge", musclesWorked: ["Glutes", "Quadriceps"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
         addExercise(name: "Banded Side Steps", musclesWorked: ["Quadriceps", "Glutes"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
         addExercise(name: "Banded Wall Sit Pulses", musclesWorked: ["Quadriceps", "Glutes", "Calves"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
+        addExercise(name: "Banded Side Kicks", musclesWorked: ["Quadriceps", "Glutes"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
+        addExercise(name: "Frog Pumps", musclesWorked: ["Glutes"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
+        addExercise(name: "Kick Backs", musclesWorked: ["Glutes", "Hamstrings"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
+        addExercise(name: "Swiss Ball Leg Curl", musclesWorked: ["Glutes", "Hamstrings"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
         
         // Upper body workouts
         addExercise(name: "Bench Press", musclesWorked: ["Pectorals", "Deltoids", "Triceps"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
@@ -56,6 +64,8 @@ class ExerciseCollection: NSObject, NSCoding {
          addExercise(name: "Single Leg Bicycle Crunches", musclesWorked: ["Abs"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
          addExercise(name: "Cross Body Toe Touches", musclesWorked: ["Abs"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
          addExercise(name: "Single Leg V Up", musclesWorked: ["Abs"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
+        addExercise(name: "Mountain Climbers", musclesWorked: ["Abs"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
+        addExercise(name: "Crunches", musclesWorked: ["Abs"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
         
         collection = collection.sorted { $0.getName() < $1.getName() }
     }

@@ -223,7 +223,7 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
         formatLabel(label: titleLabel, text: exerciseTitle, font: "Roboto-Bold", alpha: 1, width: 130, height: 28, fontSize: 24)
         titleLabel.sizeToFit()
         self.background.addSubview(titleLabel)
-        defineConstraints(label: titleLabel, height: titleLabel.frame.height, leadingConstant: 10, topConstant: 5, top: self.num.bottomAnchor, leading: self.background.leadingAnchor)
+        defineConstraints(label: titleLabel, height: titleLabel.frame.height, leadingConstant: 10, topConstant: 10, top: self.num.bottomAnchor, leading: self.background.leadingAnchor)
     }
 
     func createBackground() {
