@@ -42,6 +42,8 @@ class HomeViewController: UIViewController {
     var myWorkoutsLabel = UILabel()
     var firstWorkoutTitle = UILabel()
     var workoutDate = UILabel()
+    var noWorkoutLabel = UILabel()
+    var noWorkoutLabelTwo = UILabel()
    
     // Numbers
     var numWorkouts = UILabel()
@@ -138,7 +140,7 @@ class HomeViewController: UIViewController {
         SharingUser.sharedUser.loadUser() // un-archive data
         
         if (SharingUser.sharedUser.user == nil) {
-            SharingUser.sharedUser.user = User(firstName: "Name", lastName: "Name", heightCM: 0, weightLBS: 0, totalHoursWorked: 0, totalWeightLifted: 0, workoutCollection: createUserWorkoutCollection())
+            SharingUser.sharedUser.user = User(firstName: "Kumiko", lastName: "Randle", heightCM: 165, weightLBS: 125, totalHoursWorked: 0, totalWeightLifted: 0, workoutCollection: [])
         }
         
         sharedUser = SharingUser.sharedUser.user
@@ -339,8 +341,20 @@ class HomeViewController: UIViewController {
     func createPreviousWorkout() {
         prevWorkoutButton.frame = CGRect(x: 0, y:0, width: self.view.frame.width - 60, height: 145)
         prevWorkoutButton.addTarget(self, action: #selector(previousWorkoutSelected), for: .touchUpInside)
+
+        let parent = scrollView
+        
+        parent.addSubview(prevWorkoutButton)
         
         if (sharedUser.getWorkoutCollection().count > 0) {
+            arrow.isHidden = false
+            prevWorkout.isHidden = false
+            exercises.isHidden = false
+            dateBox.isHidden = false
+            workoutTitle.isHidden = false
+            noWorkoutLabelTwo.isHidden = true
+
+            prevWorkoutButton.isEnabled = true
             let workout = sharedUser.getWorkoutCollection()[sharedUser.getPreviousWorkout()]
             workoutTitleSubtitle = workout.getName()
             exercisesSubtitle = String(workout.getExercises().count) + " exercises completed"
@@ -353,40 +367,59 @@ class HomeViewController: UIViewController {
             let monthName = DateFormatter().monthSymbols[mon - 1]
             monthString = monthName
             dayString = String(calDay)
+            
+            createBox(box: dateBox, neighbour: nil, text:monthString, label:month, numLabel:day, num: dayString, height: 90, width: 70, topNeighbour: line2)
+            formatLabel(label: prevWorkout, text: prevSubtitle, font: "Roboto-Regular", alpha: 0.7, width: 142, height: 21, fontSize: 18)
+            formatLabel(label: workoutTitle, text: workoutTitleSubtitle, font: "Roboto-Bold", alpha: 1, width: 221, height: 28, fontSize: 24)
+            workoutTitle.textAlignment = .left
+            formatLabel(label: exercises, text: exercisesSubtitle, font: "Roboto-Regular", alpha: 1, width: 180, height: 21, fontSize: 18)
+            
+            arrow.frame = CGRect(x: 0, y: 0, width: 10, height: 12)
+            arrow.image = UIImage(named: "Arrow.png")
+
+            parent.addSubview(exercises)
+            parent.addSubview(prevWorkout)
+            parent.addSubview(workoutTitle)
+            parent.addSubview(arrow)
+
+            prevWorkoutButton.translatesAutoresizingMaskIntoConstraints = false
+            prevWorkoutButton.widthAnchor.constraint(equalToConstant: prevWorkoutButton.frame.width).isActive = true
+            prevWorkoutButton.heightAnchor.constraint(equalToConstant: prevWorkoutButton.frame.height).isActive = true
+            prevWorkoutButton.topAnchor.constraint(equalTo: line2.topAnchor, constant: 1).isActive = true
+            prevWorkoutButton.leadingAnchor.constraint(equalTo: parent.leadingAnchor, constant: 35).isActive = true
+            
+            arrow.translatesAutoresizingMaskIntoConstraints = false
+            arrow.widthAnchor.constraint(equalToConstant: 10).isActive = true
+            arrow.heightAnchor.constraint(equalToConstant: 12).isActive = true
+            arrow.leadingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -32).isActive = true
+            arrow.topAnchor.constraint(equalTo: prevWorkout.bottomAnchor, constant: 10).isActive = true
+            
+            defineConstraints(label: prevWorkout, width: prevWorkout.frame.width, height: prevWorkout.frame.height, leadingConstant: 20, topConstant: 30, top: line2.topAnchor, leading: dateBox.trailingAnchor)
+            defineConstraints(label: exercises, width: exercises.frame.width, height: exercises.frame.height, leadingConstant: 20, topConstant: 1, top: workoutTitle.bottomAnchor, leading: dateBox.trailingAnchor)
+            defineConstraints(label: workoutTitle, width: workoutTitle.frame.width, height: workoutTitle.frame.height, leadingConstant: 20, topConstant: 1, top: prevWorkout.bottomAnchor, leading: dateBox.trailingAnchor)
+        } else {
+            formatLabel(label: noWorkoutLabelTwo, text: "You have no workouts yet. Go on and create your first one!", font: "Roboto-Regular", alpha: 1, width: self.view.frame.width - 60, height: 21, fontSize: 18)
+            noWorkoutLabelTwo.sizeToFit()
+            noWorkoutLabelTwo.textAlignment = .left
+            scrollView.addSubview(noWorkoutLabelTwo)
+            defineConstraints(label: noWorkoutLabelTwo, width: noWorkoutLabelTwo.frame.width, height: noWorkoutLabelTwo.frame.height, leadingConstant: 35, topConstant: 30, top: line2.topAnchor, leading: scrollView.leadingAnchor)
+            
+            noWorkoutLabelTwo.isHidden = false
+            prevWorkoutButton.isEnabled = false
+            arrow.isHidden = true
+            prevWorkout.isHidden = true
+            exercises.isHidden = true
+            dateBox.isHidden = true
+            workoutTitle.isHidden = true
+
+            prevWorkoutButton.translatesAutoresizingMaskIntoConstraints = false
+            prevWorkoutButton.widthAnchor.constraint(equalToConstant: prevWorkoutButton.frame.width).isActive = true
+            prevWorkoutButton.heightAnchor.constraint(equalToConstant: prevWorkoutButton.frame.height).isActive = true
+            prevWorkoutButton.topAnchor.constraint(equalTo: line2.topAnchor, constant: 1).isActive = true
+            prevWorkoutButton.leadingAnchor.constraint(equalTo: parent.leadingAnchor, constant: 35).isActive = true
+            
         }
-        createBox(box: dateBox, neighbour: nil, text:monthString, label:month, numLabel:day, num: dayString, height: 90, width: 70, topNeighbour: line2)
         
-        formatLabel(label: prevWorkout, text: prevSubtitle, font: "Roboto-Regular", alpha: 0.7, width: 142, height: 21, fontSize: 18)
-        formatLabel(label: workoutTitle, text: workoutTitleSubtitle, font: "Roboto-Bold", alpha: 1, width: 221, height: 28, fontSize: 24)
-        workoutTitle.textAlignment = .left
-        formatLabel(label: exercises, text: exercisesSubtitle, font: "Roboto-Regular", alpha: 1, width: 180, height: 21, fontSize: 18)
-        
-        arrow.frame = CGRect(x: 0, y: 0, width: 10, height: 12)
-        arrow.image = UIImage(named: "Arrow.png")
-        
-        let parent = scrollView
-
-        parent.addSubview(exercises)
-        parent.addSubview(prevWorkout)
-        parent.addSubview(workoutTitle)
-        parent.addSubview(arrow)
-        parent.addSubview(prevWorkoutButton)
-
-        prevWorkoutButton.translatesAutoresizingMaskIntoConstraints = false
-        prevWorkoutButton.widthAnchor.constraint(equalToConstant: prevWorkoutButton.frame.width).isActive = true
-        prevWorkoutButton.heightAnchor.constraint(equalToConstant: prevWorkoutButton.frame.height).isActive = true
-        prevWorkoutButton.topAnchor.constraint(equalTo: line2.topAnchor, constant: 1).isActive = true
-        prevWorkoutButton.leadingAnchor.constraint(equalTo: parent.leadingAnchor, constant: 35).isActive = true
-        
-        arrow.translatesAutoresizingMaskIntoConstraints = false
-        arrow.widthAnchor.constraint(equalToConstant: 10).isActive = true
-        arrow.heightAnchor.constraint(equalToConstant: 12).isActive = true
-        arrow.leadingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -32).isActive = true
-        arrow.topAnchor.constraint(equalTo: prevWorkout.bottomAnchor, constant: 10).isActive = true
-        
-        defineConstraints(label: exercises, width: exercises.frame.width, height: exercises.frame.height, leadingConstant: 20, topConstant: 1, top: workoutTitle.bottomAnchor, leading: dateBox.trailingAnchor)
-        defineConstraints(label: workoutTitle, width: workoutTitle.frame.width, height: workoutTitle.frame.height, leadingConstant: 20, topConstant: 1, top: prevWorkout.bottomAnchor, leading: dateBox.trailingAnchor)
-        defineConstraints(label: prevWorkout, width: prevWorkout.frame.width, height: workoutTitle.frame.height, leadingConstant: 20, topConstant: 30, top: line2.topAnchor, leading: dateBox.trailingAnchor)
     }/// createPreviousWorkout
     
     func createWorkouts() {
@@ -411,7 +444,20 @@ class HomeViewController: UIViewController {
 
         defineConstraints(label: myWorkoutsLabel, width: myWorkoutsLabel.frame.width, height: myWorkoutsLabel.frame.height, leadingConstant: 35, topConstant: 30, top: line3.topAnchor, leading: parent.leadingAnchor)
         
-        createExercise()
+        if sharedUser.getWorkoutCollection().count > 0{
+            createExercise()
+            exerciseBox.isHidden = false
+            noWorkoutLabel.isHidden = true
+        }  else {
+            formatLabel(label: noWorkoutLabel, text: "You have no workouts yet. Go on and create your first one!", font: "Roboto-Regular", alpha: 1, width: self.view.frame.width - 60, height: 21, fontSize: 18)
+            noWorkoutLabel.sizeToFit()
+            noWorkoutLabel.textAlignment = .left
+            scrollView.addSubview(noWorkoutLabel)
+            defineConstraints(label: noWorkoutLabel, width: noWorkoutLabel.frame.width, height: noWorkoutLabel.frame.height, leadingConstant: 35, topConstant: 30, top: myWorkoutsLabel.bottomAnchor, leading: scrollView.leadingAnchor)
+            exerciseBox.isHidden = true
+            noWorkoutLabel.isHidden = false
+
+        }
     }/// createWorkouts
     
     func createExercise() {
