@@ -252,8 +252,9 @@ class AddExerciseViewController: UIViewController, UITableViewDelegate, UITableV
         
         for exercise in self.selectedExercises {
             previousViewController.exercises.append(exercise) // Add selected exercises to workout
+
         }
-        
+        sharedUser.setTempExercises(exercises: previousViewController.exercises)
         previousViewController.tableView.reloadData() // Reload data in edit/create workout table
         
     }

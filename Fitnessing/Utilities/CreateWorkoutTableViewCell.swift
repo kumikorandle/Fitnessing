@@ -73,7 +73,7 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
         super.layoutSubviews()
         setUpArray()
         tableView?.reloadData()
-        self.tableView!.frame = CGRect(x: self.background.frame.minX, y: self.num.frame.height + self.titleLabel.frame.height + 20, width: self.contentView.frame.width-40, height: self.background.frame.height - self.num.frame.height - self.titleLabel.frame.height - self.addButton.frame.height - 50)
+        self.tableView!.frame = CGRect(x: self.background.frame.minX, y: self.num.frame.height + self.titleLabel.frame.height/2 + 20, width: self.contentView.frame.width-40, height: self.background.frame.height - self.num.frame.height - self.titleLabel.frame.height - self.addButton.frame.height - 20)
     }
     
     override func awakeFromNib() {

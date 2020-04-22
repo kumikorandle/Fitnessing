@@ -47,6 +47,7 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
         }
 		
 		self.tableView.backgroundColor = .clear
+        self.tableView.rowHeight = 400
 
         // Remove cell separators
 		self.tableView!.separatorStyle = UITableViewCell.SeparatorStyle.none

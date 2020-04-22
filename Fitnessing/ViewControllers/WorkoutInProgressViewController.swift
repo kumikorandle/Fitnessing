@@ -95,6 +95,7 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
         cell.backgroundColor = UIColor.clear
         cell.num.text = String(indexPath.row + 1) + " of " + String(exercises!.count)
         cell.titleLabel.text = exercise.getName()
+        cell.minHeight = 365
         cell.titleLabel.sizeToFit()
 
         return cell
