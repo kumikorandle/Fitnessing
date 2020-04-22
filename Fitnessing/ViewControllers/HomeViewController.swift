@@ -24,6 +24,7 @@ class HomeViewController: UIViewController {
     let line1 = UIView()
     let line2 = UIView()
     var line3 = UIView()
+    let scrollView = UIScrollView()
 
     var box1 = UIView()
     var box2 = UIView()
@@ -92,7 +93,8 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
 		
         initializeUser()
-                
+        statusBarBackground()
+        createScrollView()
         createBackground()
         createTitle(name: sharedUser.getFirstName())
         createLine(line: line1, topNeighbour: nameLabel)
@@ -113,7 +115,7 @@ class HomeViewController: UIViewController {
         let boxSize = self.view.frame.width/3 - 30
 
         // Redraw elements with updated user values
-        createBackground()
+        createScrollView()
         createTitle(name: sharedUser.getFirstName())
         createLine(line: line1, topNeighbour: nameLabel)
         createBox(box: box1, neighbour: nil, text:workoutsSubtitle, label: workoutsCompleted, numLabel: numWorkouts, num: String(sharedUser.getNumWorkoutsCompleted()), height: boxSize, width: boxSize, topNeighbour: line1)
@@ -125,6 +127,9 @@ class HomeViewController: UIViewController {
         createWorkouts()
     }/// viewDidAppear
 	
+    override func viewDidLayoutSubviews() {
+        self.scrollView.contentSize = CGSize(width:self.view.frame.width, height: self.view.frame.height + 200)
+    }
     
 //MARK: Utility Functions
 	func initializeUser() {
@@ -181,10 +186,34 @@ class HomeViewController: UIViewController {
     }
     
 //MARK: create view functions
+    func createScrollView() {
+        scrollView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+        scrollView.isScrollEnabled = true
+        self.scrollView.contentSize = CGSize(width:self.view.frame.width, height: self.view.frame.height + 200)
+        self.view.addSubview(scrollView)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+        scrollView.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
+        scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
+        scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
+    }
+    
+    func statusBarBackground() {
+        let background = UIView()
+        background.frame = CGRect(x: 0, y: 0, width: self.view.safeAreaLayoutGuide.layoutFrame.width, height: self.view.safeAreaLayoutGuide.layoutFrame.height)
+        background.backgroundColor = UIColor(red: 1, green: 0.741, blue: 0.643, alpha: 1)
+        self.view.addSubview(background)
+        background.translatesAutoresizingMaskIntoConstraints = false
+        background.widthAnchor.constraint(equalToConstant: background.frame.width).isActive = true
+        background.heightAnchor.constraint(equalToConstant: background.frame.height).isActive = true
+        background.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
+        background.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
+
+    }
+    
     func createBackground() {
-       
 		let background = UILabel()
-        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: scrollView.contentSize.height)
         background.backgroundColor = .white
         self.view.insertSubview(background, at: 0)
         
@@ -203,7 +232,7 @@ class HomeViewController: UIViewController {
         layer0.bounds = view.bounds.insetBy(dx: -0.5*view.bounds.size.width, dy: -0.5*view.bounds.size.height)
 
         layer0.position = background.center
-        layer0.frame = self.view.bounds
+        layer0.frame = background.frame
 
         background.layer.addSublayer(layer0)
    
@@ -238,12 +267,12 @@ class HomeViewController: UIViewController {
         nameLabel.sizeToFit()
         nameLabel.textAlignment = .left
         
-        self.view.addSubview(welcomeLabel)
-        self.view.addSubview(nameLabel)
+        scrollView.addSubview(welcomeLabel)
+        scrollView.addSubview(nameLabel)
         
         // Constraints
-        defineConstraints(label: welcomeLabel, width: welcomeLabel.frame.width, height: welcomeLabel.frame.height, leadingConstant: 36, topConstant: 75, top: self.view!.topAnchor, leading: self.view!.leadingAnchor)
-        defineConstraints(label: nameLabel, width: welcomeLabel.frame.width, height: welcomeLabel.frame.height, leadingConstant: 36, topConstant: 5, top: welcomeLabel.bottomAnchor, leading: self.view.leadingAnchor)
+        defineConstraints(label: welcomeLabel, width: welcomeLabel.frame.width, height: welcomeLabel.frame.height, leadingConstant: 36, topConstant: 75, top: scrollView.topAnchor, leading: scrollView.leadingAnchor)
+        defineConstraints(label: nameLabel, width: welcomeLabel.frame.width, height: welcomeLabel.frame.height, leadingConstant: 36, topConstant: 5, top: welcomeLabel.bottomAnchor, leading: scrollView.leadingAnchor)
     }/// createTitle
     
     func createLine(line: UIView, topNeighbour: Any?) {
@@ -260,12 +289,12 @@ class HomeViewController: UIViewController {
         stroke.layer.borderWidth = 1
         stroke.layer.borderColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
         
-        self.view.addSubview(line)
+        scrollView.addSubview(line)
         
         line.translatesAutoresizingMaskIntoConstraints = false
         line.widthAnchor.constraint(equalToConstant: lineWidth).isActive = true
         line.heightAnchor.constraint(equalToConstant: 0).isActive = true
-        line.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 35).isActive = true
+        line.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 35).isActive = true
         
         if let label = topNeighbour as? UILabel {
             line.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 15).isActive = true
@@ -286,7 +315,7 @@ class HomeViewController: UIViewController {
         
         box.addSubview(numLabel)
         box.addSubview(label)
-        self.view.addSubview(box)
+        scrollView.addSubview(box)
 
         numLabel.translatesAutoresizingMaskIntoConstraints = false
         numLabel.centerXAnchor.constraint(equalTo: box.centerXAnchor).isActive = true
@@ -303,7 +332,7 @@ class HomeViewController: UIViewController {
         if (neighbour != nil) {
             box.leadingAnchor.constraint(equalTo: neighbour!.trailingAnchor, constant: 15).isActive = true
         } else {
-            box.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 36).isActive = true
+            box.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 36).isActive = true
         }
     }/// createBox
     
@@ -335,7 +364,7 @@ class HomeViewController: UIViewController {
         arrow.frame = CGRect(x: 0, y: 0, width: 10, height: 12)
         arrow.image = UIImage(named: "Arrow.png")
         
-        let parent = self.view!
+        let parent = scrollView
 
         parent.addSubview(exercises)
         parent.addSubview(prevWorkout)
@@ -352,7 +381,7 @@ class HomeViewController: UIViewController {
         arrow.translatesAutoresizingMaskIntoConstraints = false
         arrow.widthAnchor.constraint(equalToConstant: 10).isActive = true
         arrow.heightAnchor.constraint(equalToConstant: 12).isActive = true
-        arrow.trailingAnchor.constraint(equalTo: parent.trailingAnchor, constant: -32).isActive = true
+        arrow.leadingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -32).isActive = true
         arrow.topAnchor.constraint(equalTo: prevWorkout.bottomAnchor, constant: 10).isActive = true
         
         defineConstraints(label: exercises, width: exercises.frame.width, height: exercises.frame.height, leadingConstant: 20, topConstant: 1, top: workoutTitle.bottomAnchor, leading: dateBox.trailingAnchor)
@@ -369,7 +398,7 @@ class HomeViewController: UIViewController {
         showAll.setTitleColor(.white, for: .normal)
         showAll.addTarget(self, action: #selector(showAllButtonSelected), for: .touchUpInside)
 
-        let parent = self.view!
+        let parent = scrollView
 
         parent.addSubview(myWorkoutsLabel)
         parent.addSubview(showAll)
@@ -377,7 +406,7 @@ class HomeViewController: UIViewController {
         showAll.translatesAutoresizingMaskIntoConstraints = false
         showAll.widthAnchor.constraint(equalToConstant: showAll.frame.width).isActive = true
         showAll.heightAnchor.constraint(equalToConstant: showAll.frame.height).isActive = true
-        showAll.trailingAnchor.constraint(equalTo: parent.trailingAnchor, constant: -30).isActive = true
+        showAll.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive = true
         showAll.topAnchor.constraint(equalTo: line3.topAnchor, constant: 30).isActive = true
 
         defineConstraints(label: myWorkoutsLabel, width: myWorkoutsLabel.frame.width, height: myWorkoutsLabel.frame.height, leadingConstant: 35, topConstant: 30, top: line3.topAnchor, leading: parent.leadingAnchor)
@@ -412,7 +441,7 @@ class HomeViewController: UIViewController {
         startButton.titleLabel!.font = UIFont(name: "Roboto-Bold", size: 18)
         startButton.addTarget(self, action: #selector(startWorkout), for: .touchUpInside)
         
-        let parent = self.view!
+        let parent = scrollView
 
         formatLabel(label: firstWorkoutTitle, text: sharedUser.getWorkoutCollection()[0].getName(), font: "Roboto-Bold", alpha: 1, width: 155, height: 28, fontSize: 24)
         firstWorkoutTitle.textColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)

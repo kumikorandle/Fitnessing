@@ -28,6 +28,8 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
     var avgRect = UIView()
     var startButton = UIButton()
     
+    @IBOutlet weak var scrollView: UIScrollView!
+    
     var completedLabel = UILabel()
     var avgLabel = UILabel()
     var liftedLabel = UILabel()
@@ -50,14 +52,13 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
-        self.tableView.rowHeight = 365
+        //self.tableView.rowHeight = 365
         self.tableView.backgroundColor = .clear
         
         // Remove cell separators
         self.tableView!.separatorStyle = UITableViewCell.SeparatorStyle.none
         
         self.title = workout?.getName()
-
         self.navigationController?.isNavigationBarHidden = false
         
         var totalWeight = Float(0)
@@ -67,6 +68,7 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         
         self.title = workout?.getName()
         
+        createScrollView()
         customizeNavBar()
         createBackground()
         createStartButton()
@@ -77,6 +79,7 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         createRectangle(textLabel: avgLabel, imgName: "clock-icon.png", rect: avgRect, topNeighbour: liftedRect.bottomAnchor, leadingNeighbour: hoursRect.trailingAnchor, subtitle: "avg duration", text: formatter.string(from: workout?.getAvgTimeCompleted() ?? 0)! + " hr")
     
         createExerciseTitle()
+        tableView.topAnchor.constraint(equalTo: exerciseLabel.bottomAnchor, constant: 10).isActive = true
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
@@ -133,9 +136,11 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         cell.backgroundColor = UIColor.clear
         cell.num.text = String(indexPath.row + 1) + " of " + String(exercises!.count)
         cell.titleLabel.text = exercise.getName()
+        cell.minHeight = 365
         
         return cell
     }
+
     
     // MARK: Helper functions
     func formatLabel(label: UILabel, text: String, font: String, alpha: CGFloat, width: CGFloat, height: CGFloat, fontSize: CGFloat) {
@@ -195,10 +200,23 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         self.navigationItem.setRightBarButton(UIBarButtonItem(customView: editButton), animated: true)
     }
     
+    func createScrollView() {
+        scrollView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+        scrollView.isScrollEnabled = true
+        self.scrollView.contentSize = CGSize(width:self.view.frame.width, height: self.view.frame.height + tableView.frame.height)
+        self.view.addSubview(scrollView)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+        scrollView.heightAnchor.constraint(equalToConstant: self.view.frame.height).isActive = true
+        scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
+        scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
+    }
+    
+    
     func createBackground() {
-        header.frame = CGRect(x: 0, y: (self.navigationController?.navigationBar.frame.height)!, width: self.view.frame.width, height: 325)
+        header.frame = CGRect(x: 0, y: (self.navigationController?.navigationBar.frame.height)!, width: self.view.frame.width, height: 175)
         header.backgroundColor = .white
-        self.view.addSubview(header)
+        scrollView.addSubview(header)
 
         let layer0 = CAGradientLayer()
         layer0.colors = [
@@ -213,10 +231,10 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         layer0.transform = CATransform3DMakeAffineTransform(CGAffineTransform(a: 0, b: 1, c: -1, d: 0, tx: 1, ty: 0))
 
         layer0.position = header.center
-        layer0.frame = CGRect(x: 0, y: (self.navigationController?.navigationBar.frame.height)!, width: self.view.frame.width, height: 325 - (self.navigationController?.navigationBar.frame.height)!)
+        layer0.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 175)
         
         header.layer.insertSublayer(layer0, at: 0)
-        defineConstraints(label: header, width: self.view.frame.width, height: header.frame.height, leadingConstant: 0, topConstant: -10, top: self.view.topAnchor, leading: self.view.leadingAnchor)
+        defineConstraints(label: header, width: self.view.frame.width, height: header.frame.height, leadingConstant: 0, topConstant: 0, top: scrollView.topAnchor, leading: scrollView.leadingAnchor)
     }
     
     func createRectangle(textLabel: UILabel, imgName: String, rect: UIView, topNeighbour: NSLayoutYAxisAnchor, leadingNeighbour: NSLayoutXAxisAnchor, subtitle: String, text: String) {
@@ -241,11 +259,11 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         rect.layer.borderWidth = 1
         rect.layer.borderColor = UIColor(red: 0.942, green: 0.942, blue: 0.942, alpha: 1).cgColor
         
-        let parent = self.view!
+        let parent = scrollView
         rect.addSubview(imgView)
         rect.addSubview(textLabel)
         rect.addSubview(subtitleLabel)
-        parent.addSubview(rect)
+        parent!.addSubview(rect)
         
         defineConstraints(view: rect, width: rect.frame.width, height: rect.frame.height, leadingConstant: (self.view.frame.width - (rect.frame.width * 2))/3 , topConstant: 10, top: topNeighbour, leading: leadingNeighbour)
         
@@ -258,8 +276,8 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
     
     func createExerciseTitle() {
         formatLabel(label: exerciseLabel, text: "EXERCISES", font: "Roboto-Bold", alpha: 0.6, width: 100, height: 20, fontSize: 16)
-        let parent = self.view!
-        parent.addSubview(exerciseLabel)
+        let parent = scrollView
+        parent!.addSubview(exerciseLabel)
         defineConstraints(label: exerciseLabel, width: exerciseLabel.frame.width, height: exerciseLabel.frame.height, leadingConstant: (self.view.frame.width - (hoursRect.frame.width * 2))/3, topConstant: 30, top: hoursRect.bottomAnchor, leading: self.view.leadingAnchor)
         
     }
@@ -286,12 +304,12 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         layer0.frame = startButton.frame
         
         startButton.layer.insertSublayer(layer0, at: 0)
-        self.view.addSubview(startButton)
+        scrollView.addSubview(startButton)
         
         startButton.translatesAutoresizingMaskIntoConstraints = false
         startButton.widthAnchor.constraint(equalToConstant: startButton.frame.width).isActive = true
         startButton.heightAnchor.constraint(equalToConstant: startButton.frame.height).isActive = true
-        startButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
+        startButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 0).isActive = true
         startButton.bottomAnchor.constraint(equalTo: header.bottomAnchor, constant: 0).isActive = true
     }
     

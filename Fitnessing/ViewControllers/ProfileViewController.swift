@@ -76,6 +76,11 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
         heightTextField.textColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
         weightTextField.textColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
         
+        firstNameTextField.backgroundColor = .white
+        lastNameTextField.backgroundColor = .white
+        heightTextField.backgroundColor = .white
+        weightTextField.backgroundColor = .white
+        
         editButton.backgroundColor = .white
         saveButton.backgroundColor = .white
         editButton.layer.cornerRadius = 10

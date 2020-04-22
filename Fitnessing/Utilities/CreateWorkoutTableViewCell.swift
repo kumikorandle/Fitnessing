@@ -35,6 +35,47 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
     var exerciseNum = "1 of 1"
     var exerciseTitle = "Exercise"
     
+    var minHeight: CGFloat?
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style , reuseIdentifier: reuseIdentifier) 
+        initializeUser()
+        // Adds label to textfield
+        weightField.leftViewMode = .always
+        repsField.leftViewMode = .always
+        
+        repsField.delegate = self
+        weightField.delegate = self
+        
+        createBackground()
+        createExerciseNum()
+        createTitle()
+        createRepsField()
+        createWeightField()
+        createAddButton()
+        createDeleteButton()
+        setUpTable()
+        setUpArray()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setUpTable()
+    }
+    
+    override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
+        let size = super.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: horizontalFittingPriority, verticalFittingPriority: verticalFittingPriority)
+        guard let minHeight = minHeight else { return size }
+        return CGSize(width: size.width, height: max(size.height, minHeight))
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setUpArray()
+        tableView?.reloadData()
+        self.tableView!.frame = CGRect(x: self.background.frame.minX, y: self.num.frame.height + self.titleLabel.frame.height + 20, width: self.contentView.frame.width-40, height: self.background.frame.height - self.num.frame.height - self.titleLabel.frame.height - self.addButton.frame.height - 50)
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         initializeUser()
@@ -45,6 +86,37 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
         repsField.delegate = self
         weightField.delegate = self
         
+        createBackground()
+        createExerciseNum()
+        createTitle()
+        createRepsField()
+        createWeightField()
+        createAddButton()
+        createDeleteButton()
+        setUpTable()
+        setUpArray()
+        tableView?.reloadData()
+    }
+    
+    func setUpTable() {
+        self.tableView = UITableView()
+        
+        self.tableView!.register(SetTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+
+        self.background.addSubview(self.tableView!)
+        
+        self.tableView!.delegate = self
+        self.tableView!.dataSource = self
+        
+        self.tableView!.rowHeight = 60
+        self.tableView!.backgroundColor = .clear
+        self.tableView!.allowsMultipleSelection = true
+        
+        // Remove cell separators
+        self.tableView!.separatorStyle = UITableViewCell.SeparatorStyle.none
+    }
+    
+    func setUpArray() {
         // If exercises have been added to list
         if sharedUser.getTempExercises().count > 0 {
             
@@ -65,39 +137,6 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
             }
         }
                 
-        // Initialization code
-        tableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.contentView.frame.width, height: self.contentView.frame.height - num.frame.height - titleLabel.frame.height - addButton.frame.height - deleteButton.frame.height - 60))
-        
-        tableView!.register(SetTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-
-        self.background.addSubview(tableView!)
-        
-        self.tableView!.delegate = self
-        self.tableView!.dataSource = self
-        
-        createBackground()
-        createExerciseNum()
-        createTitle()
-        createRepsField()
-        createWeightField()
-        
-        self.tableView!.rowHeight = 60
-        self.tableView!.backgroundColor = .clear
-        self.tableView!.allowsSelection = false
-        
-        // Remove cell separators
-        self.tableView!.separatorStyle = UITableViewCell.SeparatorStyle.none
-        
-        createAddButton()
-        createDeleteButton()
-        
-        tableView!.translatesAutoresizingMaskIntoConstraints = false
-        tableView!.widthAnchor.constraint(equalToConstant: tableView!.frame.width).isActive = true
-        tableView!.heightAnchor.constraint(equalToConstant: tableView!.frame.height).isActive = true
-        tableView!.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10).isActive = true
-        tableView!.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0).isActive = true
-        tableView!.bottomAnchor.constraint(equalTo: addButton.topAnchor, constant: -10).isActive = true
-        
     }
         
     func initializeUser() {
@@ -176,7 +215,7 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
     }
 
     func createBackground() {
-        background.frame = CGRect(x: 0, y: 0, width: self.contentView.frame.width - 20, height: self.contentView.frame.height - 15)
+        background.frame = CGRect(x: 0, y: 0, width: self.contentView.frame.width - 20, height: 390)
         background.backgroundColor = .white
         background.layer.cornerRadius = 15
         background.layer.borderColor = UIColor(red: 0.942, green: 0.942, blue: 0.942, alpha: 1).cgColor

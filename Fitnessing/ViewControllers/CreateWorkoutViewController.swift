@@ -46,7 +46,6 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
             finishButton.alpha = 0.5
         }
 		
-		self.tableView.rowHeight = 365
 		self.tableView.backgroundColor = .clear
 
         // Remove cell separators
@@ -98,7 +97,8 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
         cell.titleLabel.text = exercise.getName()
         
         cell.exercise = exercise
-        cell.tableView?.reloadData()
+        cell.minHeight = 400
+        //cell.tableView?.reloadData()
 		
 		return cell
 	}/// cellForRowAt
@@ -187,10 +187,9 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 	
 	// MARK: View functions
 	func createBackground() {
-		
 		header.frame = CGRect(x: 0,
-							  y: (self.navigationController?.navigationBar.bounds.height)!,
-							  width: self.view.frame.width, height: 230)
+							  y: 0,
+							  width: self.view.frame.width, height: 200)
 		header.backgroundColor = .white
 		self.view.addSubview(header)
 		
@@ -201,14 +200,14 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
 			UIColor(red: 1, green: 0, blue: 0, alpha: 0.28).cgColor
 		]
 		
-		layer0.locations = [0, 0.5, 2]
+		layer0.locations = [0, 0.8, 2]
 		layer0.startPoint = CGPoint(x: 0.25, y: 0.5)
 		layer0.endPoint = CGPoint(x: 0.75, y: 0.5)
 		
 		layer0.transform = CATransform3DMakeAffineTransform(CGAffineTransform(a: 0, b: 1, c: -1, d: 0, tx: 1, ty: 0))
 		
 		layer0.position = header.center
-		layer0.frame = CGRect(x: 0, y: (self.navigationController?.navigationBar.bounds.height)!, width: self.view.frame.width, height: 230 - (self.navigationController?.navigationBar.frame.height)!)
+        layer0.frame = header.frame
 		
 		header.layer.insertSublayer(layer0, at: 0)
 		defineConstraints(label: header, width: self.view.frame.width, height: header.frame.height, leadingConstant: 0, topConstant: -10, top: self.view.topAnchor, leading: self.view.leadingAnchor)

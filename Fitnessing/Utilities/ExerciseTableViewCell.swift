@@ -32,6 +32,8 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
     
     var tableView : UITableView?
     
+    var minHeight: CGFloat?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style , reuseIdentifier: reuseIdentifier)
         initializeUser()
@@ -46,6 +48,12 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
        super.init(coder: aDecoder)
 
         setUpTable()
+    }
+    
+    override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
+        let size = super.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: horizontalFittingPriority, verticalFittingPriority: verticalFittingPriority)
+        guard let minHeight = minHeight else { return size }
+        return CGSize(width: size.width, height: max(size.height, minHeight))
     }
     
     func setUpArray() {
