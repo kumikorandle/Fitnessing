@@ -41,7 +41,7 @@ class AddExerciseTableViewCell: UITableViewCell {
         formatMuscleLabel(muscleLabel: muscleFive, colour: colours[1])
         formatMuscleLabel(muscleLabel: muscleSix, colour: colours[2])
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
