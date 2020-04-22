@@ -93,7 +93,7 @@ class AddExerciseViewController: UIViewController, UITableViewDelegate, UITableV
             }
             i = i + 1
         }
-        
+                
         if i == 2 { // Remaining 5 unset labels hidden (each exercise has at least 1 muscle group)
             cell.muscleTwo.isHidden = true
             cell.muscleThree.isHidden = true

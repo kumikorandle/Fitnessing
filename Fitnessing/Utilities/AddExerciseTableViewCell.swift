@@ -48,10 +48,8 @@ class AddExerciseTableViewCell: UITableViewCell {
 
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        isSelected = false
-        
+    override func layoutSubviews() {
+        super.layoutSubviews()
     }
     
     func formatMuscleLabel(muscleLabel: UILabel, colour: UIColor) {

@@ -57,6 +57,7 @@ class ExerciseCollection: NSObject, NSCoding {
          addExercise(name: "Cross Body Toe Touches", musclesWorked: ["Abs"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
          addExercise(name: "Single Leg V Up", musclesWorked: ["Abs"], videoLink: URL(fileURLWithPath: ""), numReps: 0, numSets: 0, weightLifted: 0, weight: 0)
         
+        collection = collection.sorted { $0.getName() < $1.getName() }
     }
     
     func addExercise(name: String, musclesWorked: [String], videoLink: URL, numReps: Int, numSets: Int, weightLifted: Float, weight: Float) {
