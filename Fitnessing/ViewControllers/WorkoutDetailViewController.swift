@@ -62,8 +62,9 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         self.navigationController?.isNavigationBarHidden = false
         
         var totalWeight = Float(0)
+        
         for exercise in (workout?.getExercises())! {
-            totalWeight = totalWeight + exercise.getWeightLifted()
+            totalWeight = (totalWeight + exercise.getWeightLifted())/2.205
         }
         
         self.title = workout?.getName()
@@ -74,7 +75,7 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         createStartButton()
         
         createRectangle(textLabel: completedLabel, imgName: "circle-checked.png", rect: completedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: self.view.leadingAnchor, subtitle: "workouts completed", text: String(workout!.getTimesCompleted()))
-        createRectangle(textLabel: liftedLabel, imgName: "weight-icon.png", rect: liftedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: completedRect.trailingAnchor, subtitle: "weight lifted", text: String(totalWeight) + " lbs")
+        createRectangle(textLabel: liftedLabel, imgName: "weight-icon.png", rect: liftedRect, topNeighbour: header.bottomAnchor, leadingNeighbour: completedRect.trailingAnchor, subtitle: "weight lifted", text: String(totalWeight) + " kg")
         createRectangle(textLabel: hoursLabel, imgName: "date-icon.png", rect: hoursRect, topNeighbour: completedRect.bottomAnchor, leadingNeighbour: self.view.leadingAnchor, subtitle: "worked out", text: formatter.string(from: workout?.getTotalTime() ?? 0)! + " hrs")
         createRectangle(textLabel: avgLabel, imgName: "clock-icon.png", rect: avgRect, topNeighbour: liftedRect.bottomAnchor, leadingNeighbour: hoursRect.trailingAnchor, subtitle: "avg duration", text: formatter.string(from: workout?.getAvgTimeCompleted() ?? 0)! + " hr")
     
@@ -96,13 +97,15 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         
         // Calculate total weight lifted for a workout (add weight lifted from all exercises)
         var totalWeight = Float(0)
+        
         for exercise in (workout?.getExercises())! {
-            totalWeight = totalWeight + exercise.getWeightLifted()
+            totalWeight = (totalWeight + exercise.getWeightLifted())/2.205
         }
+        
         self.title = workout?.getName()
 
         completedLabel.text = String(workout!.getTimesCompleted())
-        liftedLabel.text = String(totalWeight) + " lbs"
+        liftedLabel.text = String(totalWeight) + " kg"
         hoursLabel.text = formatter.string(from: workout?.getTotalTime() ?? 0)! + " hrs"
         avgLabel.text = formatter.string(from: workout?.getAvgTimeCompleted() ?? 0)! + " hr"
         

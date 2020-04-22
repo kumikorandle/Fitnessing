@@ -139,7 +139,6 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
                 }
             }
         }
-                
     }
         
     func initializeUser() {
@@ -154,7 +153,7 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Table view cells are reused and should be dequeued using a cell identifier.
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? SetTableViewCell  else {
-            fatalError("The dequeued cell is not an instance of WorkoutTableViewCell.")
+            fatalError("The dequeued cell is not an instance of SetTableViewCell.")
         }
         
         let set = setArray[indexPath.row]

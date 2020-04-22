@@ -372,7 +372,7 @@ class HomeViewController: UIViewController {
             formatLabel(label: prevWorkout, text: prevSubtitle, font: "Roboto-Regular", alpha: 0.7, width: 142, height: 21, fontSize: 18)
             formatLabel(label: workoutTitle, text: workoutTitleSubtitle, font: "Roboto-Bold", alpha: 1, width: 221, height: 28, fontSize: 24)
             workoutTitle.textAlignment = .left
-            formatLabel(label: exercises, text: exercisesSubtitle, font: "Roboto-Regular", alpha: 1, width: 180, height: 21, fontSize: 18)
+            formatLabel(label: exercises, text: exercisesSubtitle, font: "Roboto-Regular", alpha: 1, width: 200, height: 21, fontSize: 18)
             exercises.sizeToFit()
             exercises.textAlignment = .left
             
@@ -491,9 +491,10 @@ class HomeViewController: UIViewController {
         
         let parent = scrollView
 
-        formatLabel(label: firstWorkoutTitle, text: sharedUser.getWorkoutCollection()[0].getName(), font: "Roboto-Bold", alpha: 1, width: 155, height: 28, fontSize: 24)
+        formatLabel(label: firstWorkoutTitle, text: sharedUser.getWorkoutCollection()[0].getName(), font: "Roboto-Bold", alpha: 1, width: 200, height: 28, fontSize: 24)
         firstWorkoutTitle.textColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
         firstWorkoutTitle.textAlignment = .left
+        firstWorkoutTitle.adjustsFontSizeToFitWidth = true
 
         let date = sharedUser.getWorkoutCollection()[0].getLastDateCompleted()
         let calendar = Calendar.current

@@ -108,8 +108,8 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
         createBackground()
         createExerciseNum()
         createTitle()
-        setUpArray()
         setUpTable()
+        setUpArray()
         tableView?.reloadData()
     }
         

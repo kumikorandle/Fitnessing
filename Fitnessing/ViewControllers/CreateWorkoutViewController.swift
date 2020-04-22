@@ -17,6 +17,7 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
     // Constants
     // View elements
     let finishButton = UIButton(type: .custom)
+    let message = UILabel()
 
 	var header = UILabel()
 	var subtitle = UILabel()
@@ -57,7 +58,7 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
         customizeNavBar()
 		createBackground()
         createEmptyWorkoutMessage()
-		createSubtitle()
+        createSubtitle()
         createAddExercise()
         
         self.navigationItem.setRightBarButtonItems([self.editButtonItem, UIBarButtonItem(customView: finishButton)], animated: true)
@@ -68,6 +69,7 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         sharedUser.setTempExercises(exercises: exercises) // Exercises that have been added to workout are temporarily set in user to pass to cell
+        createEmptyWorkoutMessage()
     }
 	
     func initializeUser() {
@@ -277,12 +279,17 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func createEmptyWorkoutMessage() {
-        let message = UILabel()
-        formatLabel(label: message, text: "You have no exercises added yet. Go on and add your first one!", font: "Roboto-Bold", alpha: 1, width: self.view.frame.width - 50, height: 100, fontSize: 25)
-        message.textColor = UIColor(red: 0.562, green: 0.562, blue: 0.562, alpha: 1)
-        message.textAlignment = .center
-        self.view.insertSubview(message, at: 0)
-        defineConstraints(label: message, width: message.frame.width, height: message.frame.height, leadingConstant: 20, topConstant: 100, top: header.bottomAnchor, leading: self.view.leadingAnchor)
+        if exercises.count == 0 {
+            message.isHidden = false
+            formatLabel(label: message, text: "You have no exercises added yet. Go on and add your first one!", font: "Roboto-Bold", alpha: 1, width: self.view.frame.width - 50, height: 100, fontSize: 25)
+            message.textColor = UIColor(red: 0.562, green: 0.562, blue: 0.562, alpha: 1)
+            message.textAlignment = .center
+            self.view.insertSubview(message, at: 0)
+            defineConstraints(label: message, width: message.frame.width, height: message.frame.height, leadingConstant: 20, topConstant: 100, top: header.bottomAnchor, leading: self.view.leadingAnchor)
+        } else {
+            message.isHidden = true
+        }
+        
     }
 	
 	// MARK: Button functions
