@@ -188,6 +188,15 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
     
      }/// defineConstraints
     
+    func defineConstraints(label: UILabel, height: CGFloat, leadingConstant: CGFloat, topConstant: CGFloat, top: NSLayoutAnchor<NSLayoutYAxisAnchor>, leading: NSLayoutAnchor<NSLayoutXAxisAnchor>) {
+         
+         label.translatesAutoresizingMaskIntoConstraints = false
+         label.heightAnchor.constraint(equalToConstant: height).isActive = true
+         label.leadingAnchor.constraint(equalTo: leading, constant: leadingConstant).isActive = true
+         label.topAnchor.constraint(equalTo: top, constant: topConstant).isActive = true
+    
+     }/// defineConstraints
+    
     func defineConstraints(view: UIView, width: CGFloat, height: CGFloat, leadingConstant: CGFloat, topConstant: CGFloat, top: NSLayoutAnchor<NSLayoutYAxisAnchor>, leading: NSLayoutAnchor<NSLayoutXAxisAnchor>) {
          
          view.translatesAutoresizingMaskIntoConstraints = false
@@ -211,7 +220,7 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
         formatLabel(label: titleLabel, text: exerciseTitle, font: "Roboto-Bold", alpha: 1, width: 130, height: 28, fontSize: 24)
         titleLabel.sizeToFit()
         self.background.addSubview(titleLabel)
-        defineConstraints(label: titleLabel, width: titleLabel.frame.width, height: titleLabel.frame.height, leadingConstant: 10, topConstant: 5, top: self.num.bottomAnchor, leading: self.background.leadingAnchor)
+        defineConstraints(label: titleLabel, height: titleLabel.frame.height, leadingConstant: 10, topConstant: 5, top: self.num.bottomAnchor, leading: self.background.leadingAnchor)
     }
 
     func createBackground() {
@@ -227,14 +236,14 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
     }
     
     func createWeightField() {
-        formatLabel(label: weightLabel, text: "Weight: ", font: "Roboto-Medium", alpha: 1, width: 100, height: 50, fontSize: 16)
+        formatLabel(label: weightLabel, text: "Weight:", font: "Roboto-Medium", alpha: 1, width: 80, height: 50, fontSize: 16)
         //weightLabel.sizeToFit()
         weightLabel.textColor = .white
         
         weightField.leftView = weightLabel
         weightField.backgroundColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
         weightField.layer.cornerRadius = 5
-        weightField.frame = CGRect(x: 0, y: 0, width: 100, height: 30)
+        weightField.frame = CGRect(x: 0, y: 0, width: 90, height: 30)
         weightField.textColor = .white
     
         background.addSubview(weightField)
@@ -246,14 +255,14 @@ class CreateWorkoutTableViewCell: UITableViewCell, UITableViewDataSource, UITabl
         weightField.topAnchor.constraint(equalTo: background.topAnchor, constant: 10).isActive = true
     }
     func createRepsField() {
-        formatLabel(label: repsLabel, text: "Reps: ", font: "Roboto-Medium", alpha: 1, width: 100, height: 50, fontSize: 16)
+        formatLabel(label: repsLabel, text: "Reps:", font: "Roboto-Medium", alpha: 1, width: 80, height: 50, fontSize: 16)
         repsLabel.textColor = .white
         //repsLabel.sizeToFit()
         
         repsField.leftView = repsLabel
         repsField.backgroundColor = UIColor(red: 1, green: 0.604, blue: 0.576, alpha: 1)
         repsField.layer.cornerRadius = 5
-        repsField.frame = CGRect(x: 0, y: 0, width: 100, height: 30)
+        repsField.frame = CGRect(x: 0, y: 0, width: 80, height: 30)
         repsField.textColor = .white
         
         background.addSubview(repsField)

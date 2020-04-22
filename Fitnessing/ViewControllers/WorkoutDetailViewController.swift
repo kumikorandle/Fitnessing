@@ -136,6 +136,7 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         cell.backgroundColor = UIColor.clear
         cell.num.text = String(indexPath.row + 1) + " of " + String(exercises!.count)
         cell.titleLabel.text = exercise.getName()
+        cell.titleLabel.sizeToFit()
         cell.minHeight = 365
         
         return cell

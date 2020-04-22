@@ -95,6 +95,7 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
         cell.backgroundColor = UIColor.clear
         cell.num.text = String(indexPath.row + 1) + " of " + String(exercises!.count)
         cell.titleLabel.text = exercise.getName()
+        cell.titleLabel.sizeToFit()
 
         return cell
     }/// cellForRowAt
@@ -111,6 +112,7 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
          label.topAnchor.constraint(equalTo: top, constant: topConstant).isActive = true
     
      }/// defineConstraints
+    
     
     func defineConstraints(view: UIView, width: CGFloat, height: CGFloat, leadingConstant: CGFloat, topConstant: CGFloat, top: NSLayoutAnchor<NSLayoutYAxisAnchor>, leading: NSLayoutAnchor<NSLayoutXAxisAnchor>) {
          

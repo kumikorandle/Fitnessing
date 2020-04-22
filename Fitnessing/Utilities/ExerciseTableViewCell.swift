@@ -185,6 +185,15 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
     
      }/// defineConstraints
     
+    func defineConstraints(label: UILabel, height: CGFloat, leadingConstant: CGFloat, topConstant: CGFloat, top: NSLayoutAnchor<NSLayoutYAxisAnchor>, leading: NSLayoutAnchor<NSLayoutXAxisAnchor>) {
+         
+         label.translatesAutoresizingMaskIntoConstraints = false
+         label.heightAnchor.constraint(equalToConstant: height).isActive = true
+         label.leadingAnchor.constraint(equalTo: leading, constant: leadingConstant).isActive = true
+         label.topAnchor.constraint(equalTo: top, constant: topConstant).isActive = true
+    
+     }/// defineConstraints
+    
     func defineConstraints(view: UIView, width: CGFloat, height: CGFloat, leadingConstant: CGFloat, topConstant: CGFloat, top: NSLayoutAnchor<NSLayoutYAxisAnchor>, leading: NSLayoutAnchor<NSLayoutXAxisAnchor>) {
         
          view.translatesAutoresizingMaskIntoConstraints = false
@@ -204,8 +213,9 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
     
     func createTitle() {
         formatLabel(label: titleLabel, text: exerciseTitle, font: "Roboto-Bold", alpha: 1, width: 130, height: 28, fontSize: 24)
+        titleLabel.sizeToFit()
         self.background.addSubview(titleLabel)
-        defineConstraints(label: titleLabel, width: titleLabel.frame.width, height: titleLabel.frame.height, leadingConstant: 10, topConstant: 10, top: self.num.bottomAnchor, leading: self.background.leadingAnchor)
+        defineConstraints(label: titleLabel, height: titleLabel.frame.height, leadingConstant: 10, topConstant: 10, top: self.num.bottomAnchor, leading: self.background.leadingAnchor)
     }
 
     func createBackground() {
