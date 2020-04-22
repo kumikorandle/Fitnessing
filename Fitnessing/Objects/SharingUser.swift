@@ -36,7 +36,7 @@ class SharingUser {
         print("Saving the data")
         let data = NSMutableData()
         let archiver = NSKeyedArchiver(forWritingWith: data)
-    archiver.encode(SharingUser.sharedUser.user, forKey: rootKey)
+        archiver.encode(SharingUser.sharedUser.user, forKey: rootKey)
         archiver.finishEncoding()
         data.write(toFile: filePath, atomically: true)
     }

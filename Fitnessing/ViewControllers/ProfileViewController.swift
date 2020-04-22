@@ -271,7 +271,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
                 sharedUser.setWeight(weight: Float(weight)!)
             }
         }
-        
+        SharingUser.sharedUser.saveUser()
         reload()
     }
     

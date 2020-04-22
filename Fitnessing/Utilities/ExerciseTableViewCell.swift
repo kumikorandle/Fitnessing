@@ -206,7 +206,7 @@ class ExerciseTableViewCell: UITableViewCell, UITableViewDataSource, UITableView
     
     //MARK: View functions
     func createExerciseNum() {
-        formatLabel(label: num, text: exerciseNum, font: "Roboto-Regular", alpha: 0.8, width: 52, height: 19, fontSize: 16)
+        formatLabel(label: num, text: exerciseNum, font: "Roboto-Regular", alpha: 0.8, width: 100, height: 19, fontSize: 16)
         self.background.addSubview(num)
         defineConstraints(label: num, width: num.frame.width, height: num.frame.height, leadingConstant: 10, topConstant: 20, top: self.contentView.topAnchor, leading: self.background.leadingAnchor)
     }

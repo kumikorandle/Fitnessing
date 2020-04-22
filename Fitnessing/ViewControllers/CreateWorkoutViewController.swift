@@ -316,7 +316,7 @@ class CreateWorkoutViewController: UIViewController, UITableViewDelegate, UITabl
                 // Replace workout
                 sharedUser.replaceWorkout(index: sharedUser.getCurrentIndex(), workout: workout!)
             }
-
+            SharingUser.sharedUser.saveUser()
             
         }
 	}

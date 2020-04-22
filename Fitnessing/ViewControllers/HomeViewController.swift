@@ -373,6 +373,8 @@ class HomeViewController: UIViewController {
             formatLabel(label: workoutTitle, text: workoutTitleSubtitle, font: "Roboto-Bold", alpha: 1, width: 221, height: 28, fontSize: 24)
             workoutTitle.textAlignment = .left
             formatLabel(label: exercises, text: exercisesSubtitle, font: "Roboto-Regular", alpha: 1, width: 180, height: 21, fontSize: 18)
+            exercises.sizeToFit()
+            exercises.textAlignment = .left
             
             arrow.frame = CGRect(x: 0, y: 0, width: 10, height: 12)
             arrow.image = UIImage(named: "Arrow.png")
