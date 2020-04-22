@@ -106,6 +106,9 @@ class WorkoutDetailViewController: UIViewController,  UITableViewDelegate, UITab
         hoursLabel.text = formatter.string(from: workout?.getTotalTime() ?? 0)! + " hrs"
         avgLabel.text = formatter.string(from: workout?.getAvgTimeCompleted() ?? 0)! + " hr"
         
+        workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()] // Get current workout (should have been set by previous VC)
+        exercises = workout!.getExercises() 
+        
         self.tableView.reloadData() // Reload table data if workout has changed
     }
     

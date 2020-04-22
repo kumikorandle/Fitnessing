@@ -65,7 +65,8 @@ class WorkoutInProgressViewController: UIViewController, UITableViewDelegate, UI
     
     override func viewDidAppear(_ animated: Bool) {
         self.title = workout?.getName()
-
+        workout = sharedUser.getWorkoutCollection()[sharedUser.getCurrentIndex()] // Get current workout
+        exercises = workout!.getExercises() // Get exercises from workout
         tableView.reloadData()
     }
     
